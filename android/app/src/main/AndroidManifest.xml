@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.apupu_eventos">
    <application
-        android:label="apupu_eventos"
+        android:label="Apupu Eventos"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

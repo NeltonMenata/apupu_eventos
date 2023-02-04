@@ -34,14 +34,24 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Home Page"),
       ),
-      body: FutureBuilder<GuestEntity>(
-        future: widget.controller.getGuest("objectId"),
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            return Text(snapshot.data!.name);
-          }
-          return const Text("Nenhum retorno");
-        }),
+      body: Center(
+        child: Column(
+          children: [
+            FutureBuilder<GuestEntity>(
+              future: widget.controller.getGuest("objectId"),
+              builder: ((context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data!.name);
+                }
+                return const Text("Nenhum retorno");
+              }),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
       ),
     );
   }
