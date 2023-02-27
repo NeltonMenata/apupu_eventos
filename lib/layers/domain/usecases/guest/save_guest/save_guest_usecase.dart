@@ -1,5 +1,5 @@
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 
-abstract class SaveGuestUseCase {
+abstract class ISaveGuestUseCase {
   Future<GuestEntity> call(GuestEntity entity);
 }

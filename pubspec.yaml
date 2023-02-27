@@ -38,6 +38,11 @@ dependencies:
   qr_flutter: ^4.0.0
   path_provider: ^2.0.11
   parse_server_sdk: ^3.1.1
+  get_it:
+  flutter_native_splash:
+  flutter_launcher_icons:
+  #image_picker: ^0.8.6
+  #share_extend:
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +58,11 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+flutter_icons:
+  android: "ic_launcher"
+  image_path: "assets/logo/logo.png"
+
+
 # The following section is specific to Flutter.
 flutter:
 
@@ -62,9 +72,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/logo/logo.png
+    - assets/images/home_bg.jpg
+  #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -77,10 +88,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa/Comfortaa-Bold.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Medium.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Light.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-Regular.ttf
+        - asset: assets/fonts/Comfortaa/Comfortaa-SemiBold.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

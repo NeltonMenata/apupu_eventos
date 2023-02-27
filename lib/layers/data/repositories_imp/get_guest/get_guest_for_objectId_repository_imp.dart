@@ -4,8 +4,8 @@ import 'package:apupu_eventos/layers/domain/repositories/get_guest_for_objectId/
 import '../../datasources/get_guest_datasource.dart';
 
 class GetGuestForObjectIdRepositoryImp
-    implements GetGuestForObjectIdRepository {
-  final GetGuestDataSource _getGuestDataSource;
+    implements IGetGuestForObjectIdRepository {
+  final IGetGuestDataSource _getGuestDataSource;
 
   GetGuestForObjectIdRepositoryImp(this._getGuestDataSource);
 

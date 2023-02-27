@@ -1,5 +1,5 @@
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 
-abstract class GetGuestForObjectIdUseCase {
+abstract class IGetGuestForObjectIdUseCase {
   Future<GuestEntity> call(String objectId);
 }

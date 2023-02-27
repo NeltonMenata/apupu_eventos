@@ -1,5 +1,5 @@
 import '../../domain/entities/guest/guest_entity.dart';
 
-abstract class GetGuestDataSource {
+abstract class IGetGuestDataSource {
   Future<GuestEntity> call(String objectId);
 }
