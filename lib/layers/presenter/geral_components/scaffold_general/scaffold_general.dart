@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ScaffoldGeneral extends StatefulWidget {
-  ScaffoldGeneral(
-      {Key? key,
-      required this.title,
-      required this.subtitle,
-      required this.body})
-      : super(key: key);
+  ScaffoldGeneral({
+    Key? key,
+    required this.title,
+    required this.subtitle,
+    required this.body,
+    this.paddingTop,
+  }) : super(key: key);
 
   final String title;
   final String subtitle;
   final Widget body;
+  final double? paddingTop;
 
   @override
   State<ScaffoldGeneral> createState() => _ScaffoldGeneralState();
@@ -22,11 +24,11 @@ class _ScaffoldGeneralState extends State<ScaffoldGeneral> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
-    final paddingTop = height * 0.1;
+    final paddingTop = widget.paddingTop ?? height * 0.1;
     const paddingBottom = 8.0;
     final fontSizeTitle = width * .086;
     final fontSizeSubtitle = width * .049;
-    print(fontSizeSubtitle);
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

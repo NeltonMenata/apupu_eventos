@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'Apupu Eventos',
       //themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
+      //darkTheme: ThemeData.dark(),
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Comfortaa"),
       initialRoute: "/splash",
       routes: Routes.routes(context),

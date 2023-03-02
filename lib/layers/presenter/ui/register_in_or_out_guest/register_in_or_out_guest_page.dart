@@ -2,12 +2,10 @@ import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
 import '../../../data/datasources/back4app/get_guest_datasource_back4app_imp.dart';
 import '../../../data/datasources/back4app/save_guest_datasource_back4app_imp.dart';
 import '../../../data/repositories_imp/get_guest/get_guest_for_objectId_repository_imp.dart';
 import '../../../data/repositories_imp/save_guest/save_guest_repository_imp.dart';
-import '../../../domain/entities/guest/guest_entity.dart';
 import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId_imp.dart';
 import '../../../domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
 import '../../utils/utils.dart';
@@ -35,7 +33,7 @@ class RegisterInOrOutGuestPage extends StatefulWidget {
 }
 
 class _RegisterState extends State<RegisterInOrOutGuestPage> {
-  String title = "Registro de Entr/Saida de Convidados";
+  String title = "Gestão de Convidados";
 
   GlobalKey key1qrcode = GlobalKey();
 
@@ -44,8 +42,13 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    double fontSize = width * .05;
+    const paddingLeft = 15.0;
+    const paddingBottom = 8.0;
+    final fontSizeTitle = width * .086;
+    final fontSizeSubtitle = width * .049;
+    final fontSizeMenu = width * .033;
 
     return Scaffold(
       body: Center(
@@ -71,8 +74,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                 left: 10.0,
               ),
               child: Text(
-                title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                title == "-1" ? "Nenhum" : title,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
               ),
             ),
             const SizedBox(height: 20),
@@ -108,7 +112,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                             qrName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: fontSize,
+                                fontSize: fontSizeSubtitle,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
@@ -120,80 +124,136 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
               },
             ),
             const Spacer(),
-            Padding(
+            Column(
+              children: [
+                Icon(
+                  Icons.output_outlined,
+                  color: Colors.red,
+                  size: width * .15,
+                ),
+                Text(
+                  "Convidado está fora!",
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                      fontSize: width * .04),
+                )
+              ],
+            ),
+            const Spacer(),
+            Container(
+              color: Colors.grey.shade300,
               padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          var qrResult =
-                              await FlutterBarcodeScanner.scanBarcode(
-                                  "red", "Cancelar", true, ScanMode.QR);
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        var qrResult = await FlutterBarcodeScanner.scanBarcode(
+                            "red", "Cancelar", true, ScanMode.QR);
 
-                          setState(() {
-                            title = qrResult;
-                          });
-                        },
-                        child: const Icon(Icons.qr_code_scanner_outlined),
+                        setState(() {
+                          title = qrResult;
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.qr_code_scanner_outlined,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "Registrar",
+                            style: TextStyle(
+                                fontSize: fontSizeMenu,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Utils.capture(key1qrcode, context);
-                        },
-                        child: const Icon(Icons.share),
+                    TextButton(
+                      onPressed: () {
+                        Utils.capture(key1qrcode, context);
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.share,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "Compartilhar",
+                            style: TextStyle(
+                                fontSize: fontSizeMenu,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          //Utils.capture(key1qrcode, context);
+                    TextButton(
+                      onPressed: () async {
+                        //Utils.capture(key1qrcode, context);
 
-                          /*
-                          showModalBottomSheet(
-                              shape: const RoundedRectangleBorder(),
-                              context: context,
-                              builder: (builder) {
-                                return SizedBox(
-                                  height: MediaQuery.of(context).size.height * .9,
-                                   
-                                );
-                              });
-                          */
-                          final value = await Navigator.of(context)
-                              .pushNamed(Routes.ADD_GUEST);
-                          setState(() {
-                            qrName = value.toString();
-                            qrValue = value.toString();
-                          });
-                        },
-                        child: const Icon(Icons.group_add),
+                        /*
+                        showModalBottomSheet(
+                            shape: const RoundedRectangleBorder(),
+                            context: context,
+                            builder: (builder) {
+                              return SizedBox(
+                                height: MediaQuery.of(context).size.height * .9,
+                                 
+                              );
+                            });
+                        */
+                        final value = await Navigator.of(context)
+                            .pushNamed(Routes.ADD_GUEST);
+                        setState(() {
+                          qrName = value.toString();
+                          qrValue = value.toString();
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.group_add,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "Adicionar",
+                            style: TextStyle(
+                                fontSize: fontSizeMenu,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(Routes.SEARCH_GUEST);
-                        },
-                        child: const Icon(Icons.search),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(Routes.SEARCH_GUEST);
+                      },
+                      child: Column(
+                        children: [
+                          const Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "Procurar",
+                            style: TextStyle(
+                                fontSize: fontSizeMenu,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],

@@ -43,12 +43,29 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                             Navigator.pushNamed(context, Routes.ADD_EVENT)
                                 .then((value) => setState(() {}));
                           },
-                          child: Text(
-                            "Nenhum Evento foi adicionado, clique aqui criar um novo!",
-                            style: TextStyle(
-                                fontSize: fontSizeTextButton,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white),
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  "Nenhum Evento foi adicionado, clique aqui criar um novo!",
+                                  style: TextStyle(
+                                      fontSize: fontSizeTextButton,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white),
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                            context, Routes.ADD_EVENT)
+                                        .then((value) => setState(() {}));
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_forward_rounded,
+                                    size: width * .09,
+                                    color: Colors.white,
+                                  ))
+                            ],
                           ),
                         )
                       : Column(

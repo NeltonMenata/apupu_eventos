@@ -2,7 +2,7 @@ class GuestEntity {
   final String objectId;
   final String name;
   final String contact;
-  final bool isIn;
+  bool isIn;
   final String eventObjectId;
 
   GuestEntity({
