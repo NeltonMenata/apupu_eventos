@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/splash/splash_page.dart';
@@ -18,6 +19,7 @@ abstract class Routes {
   static const REGISTER_GUEST = "/register_guest";
   static const SEARCH_GUEST = "/search_guest";
   static const RESULT_SEARCH_GUEST = "/result_search_guest";
+  static const LOGIN = "/login";
 
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
@@ -30,6 +32,7 @@ abstract class Routes {
       REGISTER_GUEST: (context) => RegisterInOrOutGuestPage(),
       SEARCH_GUEST: (context) => SearchGuestPage(),
       RESULT_SEARCH_GUEST: (context) => ResultSearchGuestPage(),
+      LOGIN: (context) => LoginPage()
     };
   }
 }

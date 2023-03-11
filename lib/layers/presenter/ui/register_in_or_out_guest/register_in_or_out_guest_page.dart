@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -14,6 +15,7 @@ import '../home_controller.dart';
 
 class RegisterInOrOutGuestPage extends StatefulWidget {
   RegisterInOrOutGuestPage({Key? key}) : super(key: key);
+
   final controller = HomeController(
       SaveGuestUseCaseImp(
         SaveGuestRepositoryImp(
@@ -37,8 +39,13 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
 
   GlobalKey key1qrcode = GlobalKey();
 
-  String qrValue = "Name";
-  String qrName = "Name";
+  GuestEntity guestCurrent = GuestEntity(
+    contact: "+244",
+    name: "Nome",
+    objectId: "objectId",
+    isIn: false,
+    eventObjectId: "",
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +58,28 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
     final fontSizeMenu = width * .033;
 
     return Scaffold(
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text("Evento"),
+                accountEmail: Text("Realização"),
+                currentAccountPicture: Image.asset("assets/logo/logo.png"),
+              ),
+              ListTile(
+                title: Text("Adicionar Porteiros"),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text("Exibir Relatório do Evento"),
+                onTap: () {},
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           children: [
@@ -95,9 +124,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                     children: [
                       Expanded(
                         child: Center(
-                          child: QrImage(
-                            data: qrValue,
-                          ),
+                          child: QrImage(data: guestCurrent.name),
                         ),
                       ),
                       Container(
@@ -109,7 +136,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                         height: 30,
                         child: Center(
                           child: Text(
-                            qrName,
+                            guestCurrent.name,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: fontSizeSubtitle,
@@ -124,21 +151,45 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
               },
             ),
             const Spacer(),
-            Column(
-              children: [
-                Icon(
-                  Icons.output_outlined,
-                  color: Colors.red,
-                  size: width * .15,
-                ),
-                Text(
-                  "Convidado está fora!",
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.bold,
-                      fontSize: width * .04),
-                )
-              ],
+            GestureDetector(
+              onTapUp: (value) {
+                setState(() {
+                  guestCurrent.isIn = !guestCurrent.isIn;
+                });
+              },
+              child: guestCurrent.isIn
+                  ? Column(
+                      children: [
+                        Icon(
+                          Icons.input_outlined,
+                          color: Colors.green,
+                          size: width * .15,
+                        ),
+                        Text(
+                          "Convidado está dentro!",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: width * .04),
+                        )
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        Icon(
+                          Icons.output_outlined,
+                          color: Colors.red,
+                          size: width * .15,
+                        ),
+                        Text(
+                          "Convidado está fora!",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: width * .04),
+                        )
+                      ],
+                    ),
             ),
             const Spacer(),
             Container(
@@ -153,9 +204,17 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                       onPressed: () async {
                         var qrResult = await FlutterBarcodeScanner.scanBarcode(
                             "red", "Cancelar", true, ScanMode.QR);
-
+                        if (qrResult == "-1") {
+                          return;
+                        }
                         setState(() {
-                          title = qrResult;
+                          guestCurrent = GuestEntity(
+                            contact: "+244",
+                            name: qrResult,
+                            objectId: "objectId",
+                            isIn: true,
+                            eventObjectId: "",
+                          );
                         });
                       },
                       child: Column(
@@ -181,7 +240,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                       child: Column(
                         children: [
                           const Icon(
-                            Icons.share,
+                            Icons.share_outlined,
                             color: Colors.grey,
                           ),
                           Text(
@@ -209,17 +268,20 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                               );
                             });
                         */
+
                         final value = await Navigator.of(context)
                             .pushNamed(Routes.ADD_GUEST);
-                        setState(() {
-                          qrName = value.toString();
-                          qrValue = value.toString();
-                        });
+
+                        if (value != null) {
+                          setState(() {
+                            guestCurrent = value as GuestEntity;
+                          });
+                        }
                       },
                       child: Column(
                         children: [
                           const Icon(
-                            Icons.group_add,
+                            Icons.group_add_outlined,
                             color: Colors.grey,
                           ),
                           Text(
@@ -233,13 +295,17 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed(Routes.SEARCH_GUEST);
+                      onPressed: () async {
+                        await Navigator.of(context)
+                            .pushNamed(Routes.SEARCH_GUEST)
+                            .then((value) {
+                          setState(() {});
+                        });
                       },
                       child: Column(
                         children: [
                           const Icon(
-                            Icons.search,
+                            Icons.search_outlined,
                             color: Colors.grey,
                           ),
                           Text(

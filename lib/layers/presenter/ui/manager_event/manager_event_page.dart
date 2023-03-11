@@ -43,28 +43,32 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                             Navigator.pushNamed(context, Routes.ADD_EVENT)
                                 .then((value) => setState(() {}));
                           },
-                          child: Row(
+                          child: Column(
                             children: [
-                              Flexible(
-                                child: Text(
-                                  "Nenhum Evento foi adicionado, clique aqui criar um novo!",
-                                  style: TextStyle(
-                                      fontSize: fontSizeTextButton,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white),
-                                ),
+                              Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      "Nenhum Evento foi adicionado, clique aqui criar um novo!",
+                                      style: TextStyle(
+                                          fontSize: fontSizeTextButton,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                                context, Routes.ADD_EVENT)
+                                            .then((value) => setState(() {}));
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_forward_rounded,
+                                        size: width * .09,
+                                        color: Colors.white,
+                                      ))
+                                ],
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                            context, Routes.ADD_EVENT)
-                                        .then((value) => setState(() {}));
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_forward_rounded,
-                                    size: width * .09,
-                                    color: Colors.white,
-                                  ))
                             ],
                           ),
                         )
@@ -91,6 +95,15 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                             fontSize: fontSizeSubtitle,
                                             color: Colors.grey),
                                       ),
+                                      trailing: Text(
+                                        snapshot.data![index].price
+                                            .toStringAsFixed(2)
+                                            .toString()
+                                            .replaceAll(".", ","),
+                                        style: TextStyle(
+                                            fontSize: fontSizeSubtitle,
+                                            color: Colors.black),
+                                      ),
                                       onTap: () {
                                         Navigator.of(context)
                                             .pushNamed(Routes.REGISTER_GUEST);
@@ -112,57 +125,12 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
               },
             ),
           ),
-
-          /*
-           Padding(
-            padding: EdgeInsets.only(
-                left: paddingLeft, top: paddingTop, bottom: paddingBottom),
-            child: Column(
-              crossAxisAlignment: crossStart,
-              children: [
-                const Text(
-                  "Gerencie seus Eventos, clique  no evento para adicionar convidados!",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                ),
-                FutureBuilder<List<EventEntity>>(
-                    future: controller.getAllEvent(context),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            ...List.generate(
-                              snapshot.data!.length,
-                              ((index) {
-                                final date =
-                                    snapshot.data![index].dateOfrealization;
-                                return ListTile(
-                                  title: Text(
-                                    snapshot.data![index].name,
-                                    style: TextStyle(
-                                        fontSize: fontSize,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                      "${date.day}/${date.month}/${date.year}"),
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed("/register_guest");
-                                  },
-                                );
-                              }),
-                            )
-                          ],
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Text("Erro ao carregar dados!");
-                      }
-                      return const CircularProgressIndicator();
-                    }),
-              ],
-            ),
-          ),
-          */
         ),
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child:
+            Text("Volte sempre nesta tela para gerenciar os eventos criados!"),
       ),
     );
   }

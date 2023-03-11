@@ -1,5 +1,6 @@
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -28,6 +29,58 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       */
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: FutureBuilder(
+                    future: ParseUser.currentUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final user = snapshot.data as ParseUser;
+                        final name = user.get("name");
+                        return Text(
+                          name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        );
+                      } else if (snapshot.hasError) {
+                        return const Text("Erro na conexão");
+                      }
+                      return const Text("User Login");
+                    }),
+                accountEmail: Text("Gerenciador"),
+                currentAccountPicture: Image.asset("assets/logo/logo.png"),
+              ),
+              ListTile(
+                title: Text("Adicionar Porteiros"),
+                trailing: Icon(Icons.group_add_outlined),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text("Exibir Relatório do Evento"),
+                onTap: () {},
+                trailing: Icon(Icons.report_outlined),
+              ),
+              const Spacer(),
+              ListTile(
+                title: Text(
+                  "Terminar Sessão",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                trailing: Icon(Icons.logout_outlined),
+                onTap: () async {
+                  final user = await ParseUser.currentUser() as ParseUser;
+                  user.logout();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.LOGIN, (route) => false);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -44,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: paddingBottom),
                   Text(
-                    "Crie novos Eventos ou Gerencie seus eventos já adicionados (adicione pessoas)!",
+                    "Crie novos Eventos ou Gerencie seus eventos já adicionados (manuseie a entrada/saída de convidados)",
                     style: TextStyle(fontSize: 20),
                   )
                 ],

@@ -56,7 +56,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, Routes.HOME);
+      Navigator.pushReplacementNamed(context, Routes.LOGIN);
     });
 
     super.initState();

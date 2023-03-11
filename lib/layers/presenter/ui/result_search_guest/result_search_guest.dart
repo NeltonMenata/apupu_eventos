@@ -14,79 +14,84 @@ class ResultSearchGuestPage extends StatefulWidget {
 }
 
 class _ResultSearchGuestPageState extends State<ResultSearchGuestPage> {
-  late SearchGuestController controller;
+  SearchGuestController get controller => SearchGuestController.controller;
   final List<GuestEntity> listGuest = [];
 
   @override
   void initState() {
-    controller = SearchGuestController();
-    controller.listGuest.forEach((element) {
-      if (element.contact == widget.arguments) {
-        print("################################");
-        listGuest.add(element);
-      }
-    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(ModalRoute.of(context)?.settings.arguments);
+    String? contact = ModalRoute.of(context)?.settings.arguments.toString();
     return Scaffold(
       body: ScaffoldGeneral(
         title: "Resultados da busca",
         subtitle: "Partilhe o Qr Code com o convidado",
-        body: Column(
-          children: [
-            ...List.generate(
-              listGuest.length,
-              (index) => Column(
-                children: [
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: QrImage(data: index.toString()),
-                    ),
-                    title: Text(
-                      "Nome",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      listGuest[index].contact,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    trailing: listGuest[index].isIn
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.input_rounded,
-                              color: Colors.green,
+        body: FutureBuilder<List<GuestEntity>>(
+            future: controller.findGuest(contact.toString()),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: [
+                    ...List.generate(
+                      snapshot.data!.length,
+                      (index) => Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              child: QrImage(data: index.toString()),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                listGuest[index].isIn = !listGuest[index].isIn;
-                              });
-                            },
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              Icons.output_rounded,
-                              color: Colors.red,
+                            title: Text(
+                              snapshot.data![index].name,
+                              style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                listGuest[index].isIn = !listGuest[index].isIn;
-                              });
-                            },
+                            subtitle: Text(
+                              snapshot.data![index].contact,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            trailing: snapshot.data![index].isIn
+                                ? IconButton(
+                                    icon: Icon(
+                                      Icons.input_rounded,
+                                      color: Colors.green,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        snapshot.data![index].isIn =
+                                            !snapshot.data![index].isIn;
+                                      });
+                                    },
+                                  )
+                                : IconButton(
+                                    icon: Icon(
+                                      Icons.output_rounded,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        snapshot.data![index].isIn =
+                                            !snapshot.data![index].isIn;
+                                      });
+                                    },
+                                  ),
                           ),
-                  ),
-                  const Divider(
-                    color: Colors.white,
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+                          const Divider(
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return const Text("Erro ao procurar convidado");
+              } else {
+                return const CircularProgressIndicator();
+              }
+            }),
       ),
     );
   }

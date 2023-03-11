@@ -12,6 +12,7 @@ class ScaffoldGeneral extends StatefulWidget {
   final String title;
   final String subtitle;
   final Widget body;
+
   final double? paddingTop;
 
   @override
@@ -69,7 +70,7 @@ class _ScaffoldGeneralState extends State<ScaffoldGeneral> {
               alignment: Alignment.topCenter,
               child: widget.body,
             ),
-          )
+          ),
         ],
       ),
     );

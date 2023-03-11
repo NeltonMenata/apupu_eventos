@@ -8,6 +8,7 @@ class SaveEventDataSourceBack4appImp implements ISaveEventDataSource {
         objectId: "objectId",
         name: "name",
         dateOfrealization: DateTime.now(),
-        imgCatalog: "imgCatalog");
+        imgCatalog: "imgCatalog",
+        price: 0);
   }
 }

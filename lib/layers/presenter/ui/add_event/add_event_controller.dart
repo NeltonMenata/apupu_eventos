@@ -13,18 +13,19 @@ class AddEventController {
     ),
   );
 
-  Future<void> saveEvent(
-      BuildContext context, String name, DateTime dateOfRealization) async {
+  Future<void> saveEvent(BuildContext context, String name,
+      DateTime dateOfRealization, double price) async {
     name.trim();
 
     try {
+      await Future.delayed(Duration(seconds: 3));
       await _saveEventUseCase(
         EventEntity(
-          objectId: "",
-          name: name,
-          dateOfrealization: dateOfRealization,
-          imgCatalog: "",
-        ),
+            objectId: "",
+            name: name,
+            dateOfrealization: dateOfRealization,
+            imgCatalog: "",
+            price: price),
       );
       showResultCustom(context, "Evento Salvo com sucesso");
     } catch (e) {
