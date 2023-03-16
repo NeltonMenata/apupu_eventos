@@ -10,6 +10,7 @@ class GetGuestDataSourceBack4appImp implements IGetGuestDataSource {
       name: "name get",
       contact: "contact get",
       eventObjectId: 'eventObjectId get',
+      doormanObjectId: "doorman Object Id",
       isIn: false,
     );
   }

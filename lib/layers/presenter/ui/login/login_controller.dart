@@ -16,6 +16,13 @@ class LoginController {
       try {
         final login = await user.login();
         if (login.success && login.results != null) {
+          if (login.results![0].get("blocked")) {
+            showResultCustom(
+                context, "Usuário bloqueado! \nContacte o apoio técnico",
+                isError: true);
+
+            return;
+          }
           debugPrint(login.results.toString());
           Navigator.of(context).pushNamed(Routes.HOME);
         } else {

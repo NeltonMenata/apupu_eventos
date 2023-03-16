@@ -8,18 +8,21 @@ class GuestDto extends GuestEntity {
   final String contact;
   final bool isIn;
   final String eventObjectId;
+  final String doormanObjectId;
 
-  GuestDto({
-    required this.objectId,
-    required this.name,
-    required this.contact,
-    required this.isIn,
-    required this.eventObjectId,
-  }) : super(
+  GuestDto(
+      {required this.objectId,
+      required this.name,
+      required this.contact,
+      required this.isIn,
+      required this.eventObjectId,
+      required this.doormanObjectId})
+      : super(
             objectId: objectId,
             name: name,
             contact: contact,
             eventObjectId: eventObjectId,
+            doormanObjectId: doormanObjectId,
             isIn: isIn);
   String toMap() {
     var map = {
@@ -35,12 +38,12 @@ class GuestDto extends GuestEntity {
 
   factory GuestDto.fromMap(Map<String, dynamic> map) {
     return GuestDto(
-      objectId: map["objectId"],
-      name: map["name"],
-      contact: map["contact"],
-      isIn: map["isIn"],
-      eventObjectId: map["eventObjectId"],
-    );
+        objectId: map["objectId"],
+        name: map["name"],
+        contact: map["contact"],
+        isIn: map["isIn"],
+        eventObjectId: map["eventObjectId"],
+        doormanObjectId: map["doormanObjectId"]);
   }
 
   @override

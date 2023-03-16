@@ -78,22 +78,50 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                               snapshot.data!.length,
                               ((index) {
                                 final date =
-                                    snapshot.data![index].dateOfrealization;
+                                    snapshot.data![index].dateOfRealization;
                                 return Column(
                                   children: [
                                     ListTile(
-                                      title: Text(
-                                        snapshot.data![index].name,
-                                        style: TextStyle(
-                                            fontSize: fontSizeTitle,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                      // leading: CircleAvatar(),
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                "${snapshot.data![index].name.toUpperCase()}",
+                                                style: TextStyle(
+                                                    fontSize: fontSizeTitle,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 4.0),
+                                            child: Text(
+                                              "${snapshot.data![index].organization}",
+                                              style: TextStyle(
+                                                  fontSize: fontSizeTitle,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      subtitle: Text(
-                                        "${date.day}/${date.month}/${date.year}",
-                                        style: TextStyle(
-                                            fontSize: fontSizeSubtitle,
-                                            color: Colors.grey),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(
+                                          "${date.day}/${date.month}/${date.year}",
+                                          style: TextStyle(
+                                              fontSize: fontSizeSubtitle,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.grey),
+                                        ),
                                       ),
                                       trailing: Text(
                                         snapshot.data![index].price
@@ -102,11 +130,13 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                             .replaceAll(".", ","),
                                         style: TextStyle(
                                             fontSize: fontSizeSubtitle,
-                                            color: Colors.black),
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
                                       ),
                                       onTap: () {
-                                        Navigator.of(context)
-                                            .pushNamed(Routes.REGISTER_GUEST);
+                                        Navigator.of(context).pushNamed(
+                                            Routes.REGISTER_GUEST,
+                                            arguments: snapshot.data![index]);
                                       },
                                     ),
                                     const Divider(

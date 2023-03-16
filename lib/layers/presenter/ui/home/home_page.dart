@@ -65,11 +65,11 @@ class _HomePageState extends State<HomePage> {
               ),
               const Spacer(),
               ListTile(
-                title: Text(
+                title: const Text(
                   "Terminar Sessão",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                trailing: Icon(Icons.logout_outlined),
+                trailing: const Icon(Icons.logout_outlined),
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser;
                   user.logout();

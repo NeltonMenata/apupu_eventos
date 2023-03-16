@@ -21,6 +21,8 @@ abstract class Routes {
   static const RESULT_SEARCH_GUEST = "/result_search_guest";
   static const LOGIN = "/login";
 
+  // Routers for Doorman
+
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
     return {

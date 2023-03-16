@@ -1,5 +1,6 @@
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -55,10 +56,19 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, Routes.LOGIN);
-    });
-
+    _login();
     super.initState();
+  }
+
+  Future<void> _login() async {
+    final currentUser = await ParseUser.currentUser() as ParseUser?;
+    Future.delayed(const Duration(seconds: 5), () {
+      if (currentUser == null) {
+        Navigator.pushReplacementNamed(context, Routes.LOGIN);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+            context, Routes.HOME, (route) => false);
+      }
+    });
   }
 }

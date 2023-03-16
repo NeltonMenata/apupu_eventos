@@ -7,27 +7,44 @@ import '../save_guest_datasource.dart';
 class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
   @override
   Future<GuestEntity> call(GuestEntity guestEntity) async {
-    var parseObject = ParseObject("Guest");
-    parseObject.set("name", guestEntity.name);
-    parseObject.set("contact", guestEntity.contact);
+    final saveGuest = ParseCloudFunction("saveGuest");
 
     try {
-      await parseObject.save();
-      return GuestDto(
-        objectId: parseObject.objectId ?? "error",
-        name: parseObject.get("name") ?? "name error",
-        contact: parseObject.get("contact") ?? "contact error",
-        eventObjectId: parseObject.get("contact") ?? "objectId error",
-        isIn: parseObject.get("isIn") ?? false,
-      );
+      final result = await saveGuest.execute(parameters: {
+        "name": guestEntity.name,
+        "contact": guestEntity.contact,
+        "eventObjectId": guestEntity.eventObjectId,
+        "doormanObjectId": guestEntity.doormanObjectId
+      });
+
+      if (result.statusCode == 200) {
+        return GuestEntity(
+          objectId: result.result["objectId"],
+          name: result.result["name"],
+          doormanObjectId: result.result["doormanObjectId"],
+          eventObjectId: result.result["eventObjectId"],
+          contact: result.result["contact"],
+          isIn: result.result["isIn"],
+        );
+
+        // EventDto.fromMap(saveEvent.results![0]);
+      }
     } catch (e) {
-      print(e);
-      return GuestDto(
-          objectId: "objectId not save",
-          name: "$e",
-          contact: "contact not save",
-          eventObjectId: "event not save",
-          isIn: false);
+      return GuestEntity(
+        objectId: "objectId",
+        name: "User not save",
+        doormanObjectId: "doormanId",
+        eventObjectId: "eventId",
+        contact: "Contact",
+        isIn: false,
+      );
     }
+
+    return GuestEntity(
+        objectId: "objectId",
+        name: "name",
+        contact: "contact",
+        doormanObjectId: "doorman",
+        eventObjectId: "eventObjectId");
   }
 }

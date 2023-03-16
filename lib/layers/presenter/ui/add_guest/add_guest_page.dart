@@ -99,12 +99,12 @@ class _AddGuestPageState extends State<AddGuestPage> {
                           contactController.text;
                         });
                         final guestSaved = await saveGuestUseCase(GuestEntity(
-                          contact: contactController.text,
-                          name: nameController.text,
-                          objectId: "objectId",
-                          isIn: false,
-                          eventObjectId: "",
-                        ));
+                            contact: contactController.text,
+                            name: nameController.text,
+                            objectId: "objectId",
+                            isIn: false,
+                            eventObjectId: "",
+                            doormanObjectId: "doormanObjectId"));
                         Navigator.of(context).pop(guestSaved);
                         contactController.text = "";
                         nameController.text = "";

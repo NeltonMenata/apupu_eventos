@@ -12,6 +12,7 @@ class GetGuestDataSourceMockImp implements IGetGuestDataSource {
           objectId: "objectId",
           name: "name",
           contact: "contact",
+          doormanObjectId: "doormanId",
           eventObjectId: "eventObjectId");
     }
 

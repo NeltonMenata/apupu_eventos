@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:flutter/material.dart';
@@ -40,15 +41,18 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
   GlobalKey key1qrcode = GlobalKey();
 
   GuestEntity guestCurrent = GuestEntity(
-    contact: "+244",
-    name: "Nome",
-    objectId: "objectId",
-    isIn: false,
-    eventObjectId: "",
-  );
+      contact: "+244",
+      name: "Nome",
+      objectId: "objectId",
+      isIn: false,
+      eventObjectId: "",
+      doormanObjectId: "doormanId");
 
   @override
   Widget build(BuildContext context) {
+    final currentEvent =
+        ModalRoute.of(context)?.settings.arguments as EventEntity;
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
@@ -102,10 +106,21 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                 top: MediaQuery.of(context).size.height * .1,
                 left: 10.0,
               ),
-              child: Text(
-                title == "-1" ? "Nenhum" : title,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    currentEvent.name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
+                  ),
+                  Text(
+                    title,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSizeSubtitle),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 20),
@@ -209,12 +224,12 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                         }
                         setState(() {
                           guestCurrent = GuestEntity(
-                            contact: "+244",
-                            name: qrResult,
-                            objectId: "objectId",
-                            isIn: true,
-                            eventObjectId: "",
-                          );
+                              contact: "+244",
+                              name: qrResult,
+                              objectId: "objectId",
+                              isIn: true,
+                              eventObjectId: "",
+                              doormanObjectId: "doormanObjectId");
                         });
                       },
                       child: Column(

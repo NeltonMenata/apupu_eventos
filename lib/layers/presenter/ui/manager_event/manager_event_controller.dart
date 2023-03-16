@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/data/datasources/back4app/get_all_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/mock/get_all_event_datasource_mock_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/get_all_event/get_all_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 class ManagerEventController {
   final IGetAllEventUseCase _getAllEventUseCase = GetAllEventUseCaseImp(
     GetAllEventRepositoryImp(
-      GetAllEventDataSourceMockImp(),
+      GetAllEventDataSourceBack4appImp(),
     ),
   );
 

@@ -157,6 +157,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                 onPressed: () async {
                                   if (nameController.text.isEmpty ||
                                       dateController.text.isEmpty ||
+                                      organizationNameController.text.isEmpty ||
                                       priceController.text.isEmpty) {
                                     showResultCustom(context,
                                         "Preencha os campos corretamente!");
@@ -170,6 +171,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                       context,
                                       nameController.text,
                                       date,
+                                      organizationNameController.text,
                                       double.parse(priceController.text));
 
                                   setState(() {
