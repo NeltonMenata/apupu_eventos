@@ -6,6 +6,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:path_provider/path_provider.dart' as path;
 
 class Utils {
+  static const assetLogo = "assets/logo/logo.png";
+
   static final TextEditingController _qrData = TextEditingController();
 
   TextEditingController get qrData => _qrData;
@@ -36,10 +38,19 @@ class Utils {
               content: Image.file(file),
               actions: [
                 TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Sair"))
+                  onPressed: () async {
+                    //Share.shareFiles(['/image.jpg'], text: 'Great picture');
+                    file.delete();
+                  },
+                  child: const Text("Compartilhar"),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    file.delete();
+                  },
+                  child: const Text("Sair"),
+                )
               ],
             );
           });

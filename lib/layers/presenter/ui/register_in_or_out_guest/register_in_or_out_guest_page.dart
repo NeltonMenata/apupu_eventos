@@ -87,20 +87,6 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
       body: Center(
         child: Column(
           children: [
-            /*
-
-            FutureBuilder<GuestEntity>(
-              future: widget.controller.getGuest("objectId"),
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data);
-                  return Text(snapshot.data!.name);
-                }
-                return const Text("Nenhum retorno");
-              }),
-            ),
-
-            */
             Padding(
               padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * .1,
@@ -132,7 +118,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white),
-                  height: MediaQuery.of(context).size.width * .7,
+                  height: MediaQuery.of(context).size.width * .8,
                   width: MediaQuery.of(context).size.width * .7,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -148,15 +134,48 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                           color: Colors.black87,
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        height: 30,
+                        height: width * .2,
                         child: Center(
-                          child: Text(
-                            guestCurrent.name,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: fontSizeSubtitle,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 8.0,
+                                    bottom: 8.0,
+                                    left: 4.0,
+                                    right: width * .05),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: currentEvent.imgCartaz != null
+                                      ? Image.network(currentEvent.imgCartaz!,
+                                          fit: BoxFit.cover)
+                                      : Image.asset(Utils.assetLogo,
+                                          fit: BoxFit.cover),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    guestCurrent.name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: fontSizeSubtitle,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                  Text(
+                                    "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
+                                    style: TextStyle(
+                                        fontSize: fontSizeSubtitle * .8,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  )
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -270,20 +289,6 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        //Utils.capture(key1qrcode, context);
-
-                        /*
-                        showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(),
-                            context: context,
-                            builder: (builder) {
-                              return SizedBox(
-                                height: MediaQuery.of(context).size.height * .9,
-                                 
-                              );
-                            });
-                        */
-
                         final value = await Navigator.of(context)
                             .pushNamed(Routes.ADD_GUEST);
 

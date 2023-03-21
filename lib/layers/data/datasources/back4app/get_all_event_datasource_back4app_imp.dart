@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:apupu_eventos/layers/data/dtos/event_dto.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../../../domain/entities/event/event_entity.dart';
@@ -16,7 +14,7 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
         list.add(
           EventDto(
             dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
-            imgCatalog: e["imgCatalog"].toString(),
+            imgCartaz: e["imgCartaz"],
             name: e["name"].toString(),
             objectId: e["objectId"].toString(),
             organization: e["organization"].toString(),
@@ -32,7 +30,7 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
     return [
       EventDto(
           dateOfRealization: DateTime.now(),
-          imgCatalog: "",
+          imgCartaz: "assets/logo/logo.png",
           name: "Fake Object",
           objectId: "",
           organization: "",

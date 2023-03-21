@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import '../../domain/entities/event/event_entity.dart';
 
 class EventDto extends EventEntity {
@@ -7,18 +8,18 @@ class EventDto extends EventEntity {
   final String organization;
   final DateTime dateOfRealization;
   final double price;
-  final String imgCatalog;
+  final String? imgCartaz;
   EventDto(
       {required this.objectId,
       required this.name,
       required this.dateOfRealization,
       required this.organization,
-      required this.imgCatalog,
+      required this.imgCartaz,
       required this.price})
       : super(
             objectId: objectId,
             name: name,
-            imgCatalog: imgCatalog,
+            imgCartaz: imgCartaz,
             organization: organization,
             price: price,
             dateOfRealization: dateOfRealization);
@@ -26,7 +27,7 @@ class EventDto extends EventEntity {
     var map = {
       "objectId": objectId,
       "name": name,
-      "imgCatalog": imgCatalog,
+      "imgCartaz": imgCartaz,
       "organization": organization,
       "dateOfRealization": dateOfRealization,
       "price": price
@@ -38,7 +39,7 @@ class EventDto extends EventEntity {
   factory EventDto.fromMap(Map<String, dynamic> e) {
     return EventDto(
         dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
-        imgCatalog: e["imgCatalog"].toString(),
+        imgCartaz: e["imgCartaz"],
         name: e["name"].toString(),
         objectId: e["objectId"].toString(),
         organization: e["organization"].toString(),

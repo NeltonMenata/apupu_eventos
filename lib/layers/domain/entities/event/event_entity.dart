@@ -3,7 +3,7 @@ class EventEntity {
   final String name;
   final DateTime dateOfRealization;
   final String organization;
-  final String imgCatalog;
+  final String? imgCartaz;
   final double price;
 
   EventEntity({
@@ -11,7 +11,7 @@ class EventEntity {
     required this.name,
     required this.dateOfRealization,
     required this.organization,
-    required this.imgCatalog,
+    this.imgCartaz,
     required this.price,
   });
 }

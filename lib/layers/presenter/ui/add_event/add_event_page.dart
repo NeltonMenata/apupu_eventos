@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:apupu_eventos/layers/presenter/ui/add_event/add_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddEventPage extends StatefulWidget {
   const AddEventPage({Key? key}) : super(key: key);
@@ -17,18 +20,23 @@ class _AddEventPageState extends State<AddEventPage> {
   final priceController = TextEditingController();
 
   DateTime date = DateTime.now();
+  Image image = Image.asset("assets/logo/logo.png");
+  File? imageFile;
 
   bool isSave = false;
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    //final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
     final paddingTop = height * 0.05;
     const paddingBottom = 15.0;
     const crossStart = CrossAxisAlignment.start;
     const fontSize = 17.0;
+    final fontSizeTitle = width * .08;
+    const allPadding = 8.0;
+    final circleAvatarSize = width * .2;
 
     return Scaffold(
       appBar: AppBar(
@@ -49,11 +57,11 @@ class _AddEventPageState extends State<AddEventPage> {
             padding: EdgeInsets.only(
                 left: paddingLeft, top: paddingTop, bottom: paddingBottom),
             child: Column(children: [
-              const Text(
+              Text(
                 "Adicione um Evento novo, com nome e data de realização!",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 35,
+                  fontSize: fontSizeTitle,
                 ),
               ),
               Padding(
@@ -62,7 +70,7 @@ class _AddEventPageState extends State<AddEventPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(allPadding),
                       child: Column(crossAxisAlignment: crossStart, children: [
                         const Text(
                           "Nome do Evento",
@@ -79,7 +87,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ]),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(allPadding),
                       child: Column(
                         crossAxisAlignment: crossStart,
                         children: [
@@ -115,7 +123,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(allPadding),
                       child: Column(crossAxisAlignment: crossStart, children: [
                         const Text(
                           "Organização",
@@ -131,7 +139,7 @@ class _AddEventPageState extends State<AddEventPage> {
                       ]),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(allPadding),
                       child: Column(crossAxisAlignment: crossStart, children: [
                         const Text(
                           "Valor de ingresso",
@@ -148,7 +156,54 @@ class _AddEventPageState extends State<AddEventPage> {
                       ]),
                     ),
                     Padding(
-                        padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(allPadding),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.black38,
+                        ),
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.all(allPadding),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  height: circleAvatarSize,
+                                  width: circleAvatarSize,
+                                  child: ClipRRect(
+                                    child: image,
+                                    borderRadius: BorderRadius.circular(10),
+                                    //  radius: circleAvatarSize,
+                                  ),
+                                ),
+                                Column(children: const [
+                                  Text(
+                                    "Selecione o",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w900),
+                                  ),
+                                  Text(
+                                    "Cartaz do Evento",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w900),
+                                  ),
+                                ]),
+                                IconButton(
+                                  onPressed: () {
+                                    _selectImgCartaz();
+                                  },
+                                  icon: Icon(
+                                    Icons.add_photo_alternate_outlined,
+                                    size: width * .1,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(allPadding),
                         child: isSave
                             ? const Center(
                                 child: CircularProgressIndicator(),
@@ -167,12 +222,13 @@ class _AddEventPageState extends State<AddEventPage> {
                                   setState(() {
                                     isSave = !isSave;
                                   });
-                                  await controller.saveEvent(
-                                      context,
-                                      nameController.text,
-                                      date,
-                                      organizationNameController.text,
-                                      double.parse(priceController.text));
+                                  await controller.saveEvent(context,
+                                      name: nameController.text,
+                                      dateOfRealization: date,
+                                      organization:
+                                          organizationNameController.text,
+                                      price: double.parse(priceController.text),
+                                      imgCartaz: imageFile);
 
                                   setState(() {
                                     nameController.text = "";
@@ -197,8 +253,21 @@ class _AddEventPageState extends State<AddEventPage> {
     );
   }
 
-  Future<bool> _saveEvent() async {
-    await Future.delayed(Duration(seconds: 3));
-    return true;
+  Future<void> _selectImgCartaz() async {
+    final imgCartaz = await ImagePicker.platform.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 500,
+        maxWidth: 500,
+        imageQuality: 50);
+
+    setState(() {
+      if (imgCartaz != null) {
+        imageFile = File(imgCartaz.path);
+        image = Image.file(
+          imageFile!,
+          fit: BoxFit.cover,
+        );
+      }
+    });
   }
 }

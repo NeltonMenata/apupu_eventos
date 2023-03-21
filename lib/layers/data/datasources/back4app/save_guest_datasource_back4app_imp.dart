@@ -1,4 +1,3 @@
-import 'package:apupu_eventos/layers/data/dtos/guest_dto.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 

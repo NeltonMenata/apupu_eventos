@@ -1,8 +1,8 @@
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_controller.dart';
+import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
-
 import '../../geral_components/scaffold_general/scaffold_general.dart';
 
 class ManagerEventPage extends StatefulWidget {
@@ -25,6 +25,7 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
     double fontSizeTitle = width * .045;
     double fontSizeSubtitle = width * .035;
     double fontSizeTextButton = width * .06;
+    final imgCartazSize = width * .15;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -82,7 +83,26 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                 return Column(
                                   children: [
                                     ListTile(
-                                      // leading: CircleAvatar(),
+                                      minLeadingWidth: imgCartazSize,
+                                      leading: SizedBox(
+                                        //height: imgCartazSize,
+                                        width: imgCartazSize,
+                                        child: ClipRRect(
+                                          child:
+                                              snapshot.data![index].imgCartaz !=
+                                                      null
+                                                  ? Image.network(
+                                                      snapshot.data![index]
+                                                          .imgCartaz!,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Image.asset(Utils.assetLogo,
+                                                      fit: BoxFit.cover),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          //  radius: circleAvatarSize,
+                                        ),
+                                      ),
                                       title: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -157,8 +177,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
           ),
         ),
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.all(8.0),
+      bottomSheet: const Padding(
+        padding: EdgeInsets.all(8.0),
         child:
             Text("Volte sempre nesta tela para gerenciar os eventos criados!"),
       ),

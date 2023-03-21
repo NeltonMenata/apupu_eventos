@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:apupu_eventos/layers/data/datasources/back4app/save_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/save_event/save_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
@@ -6,8 +8,6 @@ import 'package:apupu_eventos/layers/domain/usecases/event/save_event_usecase/sa
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/datasources/mock/save_event_datasource_mock_imp.dart';
-
 class AddEventController {
   final ISaveEventUseCase _saveEventUseCase = SaveEventUseCaseImp(
     SaveEventRepositoryImp(
@@ -15,18 +15,23 @@ class AddEventController {
     ),
   );
 
-  Future<void> saveEvent(BuildContext context, String name,
-      DateTime dateOfRealization, String organization, double price) async {
+  Future<void> saveEvent(BuildContext context,
+      {required String name,
+      required DateTime dateOfRealization,
+      required String organization,
+      required double price,
+      File? imgCartaz}) async {
     name.trim();
     organization.trim();
 
     try {
       //await Future.delayed(Duration(seconds: 3));
+
       final event = EventEntity(
           objectId: "",
           name: name,
           dateOfRealization: dateOfRealization,
-          imgCatalog: "",
+          imgCartaz: imgCartaz?.path,
           organization: organization,
           price: price);
       await _saveEventUseCase(event);

@@ -61,10 +61,10 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextField(
                   controller: username,
                   decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Nome de Usuário",
-                    label: Text("Nome de Usuário"),
-                  ),
+                      border: OutlineInputBorder(),
+                      hintText: "Nome de Usuário",
+                      label: Text("Nome de Usuário"),
+                      suffixIcon: Icon(Icons.person_outlined)),
                 ),
               ),
               Padding(
@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder(),
                     hintText: "Senha de Usuário",
                     label: Text("Senha de Usuário"),
+                    suffixIcon: Icon(Icons.password_outlined),
                   ),
                 ),
               ),
