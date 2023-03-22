@@ -35,6 +35,8 @@ class AddEventController {
           organization: organization,
           price: price);
       await _saveEventUseCase(event);
+
+      
       showResultCustom(context, "Evento Salvo com sucesso");
     } catch (e) {
       showResultCustom(context, "Erro ao salvar evento: " + e.toString());

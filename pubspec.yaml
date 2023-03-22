@@ -41,9 +41,9 @@ dependencies:
   get_it:
   flutter_native_splash:
   flutter_launcher_icons:
-  #share_plus: ^0.6.5
   image_picker: ^0.7.2+1
   cached_network_image: ^3.2.0
+  share_plus:
   #image_picker: ^0.8.6
   #share_extend:
 

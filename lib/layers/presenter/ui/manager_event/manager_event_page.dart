@@ -2,6 +2,7 @@ import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../geral_components/scaffold_general/scaffold_general.dart';
 
@@ -80,6 +81,7 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                               ((index) {
                                 final date =
                                     snapshot.data![index].dateOfRealization;
+
                                 return Column(
                                   children: [
                                     ListTile(
@@ -88,16 +90,21 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                         //height: imgCartazSize,
                                         width: imgCartazSize,
                                         child: ClipRRect(
-                                          child:
-                                              snapshot.data![index].imgCartaz !=
-                                                      null
-                                                  ? Image.network(
-                                                      snapshot.data![index]
+                                          child: snapshot
+                                                      .data![index].imgCartaz !=
+                                                  null
+                                              ? snapshot.data![index].imgCartaz!
+                                                      .isNotEmpty
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: snapshot
+                                                          .data![index]
                                                           .imgCartaz!,
                                                       fit: BoxFit.cover,
                                                     )
                                                   : Image.asset(Utils.assetLogo,
-                                                      fit: BoxFit.cover),
+                                                      fit: BoxFit.cover)
+                                              : Image.asset(Utils.assetLogo,
+                                                  fit: BoxFit.cover),
                                           borderRadius:
                                               BorderRadius.circular(10),
                                           //  radius: circleAvatarSize,
@@ -185,3 +192,15 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
     );
   }
 }
+/*
+
+   splits {
+    abi {
+        enable true
+        reset()
+        include 'x86','x86_64','armeabi-v7a','mips','mips64','arm64-v8a'
+        universalApk true
+    }
+}
+
+*/

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:path_provider/path_provider.dart' as path;
+import 'package:share_plus/share_plus.dart';
 
 class Utils {
   static const assetLogo = "assets/logo/logo.png";
@@ -18,7 +19,7 @@ class Utils {
       final renderObject =
           key.currentContext!.findRenderObject() as RenderRepaintBoundary?;
       if (renderObject == null) return;
-      final render = await renderObject.toImage(pixelRatio: 5);
+      final render = await renderObject.toImage(pixelRatio: 2);
       final byData = await render.toByteData(format: ImageByteFormat.png);
       if (byData == null) return;
       final buffer8 = byData.buffer.asUint8List();
@@ -26,7 +27,7 @@ class Utils {
           type: path.StorageDirectory.pictures);
       final name = DateTime.now().toString();
       if (dir == null) return;
-      final file = File("${dir.first.path}/$name.jpg");
+      final file = File("${dir.first.path}/$name.png");
       file.writeAsBytesSync(buffer8);
       print(dir);
       print(file.path);
@@ -40,6 +41,8 @@ class Utils {
                 TextButton(
                   onPressed: () async {
                     //Share.shareFiles(['/image.jpg'], text: 'Great picture');
+                    await Share.shareFiles([file.path],
+                        mimeTypes: ["image/png"], text: "Meu Código");
                     file.delete();
                   },
                   child: const Text("Compartilhar"),

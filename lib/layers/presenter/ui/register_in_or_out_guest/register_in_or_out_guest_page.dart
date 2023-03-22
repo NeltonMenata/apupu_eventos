@@ -1,6 +1,7 @@
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -136,46 +137,58 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                         ),
                         height: width * .2,
                         child: Center(
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: 8.0,
-                                    bottom: 8.0,
-                                    left: 4.0,
-                                    right: width * .05),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: currentEvent.imgCartaz != null
-                                      ? Image.network(currentEvent.imgCartaz!,
-                                          fit: BoxFit.cover)
-                                      : Image.asset(Utils.assetLogo,
-                                          fit: BoxFit.cover),
-                                ),
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    guestCurrent.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: fontSizeSubtitle,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 8.0,
+                                      bottom: 8.0,
+                                      left: 4.0,
+                                      right: width * .03),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: currentEvent.imgCartaz != null
+                                        ? currentEvent.imgCartaz!.isNotEmpty
+                                            ? CachedNetworkImage(
+                                                imageUrl:
+                                                    currentEvent.imgCartaz!,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(Utils.assetLogo,
+                                                fit: BoxFit.cover)
+                                        : Image.asset(Utils.assetLogo,
+                                            fit: BoxFit.cover),
                                   ),
-                                  Text(
-                                    "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
-                                    style: TextStyle(
-                                        fontSize: fontSizeSubtitle * .8,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey),
-                                  )
-                                ],
-                              ),
-                            ],
+                                ),
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 4.0),
+                                      child: Text(
+                                        guestCurrent.name,
+                                        style: TextStyle(
+                                            fontSize: fontSizeSubtitle,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Text(
+                                      "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
+                                      style: TextStyle(
+                                          fontSize: fontSizeSubtitle * .8,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
