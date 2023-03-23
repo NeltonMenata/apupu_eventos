@@ -8,7 +8,7 @@ class GetGuestForObjectIdUseCaseImp implements IGetGuestForObjectIdUseCase {
   GetGuestForObjectIdUseCaseImp(this._getGuestForObjectIdRepository);
 
   @override
-  Future<GuestEntity> call(String objectId) async {
-    return await _getGuestForObjectIdRepository(objectId);
+  Future<GuestEntity> call(String objectId, String eventObjectId) async {
+    return await _getGuestForObjectIdRepository(objectId, eventObjectId);
   }
 }

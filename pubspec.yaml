@@ -43,9 +43,8 @@ dependencies:
   flutter_launcher_icons:
   image_picker: ^0.7.2+1
   cached_network_image: ^3.2.0
-  share_plus:
-  #image_picker: ^0.8.6
-  #share_extend:
+  share_plus: ^4.5.3
+  
 
 dev_dependencies:
   flutter_test:

@@ -10,7 +10,7 @@ class GetGuestForObjectIdRepositoryImp
   GetGuestForObjectIdRepositoryImp(this._getGuestDataSource);
 
   @override
-  Future<GuestEntity> call(String objectId) {
-    return _getGuestDataSource(objectId);
+  Future<GuestEntity> call(String objectId, String eventObjectId) {
+    return _getGuestDataSource(objectId, eventObjectId);
   }
 }

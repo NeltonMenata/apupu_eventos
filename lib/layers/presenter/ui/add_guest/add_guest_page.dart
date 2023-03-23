@@ -1,10 +1,10 @@
-import 'package:apupu_eventos/layers/data/datasources/mock/save_guest_datasource_mock_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/save_guest/save_guest_repository_imp.dart';
-import 'package:apupu_eventos/layers/domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
+import 'package:apupu_eventos/layers/presenter/ui/add_guest/add_guest_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+import '../../../domain/entities/event/event_entity.dart';
 import '../../../domain/entities/guest/guest_entity.dart';
 
 class AddGuestPage extends StatefulWidget {
@@ -17,15 +17,16 @@ class AddGuestPage extends StatefulWidget {
 class _AddGuestPageState extends State<AddGuestPage> {
   final contactController = TextEditingController();
   final nameController = TextEditingController();
-  final saveGuestUseCase = SaveGuestUseCaseImp(
-    SaveGuestRepositoryImp(
-      SaveGuestDataSourceMockImp(),
-    ),
-  );
+  final controller = AddGuestController();
+
+  bool isSave = false;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double fontSizeTitle = width * .045;
+    final currentEvent =
+        ModalRoute.of(context)?.settings.arguments as EventEntity;
     //double fontSizeSubtitle = width * .035;
 
     return Scaffold(
@@ -84,8 +85,51 @@ class _AddGuestPageState extends State<AddGuestPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
+                      padding: const EdgeInsets.all(8.0),
+                      child: isSave
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ElevatedButton(
+                              onPressed: () async {
+                                if (nameController.text.isEmpty ||
+                                    contactController.text.isEmpty) {
+                                  showResultCustom(context,
+                                      "Preencha os campos corretamente!");
+                                  return;
+                                }
+
+                                setState(() {
+                                  isSave = !isSave;
+                                });
+                                final currentUser =
+                                    await ParseUser.currentUser() as ParseUser;
+                                final guestSaved = await controller.saveGuest(
+                                  GuestEntity(
+                                      contact: contactController.text,
+                                      name: nameController.text,
+                                      objectId: "objectId",
+                                      isIn: false,
+                                      eventObjectId: currentEvent.objectId,
+                                      doormanObjectId: currentUser.objectId!),
+                                );
+
+                                setState(() {
+                                  nameController.text = "";
+                                  contactController.text = "";
+
+                                  isSave = !isSave;
+                                });
+                                Navigator.of(context).pop(guestSaved);
+                              },
+                              child: const Text(
+                                "Salvar Convidado",
+                                //style: TextStyle(fontSize: fontSize),
+                              ),
+                            )
+
+                      /*
+                    ElevatedButton(
                       onPressed: () async {
                         if (contactController.text.isEmpty ||
                             nameController.text.isEmpty) {
@@ -98,20 +142,24 @@ class _AddGuestPageState extends State<AddGuestPage> {
                           nameController.text;
                           contactController.text;
                         });
-                        final guestSaved = await saveGuestUseCase(GuestEntity(
+
+                        final guestSaved = await controller.saveGuest(GuestEntity(
                             contact: contactController.text,
                             name: nameController.text,
                             objectId: "objectId",
                             isIn: false,
                             eventObjectId: "",
                             doormanObjectId: "doormanObjectId"));
+                        
                         Navigator.of(context).pop(guestSaved);
                         contactController.text = "";
                         nameController.text = "";
                       },
                       child: const Text("Salvar convidado"),
                     ),
-                  ),
+                    */
+
+                      ),
                 ],
               ),
             ),

@@ -3,7 +3,7 @@ class EventEntity {
   final String name;
   final DateTime dateOfRealization;
   final String organization;
-  final String? imgCartaz;
+  String? imgCartaz;
   final double price;
 
   EventEntity({

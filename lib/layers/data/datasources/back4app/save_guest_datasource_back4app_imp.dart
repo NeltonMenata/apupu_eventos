@@ -29,6 +29,7 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
         // EventDto.fromMap(saveEvent.results![0]);
       }
     } catch (e) {
+      print(e);
       return GuestEntity(
         objectId: "objectId",
         name: "User not save",

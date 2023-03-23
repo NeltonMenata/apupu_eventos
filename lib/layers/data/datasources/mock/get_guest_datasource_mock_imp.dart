@@ -4,7 +4,7 @@ import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 
 class GetGuestDataSourceMockImp implements IGetGuestDataSource {
   @override
-  Future<GuestEntity> call(String objectId) async {
+  Future<GuestEntity> call(String objectId, String eventObjectId) async {
     final element = int.tryParse(objectId) ?? 0;
     final length = DataBaseMock.listGuestEntity.length;
     if (element >= length) {
