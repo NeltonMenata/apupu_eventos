@@ -11,6 +11,7 @@ class DoneInOrOutGuestDatasourceBack4appImp
       final result = await getOneGuest
           .execute(parameters: {"objectId": objectId, "inOrOut": inOrOut});
 
+      // ignore: avoid_print
       print(result.result);
       return result.result["inOrOut"];
     } catch (e) {

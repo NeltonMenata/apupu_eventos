@@ -1,15 +1,13 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/done_in_or_out_guest_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/done_in_or_out_guest/done_in_or_out_guest_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/guest/done_in_or_out_guest/done_in_or_out_guest_imp.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../data/datasources/back4app/get_guest_datasource_back4app_imp.dart';
 import '../../../data/datasources/back4app/save_guest_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/get_guest/get_guest_for_objectId_repository_imp.dart';
+import '../../../data/repositories_imp/get_guest_for_objectId/get_guest_for_objectId_repository_imp.dart';
 import '../../../data/repositories_imp/save_guest/save_guest_repository_imp.dart';
 import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId_imp.dart';
 import '../../../domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
@@ -31,11 +29,6 @@ class RegisterInOrOutGuestPage extends StatefulWidget {
         GetGuestDataSourceBack4appImp(),
       ),
     ),
-    DoneInOrOutGuestUseCaseImp(
-      DoneInOrOutGuestRepositoryImp(
-        DoneInOrOutGuestDatasourceBack4appImp(),
-      ),
-    ),
   );
 
   @override
@@ -44,7 +37,8 @@ class RegisterInOrOutGuestPage extends StatefulWidget {
   }
 }
 
-class _RegisterState extends State<RegisterInOrOutGuestPage> {
+class _RegisterState extends State<RegisterInOrOutGuestPage>
+    with DoneInOrOutGuestMixin {
   String title = "Gestão de Convidados";
 
   GlobalKey key1qrcode = GlobalKey();
@@ -59,18 +53,19 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
 
   bool isIn = false;
   String statusGuest = "Convidado está fora";
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
 
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    const paddingLeft = 15.0;
-    const paddingBottom = 8.0;
+    //const paddingLeft = 15.0;
+    //const paddingBottom = 8.0;
     final fontSizeTitle = width * .086;
-    final fontSizeGuest = width * .045;
+    final fontSizeGuest = width * .042;
     final fontSizeSubtitle = width * .049;
     final fontSizeMenu = width * .033;
 
@@ -81,16 +76,16 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
           child: Column(
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text("Evento"),
-                accountEmail: Text("Realização"),
+                accountName: Text(currentEvent.name),
+                accountEmail: Text(currentEvent.organization),
                 currentAccountPicture: Image.asset(Utils.assetLogo),
               ),
               ListTile(
-                title: Text("Adicionar Porteiros"),
+                title: const Text("Adicionar Porteiros"),
                 onTap: () {},
               ),
               ListTile(
-                title: Text("Exibir Relatório do Evento"),
+                title: const Text("Exibir Relatório do Evento"),
                 onTap: () {},
               ),
             ],
@@ -162,7 +157,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
                                     child: currentEvent.imgCartaz != null
-                                        ? currentEvent.imgCartaz!.isNotEmpty
+                                        ? currentEvent.imgCartaz!.isNotEmpty &&
+                                                currentEvent.imgCartaz! !=
+                                                    Utils.assetLogo
                                             ? CachedNetworkImage(
                                                 imageUrl:
                                                     currentEvent.imgCartaz!,
@@ -212,9 +209,14 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
             const Spacer(),
             GestureDetector(
               onTapUp: (value) async {
-                isIn = await widget.controller
-                    .doneInOrOutGuest(guestCurrent.objectId, !isIn);
                 setState(() {
+                  isLoading = true;
+                });
+                isIn = await doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                //isIn = await widget.controller
+                //  .doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                setState(() {
+                  isLoading = false;
                   if (isIn) {
                     statusGuest = "Convidado está dentro!";
                   } else {
@@ -222,47 +224,49 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                   }
                 });
               },
-              child: isIn
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.input_outlined,
-                          color: Colors.green,
-                          size: width * .15,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            statusGuest,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : isIn
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.input_outlined,
+                              color: Colors.green,
+                              size: width * .15,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                statusGuest,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: width * .04),
+                              ),
+                            )
+                          ],
                         )
-                      ],
-                    )
-                  : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.output_outlined,
-                          color: Colors.red,
-                          size: width * .15,
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.output_outlined,
+                              color: Colors.red,
+                              size: width * .15,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Text(
+                                statusGuest,
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: width * .04),
+                              ),
+                            )
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            statusGuest,
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                        )
-                      ],
-                    ),
             ),
             const Spacer(),
             Container(
@@ -275,11 +279,16 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                   children: [
                     TextButton(
                       onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
                         guestCurrent = await widget.controller
                             .getGuest(currentEvent.objectId);
 
                         if (guestCurrent.contact == "contact") {
                           setState(() {
+                            isLoading = false;
+                            isIn = false;
                             statusGuest =
                                 "Usuário não está cadastrado neste Evento";
                           });
@@ -287,7 +296,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                               isError: true);
                           return;
                         }
-
+                        setState(() {
+                          isLoading = false;
+                        });
                         isIn = guestCurrent.isIn;
                         if (isIn) {
                           statusGuest =
@@ -296,21 +307,17 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                               context, "O usuário já está dentro do evento",
                               isError: true);
                         } else {
-                          await widget.controller
-                              .doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          await doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                          setState(() {
+                            isLoading = false;
+                          });
                           statusGuest = "O Convidado pode entrar no Evento";
                           isIn = !isIn;
                         }
-                        setState(() {
-                          /* GuestEntity(
-                              contact: "+244",
-                              name: "",//qrResult,
-                              objectId: "objectId",
-                              isIn: true,
-                              eventObjectId: "",
-                              doormanObjectId: "doormanObjectId");
-                              */
-                        });
                       },
                       child: Column(
                         children: [
@@ -357,6 +364,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                         if (value != null) {
                           setState(() {
                             guestCurrent = value as GuestEntity;
+                            isIn = false;
+                            statusGuest = "O Convidado está fora do Evento";
                           });
                         }
                       },
@@ -379,7 +388,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage> {
                     TextButton(
                       onPressed: () async {
                         await Navigator.of(context)
-                            .pushNamed(Routes.SEARCH_GUEST)
+                            .pushNamed(Routes.SEARCH_GUEST,
+                                arguments: currentEvent.objectId)
                             .then((value) {
                           setState(() {});
                         });

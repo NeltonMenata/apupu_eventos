@@ -1,9 +1,10 @@
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -19,16 +20,10 @@ class _HomePageState extends State<HomePage> {
     const paddingLeft = 15.0;
     final paddingTop = height * 0.1;
     const paddingBottom = 15.0;
+    final fontSizeTitle = width * .08;
+    final fontSizeSubtitle = width * .05;
+    final allPadding = width * .022;
     return Scaffold(
-      /*
-      appBar: AppBar(
-        title: Text(title),
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: Image.asset("assets/logo/logo.png"))
-        ],
-      ),
-      */
       drawer: Drawer(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -43,25 +38,25 @@ class _HomePageState extends State<HomePage> {
                         final name = user.get("name");
                         return Text(
                           name,
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         );
                       } else if (snapshot.hasError) {
                         return const Text("Erro na conexão");
                       }
                       return const Text("User Login");
                     }),
-                accountEmail: Text("Gerenciador"),
-                currentAccountPicture: Image.asset("assets/logo/logo.png"),
+                accountEmail: const Text("Gerenciador"),
+                currentAccountPicture: Image.asset(Utils.assetLogo),
               ),
               ListTile(
-                title: Text("Adicionar Porteiros"),
-                trailing: Icon(Icons.group_add_outlined),
+                title: const Text("Adicionar Porteiros"),
+                trailing: const Icon(Icons.group_add_outlined),
                 onTap: () {},
               ),
               ListTile(
-                title: Text("Exibir Relatório do Evento"),
+                title: const Text("Exibir Relatório do Evento"),
                 onTap: () {},
-                trailing: Icon(Icons.report_outlined),
+                trailing: const Icon(Icons.report_outlined),
               ),
               const Spacer(),
               ListTile(
@@ -90,22 +85,23 @@ class _HomePageState extends State<HomePage> {
                   left: paddingLeft, top: paddingTop, bottom: paddingBottom),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     "Benvindo ao Apupu Eventos",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
                   ),
-                  SizedBox(height: paddingBottom),
+                  const SizedBox(height: paddingBottom),
                   Text(
                     "Crie novos Eventos ou Gerencie seus eventos já adicionados (manuseie a entrada/saída de convidados)",
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: fontSizeSubtitle),
                   )
                 ],
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(allPadding),
                 child: Container(
                   decoration: BoxDecoration(
                       color: Colors.blueGrey,
@@ -124,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(allPadding),
                             child: ElevatedButton(
                               style: ButtonStyle(
                                   shape: MaterialStateProperty.all(
@@ -146,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Icon(
                                       Icons.event,
-                                      size: width * .15,
+                                      size: width * .13,
                                       color: Colors.grey,
                                     ),
                                     const Text(
@@ -161,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(allPadding),
                             child: ElevatedButton(
                               style: _buttonStyle(Colors.blue, 15),
                               onPressed: () {
@@ -173,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                                 label: const Text("Gerenciar Eventos")),
                                 */
                               child: Container(
-                                padding: const EdgeInsets.all(8),
+                                padding: EdgeInsets.all(allPadding),
                                 width: width * .35,
                                 height: height * .15,
                                 child: Column(
@@ -181,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Icon(
                                       Icons.settings_applications,
-                                      size: width * .15,
+                                      size: width * .13,
                                     ),
                                     const Text(
                                       "Gerenciar Eventos",
@@ -197,7 +193,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Expanded(
                           child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(allPadding),
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           height: 100,

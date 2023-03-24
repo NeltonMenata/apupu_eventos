@@ -94,7 +94,10 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                                       .data![index].imgCartaz !=
                                                   null
                                               ? snapshot.data![index].imgCartaz!
-                                                      .isNotEmpty
+                                                          .isNotEmpty &&
+                                                      snapshot.data![index]
+                                                              .imgCartaz! !=
+                                                          Utils.assetLogo
                                                   ? CachedNetworkImage(
                                                       imageUrl: snapshot
                                                           .data![index]
@@ -119,7 +122,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                               padding:
                                                   const EdgeInsets.all(4.0),
                                               child: Text(
-                                                "${snapshot.data![index].name.toUpperCase()}",
+                                                snapshot.data![index].name
+                                                    .toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: fontSizeTitle,
                                                     fontWeight: FontWeight.bold,
@@ -131,7 +135,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 4.0),
                                             child: Text(
-                                              "${snapshot.data![index].organization}",
+                                              snapshot
+                                                  .data![index].organization,
                                               style: TextStyle(
                                                   fontSize: fontSizeTitle,
                                                   fontWeight: FontWeight.bold,

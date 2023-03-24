@@ -20,7 +20,7 @@ class _AddEventPageState extends State<AddEventPage> {
   final priceController = TextEditingController();
 
   DateTime date = DateTime.now();
-  Image image = Image.asset("assets/logo/logo.png");
+  Image image = Image.asset(Utils.assetLogo);
   File? imageFile;
 
   bool isSave = false;
@@ -254,6 +254,7 @@ class _AddEventPageState extends State<AddEventPage> {
   }
 
   Future<void> _selectImgCartaz() async {
+    // ignore: invalid_use_of_visible_for_testing_member
     final imgCartaz = await ImagePicker.platform.pickImage(
         source: ImageSource.gallery,
         maxHeight: 500,

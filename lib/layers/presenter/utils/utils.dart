@@ -29,10 +29,8 @@ class Utils {
       if (dir == null) return;
       final file = File("${dir.first.path}/$name.png");
       file.writeAsBytesSync(buffer8);
-      print(dir);
-      print(file.path);
 
-      showDialog(
+      await showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -41,22 +39,23 @@ class Utils {
                 TextButton(
                   onPressed: () async {
                     //Share.shareFiles(['/image.jpg'], text: 'Great picture');
+                    // ignore: deprecated_member_use
                     await Share.shareFiles([file.path],
                         mimeTypes: ["image/png"], text: "Meu Código");
-                    file.delete();
+                    //file.delete();
                   },
                   child: const Text("Compartilhar"),
                 ),
                 TextButton(
-                  onPressed: () async {
+                  onPressed: () {
                     Navigator.of(context).pop();
-                    file.delete();
                   },
                   child: const Text("Sair"),
                 )
               ],
             );
           });
+      file.delete();
     } catch (e) {
       showDialog(
           context: context,
@@ -79,9 +78,7 @@ class Utils {
     await FlutterBarcodeScanner.scanBarcode(
             "#ff6666", "Cancel", true, ScanMode.QR)
         .then((value) => _qrData.text = value)
-        .catchError((onError) {
-      print(onError.toString());
-    });
+        .catchError((onError) {});
   }
 }
 

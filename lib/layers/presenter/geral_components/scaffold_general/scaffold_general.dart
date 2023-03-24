@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ScaffoldGeneral extends StatefulWidget {
-  ScaffoldGeneral({
+  const ScaffoldGeneral({
     Key? key,
     required this.title,
     required this.subtitle,

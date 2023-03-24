@@ -1,10 +1,13 @@
-import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
-import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+
+import '../../../data/datasources/back4app/search_guest_for_contact_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
+import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
 
 class SearchGuestPage extends StatefulWidget {
   const SearchGuestPage({Key? key}) : super(key: key);
@@ -13,28 +16,29 @@ class SearchGuestPage extends StatefulWidget {
   State<SearchGuestPage> createState() => _SearchGuestPageState();
 }
 
-class _SearchGuestPageState extends State<SearchGuestPage> {
-  bool _progressIndicator = false;
+class _SearchGuestPageState extends State<SearchGuestPage>
+    with DoneInOrOutGuestMixin {
+  bool isLoading = false;
 
   final searchTextController = TextEditingController();
-  SearchGuestController get controller => SearchGuestController.controller;
+  final controller = SearchGuestController(SearchGuestForContactUseCaseImp(
+      SearchGuestForContactRepositoryImp(
+          SearchGuestForContactDataSourceBack4appImp())));
 
   @override
   void initState() {
-    controller.scrollController.addListener(() {
-      if (true != false) {}
-    });
     super.initState();
   }
 
   @override
   void dispose() {
-    controller.scrollController.removeListener(() {});
+    controller.cleanListGuest();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final eventObjectId = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -64,11 +68,28 @@ class _SearchGuestPageState extends State<SearchGuestPage> {
                     showResultCustom(context,
                         "Digite o contacto do convidado que deseja procurar!");
                     return;
+                  } else if (searchTextController.text.length < 9 ||
+                      searchTextController.text.length > 9) {
+                    showResultCustom(context,
+                        "É obrigatório o campo de procura ter 9 digitos!");
+                    return;
                   }
+                  /*
                   Navigator.pushNamed(context, Routes.RESULT_SEARCH_GUEST,
-                          arguments: searchTextController.text)
-                      .then((value) {
-                    setState(() {});
+                      arguments: {
+                        "contact": searchTextController.text,
+                        "eventObjectId": eventObjectId
+                      }).then((value) {
+                    
+                  });
+                  */
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await controller.findGuest(
+                      searchTextController.text, eventObjectId);
+                  setState(() {
+                    isLoading = false;
                   });
                   searchTextController.text = "";
                 },
@@ -80,76 +101,84 @@ class _SearchGuestPageState extends State<SearchGuestPage> {
         ),
       ),
       body: SingleChildScrollView(
-        controller: controller.scrollController,
         child: ScaffoldGeneral(
           paddingTop: 15,
           title: "Procurar convidados",
           subtitle: "Encontre os convidados e registe a sua entrada no evento!",
           //body: Container(),
 
-          body: FutureBuilder<List<GuestEntity>>(
-              future: controller.listGuest(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Column(
-                    children: [
-                      ...List.generate(
-                        snapshot.data!.length,
-                        (index) => Column(
-                          children: [
-                            ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                child: QrImage(data: index.toString()),
-                              ),
-                              title: Text(
-                                snapshot.data![index].name,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              subtitle: Text(
-                                snapshot.data![index].contact,
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              trailing: snapshot.data![index].isIn
-                                  ? IconButton(
-                                      icon: Icon(
-                                        Icons.input_rounded,
-                                        color: Colors.green,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          snapshot.data![index].isIn =
-                                              !snapshot.data![index].isIn;
-                                        });
-                                      },
-                                    )
-                                  : IconButton(
-                                      icon: Icon(
-                                        Icons.output_rounded,
-                                        color: Colors.red,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          snapshot.data![index].isIn =
-                                              !snapshot.data![index].isIn;
-                                        });
-                                      },
-                                    ),
-                            ),
-                            const Divider(
-                              color: Colors.white,
-                            )
-                          ],
+          body: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  children: List.generate(
+                    controller.listGuest.length,
+                    (index) => Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            child: QrImage(data: index.toString()),
+                          ),
+                          title: Text(
+                            controller.listGuest[index].name,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            controller.listGuest[index].contact,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          trailing: controller.listGuest[index].isIn
+                              ? IconButton(
+                                  icon: const Icon(
+                                    Icons.input_rounded,
+                                    color: Colors.green,
+                                  ),
+                                  onPressed: () async {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.red.shade900,
+                                      content: Text(
+                                          "Registrando saída do Convidado(a): ${controller.listGuest[index].name}"),
+                                    ));
+                                    controller.listGuest[index].isIn =
+                                        await doneInOrOutGuest(
+                                            controller
+                                                .listGuest[index].objectId,
+                                            !controller.listGuest[index].isIn);
+                                    setState(() {});
+                                  },
+                                )
+                              : IconButton(
+                                  icon: const Icon(
+                                    Icons.output_rounded,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () async {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      backgroundColor: Colors.green.shade900,
+                                      content: Text(
+                                          "Registrando entrada do Convidado(a): ${controller.listGuest[index].name}"),
+                                    ));
+                                    controller.listGuest[index].isIn =
+                                        await doneInOrOutGuest(
+                                            controller
+                                                .listGuest[index].objectId,
+                                            !controller.listGuest[index].isIn);
+
+                                    setState(() {});
+                                  },
+                                ),
                         ),
-                      )
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return const Text("Erro ao Carregar Convidados");
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
+                        const Divider(
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

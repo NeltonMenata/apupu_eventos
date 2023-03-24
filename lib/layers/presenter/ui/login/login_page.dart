@@ -1,4 +1,3 @@
-import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
     const paddingLeft = 15.0;
     final paddingTop = height * 0.1;
     const paddingBottom = 15.0;
+    final fontSizeTitle = width * .086;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -42,15 +42,16 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.all(12.0),
                       child: Center(
                           child: Image.asset(
-                        "assets/logo/logo.png",
+                        Utils.assetLogo,
                         height: width * 0.2,
                         width: width * 0.2,
+                        fit: BoxFit.cover,
                       )),
                     ),
-                    const Text(
+                    Text(
                       "Inicie sua Sessão no Apupu Eventos",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
                     ),
                     SizedBox(height: height * 0.13),
                   ],

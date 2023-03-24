@@ -1,5 +1,6 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'dart:convert';
-import 'dart:io';
 import '../../domain/entities/event/event_entity.dart';
 
 class EventDto extends EventEntity {

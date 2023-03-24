@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/domain/repositories/get_guest_for_objectId/get_guest_for_objectId_repository.dart';
 

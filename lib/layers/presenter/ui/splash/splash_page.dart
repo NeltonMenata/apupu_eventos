@@ -1,4 +1,5 @@
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
@@ -19,12 +20,12 @@ class _SplashPageState extends State<SplashPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: SizedBox(
                 height: 100,
                 width: 100,
                 child: Image.asset(
-                  "assets/logo/logo.png",
+                  Utils.assetLogo,
                 ),
               ),
             ),

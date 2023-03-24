@@ -12,7 +12,6 @@ class GetGuestDataSourceBack4appImp implements IGetGuestDataSource {
       final result = await getOneGuest.execute(
           parameters: {"objectId": objectId, "eventObjectId": eventObjectId});
 
-      print(result.result);
       return GuestDto(
         objectId: result.result["objectId"],
         name: result.result["name"],

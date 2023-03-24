@@ -1,30 +1,28 @@
-import 'package:apupu_eventos/layers/data/datasources/mock/get_all_guest_datasource_mock_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/get_all_guest/get_all_event_repository_imp.dart';
-import 'package:apupu_eventos/layers/domain/usecases/guest/get_all_guest/get_all_guest_entity_usecase_imp.dart';
-import 'package:flutter/material.dart';
-
 import '../../../domain/entities/guest/guest_entity.dart';
+import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact.dart';
 
 class SearchGuestController {
-  static final controller = SearchGuestController();
-  final scrollController = ScrollController();
-  final _listGuest = GetAllGuestUseCaseImp(
-    GetAllGuestRepositoryImp(
-      GetAllGuestDataSourceMockImp(),
-    ),
-  );
+  SearchGuestController(this._searchGuestUseCase);
+  final List<GuestEntity> _listGuest = [];
 
+  List<GuestEntity> get listGuest => _listGuest;
+
+  final ISearchGuestForContactUseCase _searchGuestUseCase;
+/*
   Future<List<GuestEntity>> listGuest() async {
     final listSearch = await _listGuest();
     final reversedList = listSearch.reversed.toList();
     return reversedList;
   }
+  */
 
-  Future<List<GuestEntity>> findGuest(String contact) async {
-    final listSearch = await _listGuest();
+  Future<void> findGuest(String contact, String eventObjectId) async {
+    cleanListGuest();
+    final listSearch = await _searchGuestUseCase(contact, eventObjectId);
+    _listGuest.addAll(listSearch);
+  }
 
-    final reversedList =
-        listSearch.where((element) => element.contact == contact).toList();
-    return reversedList.reversed.toList();
+  cleanListGuest() {
+    _listGuest.clear();
   }
 }

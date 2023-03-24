@@ -2,7 +2,10 @@ import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+
+import '../../../data/datasources/back4app/search_guest_for_contact_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
+import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
 
 class ResultSearchGuestPage extends StatefulWidget {
   const ResultSearchGuestPage({Key? key, this.arguments = ""})
@@ -14,8 +17,13 @@ class ResultSearchGuestPage extends StatefulWidget {
 }
 
 class _ResultSearchGuestPageState extends State<ResultSearchGuestPage> {
-  SearchGuestController get controller => SearchGuestController.controller;
-  final List<GuestEntity> listGuest = [];
+  final controller = SearchGuestController(
+    SearchGuestForContactUseCaseImp(
+      SearchGuestForContactRepositoryImp(
+        SearchGuestForContactDataSourceBack4appImp(),
+      ),
+    ),
+  );
 
   @override
   void initState() {
@@ -24,13 +32,22 @@ class _ResultSearchGuestPageState extends State<ResultSearchGuestPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? contact = ModalRoute.of(context)?.settings.arguments.toString();
     return Scaffold(
       body: ScaffoldGeneral(
         title: "Resultados da busca",
         subtitle: "Partilhe o Qr Code com o convidado",
-        body: FutureBuilder<List<GuestEntity>>(
-            future: controller.findGuest(contact.toString()),
+        body: Container(),
+      ),
+    );
+  }
+}
+
+
+/*
+
+FutureBuilder<List<GuestEntity>>(
+            future: controller.findGuest(
+                searchGuest["contact"], searchGuest["eventObjectId"]),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Column(
@@ -91,8 +108,6 @@ class _ResultSearchGuestPageState extends State<ResultSearchGuestPage> {
               } else {
                 return const CircularProgressIndicator();
               }
-            }),
-      ),
-    );
-  }
-}
+            })
+
+*/

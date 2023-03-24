@@ -1,4 +1,5 @@
 import 'package:apupu_eventos/layers/data/dtos/event_dto.dart';
+import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../../../domain/entities/event/event_entity.dart';
 import '../get_all_event_datasource.dart';
@@ -30,7 +31,7 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
     return [
       EventDto(
           dateOfRealization: DateTime.now(),
-          imgCartaz: "assets/logo/logo.png",
+          imgCartaz: Utils.assetLogo,
           name: "Fake Object",
           objectId: "",
           organization: "",

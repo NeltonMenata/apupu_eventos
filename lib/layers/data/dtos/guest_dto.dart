@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides, overridden_fields
+
 import 'dart:convert';
 
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';

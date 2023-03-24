@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_page.dart';
@@ -26,14 +28,14 @@ abstract class Routes {
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
     return {
-      SPLASH: (context) => SplashPage(),
-      HOME: (context) => HomePage(),
-      ADD_EVENT: (context) => AddEventPage(),
-      ADD_GUEST: (context) => AddGuestPage(),
-      MANAGER_EVENT: (context) => ManagerEventPage(),
+      SPLASH: (context) => const SplashPage(),
+      HOME: (context) => const HomePage(),
+      ADD_EVENT: (context) => const AddEventPage(),
+      ADD_GUEST: (context) => const AddGuestPage(),
+      MANAGER_EVENT: (context) => const ManagerEventPage(),
       REGISTER_GUEST: (context) => RegisterInOrOutGuestPage(),
-      SEARCH_GUEST: (context) => SearchGuestPage(),
-      RESULT_SEARCH_GUEST: (context) => ResultSearchGuestPage(),
+      SEARCH_GUEST: (context) => const SearchGuestPage(),
+      RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),
       LOGIN: (context) => LoginPage()
     };
   }
