@@ -4,11 +4,12 @@ import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import '../../../data/datasources/back4app/get_guest_datasource_back4app_imp.dart';
-import '../../../data/datasources/back4app/save_guest_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/get_guest_for_objectId/get_guest_for_objectId_repository_imp.dart';
-import '../../../data/repositories_imp/save_guest/save_guest_repository_imp.dart';
+import '../../../data/datasources/back4app/guest/get_guest_datasource_back4app_imp.dart';
+import '../../../data/datasources/back4app/guest/save_guest_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/guest/get_guest_for_objectId/get_guest_for_objectId_repository_imp.dart';
+import '../../../data/repositories_imp/guest/save_guest/save_guest_repository_imp.dart';
 import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId_imp.dart';
 import '../../../domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
 import '../../utils/utils.dart';
@@ -44,12 +45,12 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
   GlobalKey key1qrcode = GlobalKey();
 
   GuestEntity guestCurrent = GuestEntity(
-      contact: "+244",
+      contact: "contact",
       name: "Nome",
       objectId: "objectId",
       isIn: false,
       eventObjectId: "",
-      doormanObjectId: "doormanId");
+      workerObjectId: "workerId");
 
   bool isIn = false;
   String statusGuest = "Convidado está fora";
@@ -82,11 +83,23 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
               ),
               ListTile(
                 title: const Text("Adicionar Porteiros"),
-                onTap: () {},
+                onTap: () async {
+                  final user = await ParseUser.currentUser() as ParseUser?;
+                  if (user != null) {
+                  } else {
+                    showResultCustom(context, "Área restrita!");
+                  }
+                },
               ),
               ListTile(
                 title: const Text("Exibir Relatório do Evento"),
-                onTap: () {},
+                onTap: () async {
+                  final user = await ParseUser.currentUser() as ParseUser?;
+                  if (user != null) {
+                  } else {
+                    showResultCustom(context, "Área restrita!");
+                  }
+                },
               ),
             ],
           ),
@@ -124,85 +137,99 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 return Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
+                      border: Border.all(),
                       borderRadius: BorderRadius.circular(15),
                       color: Colors.white),
                   height: MediaQuery.of(context).size.width * .8,
                   width: MediaQuery.of(context).size.width * .7,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: QrImage(data: guestCurrent.objectId),
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        height: width * .2,
-                        child: Center(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: 8.0,
-                                      bottom: 8.0,
-                                      left: 4.0,
-                                      right: width * .03),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: currentEvent.imgCartaz != null
-                                        ? currentEvent.imgCartaz!.isNotEmpty &&
-                                                currentEvent.imgCartaz! !=
-                                                    Utils.assetLogo
-                                            ? CachedNetworkImage(
-                                                imageUrl:
-                                                    currentEvent.imgCartaz!,
-                                                fit: BoxFit.cover,
-                                              )
-                                            : Image.asset(Utils.assetLogo,
-                                                fit: BoxFit.cover)
-                                        : Image.asset(Utils.assetLogo,
-                                            fit: BoxFit.cover),
+                  child: guestCurrent.contact == "contact"
+                      ? Center(
+                          child: Text(
+                            "Clique em Adicionar para criar um Convidado neste Evento.",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: fontSizeSubtitle),
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Center(
+                                child: QrImage(data: guestCurrent.objectId),
+                              ),
+                            ),
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.black45,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              height: width * .2,
+                              child: Center(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 8.0,
+                                            bottom: 8.0,
+                                            left: 4.0,
+                                            right: width * .03),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: currentEvent.imgCartaz != null
+                                              ? currentEvent.imgCartaz!
+                                                          .isNotEmpty &&
+                                                      currentEvent.imgCartaz! !=
+                                                          Utils.assetLogo
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: currentEvent
+                                                          .imgCartaz!,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : Image.asset(Utils.assetLogo,
+                                                      fit: BoxFit.cover)
+                                              : Image.asset(Utils.assetLogo,
+                                                  fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 4.0),
+                                            child: Text(
+                                              guestCurrent.name,
+                                              style: TextStyle(
+                                                  fontSize: fontSizeGuest,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Text(
+                                            "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
+                                            style: TextStyle(
+                                                fontSize: fontSizeSubtitle * .8,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black),
+                                          )
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 4.0),
-                                      child: Text(
-                                        guestCurrent.name,
-                                        style: TextStyle(
-                                            fontSize: fontSizeGuest,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Text(
-                                      "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
-                                      style: TextStyle(
-                                          fontSize: fontSizeSubtitle * .8,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.grey),
-                                    )
-                                  ],
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 );
               },
             ),

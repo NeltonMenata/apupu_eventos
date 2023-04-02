@@ -1,10 +1,9 @@
-import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_controller.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/datasources/back4app/search_guest_for_contact_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
+import '../../../data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/guest/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
 import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
 
 class ResultSearchGuestPage extends StatefulWidget {

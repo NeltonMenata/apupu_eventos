@@ -79,6 +79,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
                         TextFormField(
                           controller: nameController,
+                          keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
                               suffixIcon:
                                   Icon(Icons.insert_drive_file_outlined),
@@ -132,6 +133,7 @@ class _AddEventPageState extends State<AddEventPage> {
                         ),
                         TextFormField(
                           controller: organizationNameController,
+                          keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
                               suffixIcon: Icon(Icons.group_outlined),
                               border: OutlineInputBorder()),

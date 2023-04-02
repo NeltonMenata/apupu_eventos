@@ -10,7 +10,7 @@ class GuestDto extends GuestEntity {
   final String contact;
   final bool isIn;
   final String eventObjectId;
-  final String doormanObjectId;
+  final String workerObjectId;
 
   GuestDto(
       {required this.objectId,
@@ -18,13 +18,13 @@ class GuestDto extends GuestEntity {
       required this.contact,
       required this.isIn,
       required this.eventObjectId,
-      required this.doormanObjectId})
+      required this.workerObjectId})
       : super(
             objectId: objectId,
             name: name,
             contact: contact,
             eventObjectId: eventObjectId,
-            doormanObjectId: doormanObjectId,
+            workerObjectId: workerObjectId,
             isIn: isIn);
   String toMap() {
     var map = {
@@ -45,7 +45,7 @@ class GuestDto extends GuestEntity {
         contact: map["contact"],
         isIn: map["isIn"],
         eventObjectId: map["eventObjectId"],
-        doormanObjectId: map["doormanObjectId"]);
+        workerObjectId: map["workerObjectId"]);
   }
 
   @override

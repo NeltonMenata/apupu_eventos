@@ -10,6 +10,7 @@ import '../ui/add_event/add_event_page.dart';
 import '../ui/add_guest/add_guest_page.dart';
 import '../ui/home/home_page.dart';
 import '../ui/manager_event/manager_event_page.dart';
+import '../ui/manager_event/manager_event_worker_page.dart';
 import '../ui/result_search_guest/result_search_guest.dart';
 
 abstract class Routes {
@@ -18,12 +19,13 @@ abstract class Routes {
   static const ADD_EVENT = "/add_event";
   static const ADD_GUEST = "/add_guest";
   static const MANAGER_EVENT = "/manager_event";
+  static const MANAGER_EVENT_WORKER = "/manager_event_worker";
   static const REGISTER_GUEST = "/register_guest";
   static const SEARCH_GUEST = "/search_guest";
   static const RESULT_SEARCH_GUEST = "/result_search_guest";
   static const LOGIN = "/login";
 
-  // Routers for Doorman
+  // Routers for Worker
 
   static Map<String, Widget Function(BuildContext)> routes(
       BuildContext context) {
@@ -33,6 +35,7 @@ abstract class Routes {
       ADD_EVENT: (context) => const AddEventPage(),
       ADD_GUEST: (context) => const AddGuestPage(),
       MANAGER_EVENT: (context) => const ManagerEventPage(),
+      MANAGER_EVENT_WORKER: (context) => const ManagerEventWorkerPage(),
       REGISTER_GUEST: (context) => RegisterInOrOutGuestPage(),
       SEARCH_GUEST: (context) => const SearchGuestPage(),
       RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),

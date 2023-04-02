@@ -4,14 +4,14 @@ class GuestEntity {
   final String contact;
   bool isIn;
   final String eventObjectId;
-  final String doormanObjectId;
+  final String? workerObjectId;
 
   GuestEntity({
     required this.objectId,
     required this.name,
     required this.contact,
     this.isIn = false,
-    required this.doormanObjectId,
+    required this.workerObjectId,
     required this.eventObjectId,
   });
 }

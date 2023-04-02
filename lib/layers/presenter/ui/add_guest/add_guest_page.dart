@@ -1,5 +1,6 @@
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_guest/add_guest_controller.dart';
+import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -25,6 +26,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double fontSizeTitle = width * .045;
+    final workerObjectId = LoginController.currentWorker?.objectId;
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
     //double fontSizeSubtitle = width * .035;
@@ -53,6 +55,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                         controller: nameController,
+                        keyboardType: TextInputType.name,
                         style: const TextStyle(color: Colors.white),
                         cursorColor: Colors.white,
                         decoration: _styleTextField(false)),
@@ -93,7 +96,8 @@ class _AddGuestPageState extends State<AddGuestPage> {
                           : ElevatedButton(
                               onPressed: () async {
                                 if (nameController.text.isEmpty ||
-                                    contactController.text.isEmpty) {
+                                    contactController.text.isEmpty ||
+                                    contactController.text.length < 9) {
                                   showResultCustom(context,
                                       "Preencha os campos corretamente!");
                                   return;
@@ -102,8 +106,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
                                 setState(() {
                                   isSave = !isSave;
                                 });
-                                final currentUser =
-                                    await ParseUser.currentUser() as ParseUser;
+
                                 final guestSaved = await controller.saveGuest(
                                   GuestEntity(
                                       contact: contactController.text,
@@ -111,7 +114,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
                                       objectId: "objectId",
                                       isIn: false,
                                       eventObjectId: currentEvent.objectId,
-                                      doormanObjectId: currentUser.objectId!),
+                                      workerObjectId: workerObjectId),
                                 );
 
                                 setState(() {
@@ -149,7 +152,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
                             objectId: "objectId",
                             isIn: false,
                             eventObjectId: "",
-                            doormanObjectId: "doormanObjectId"));
+                            workerObjectId: "workerObjectId"));
                         
                         Navigator.of(context).pop(guestSaved);
                         contactController.text = "";

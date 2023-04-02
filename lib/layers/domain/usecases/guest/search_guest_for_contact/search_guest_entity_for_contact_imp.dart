@@ -1,5 +1,5 @@
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
-import '../../../repositories/search_guest_for_contact/get_guest_for_objectId_repository.dart';
+import '../../../repositories/guest/search_guest_for_contact/get_guest_for_objectId_repository.dart';
 import 'search_guest_entity_for_contact.dart';
 
 class SearchGuestForContactUseCaseImp implements ISearchGuestForContactUseCase {

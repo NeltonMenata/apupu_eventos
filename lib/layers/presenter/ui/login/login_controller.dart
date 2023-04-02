@@ -1,3 +1,7 @@
+import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_worker/worker_login_datasource_imp.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/worker/worker_login/worker_login_repository_imp.dart';
+import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity.dart';
+import 'package:apupu_eventos/layers/domain/usecases/worker/login/login_worker_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -6,6 +10,12 @@ import '../../routes/Routes.dart';
 
 class LoginController {
   bool isAdmin = false;
+  static WorkerEntity? currentWorker;
+  static logout(BuildContext context) {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(Routes.LOGIN, (route) => false);
+    currentWorker = null;
+  }
 
   Future<void> login(
       BuildContext context, String username, String password) async {
@@ -23,8 +33,9 @@ class LoginController {
 
             return;
           }
-          debugPrint(login.results.toString());
-          Navigator.of(context).pushNamed(Routes.HOME);
+
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
         } else {
           if (login.statusCode == -1) {
             showResultCustom(context,
@@ -39,9 +50,17 @@ class LoginController {
             context, "Erro ao logar. Verifique a sua conexão com a internet!");
       }
     } else {
-      if (username == "doorman" && password == "123") {
+      final _loginWorker = LoginWorkerUseCaseImp(
+        WorkerLoginRepositoryImp(
+          WorkerLoginDataSourceImp(),
+        ),
+      );
+      final login = await _loginWorker(username, password);
+      if (login.username == "" && login.password == "") {
+        currentWorker = login;
         Navigator.pushNamedAndRemoveUntil(
-            context, Routes.MANAGER_EVENT, (route) => false);
+            context, Routes.MANAGER_EVENT_WORKER, (route) => false,
+            arguments: login.objectId);
       }
     }
   }

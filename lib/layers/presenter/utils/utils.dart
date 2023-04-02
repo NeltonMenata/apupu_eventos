@@ -37,15 +37,14 @@ class Utils {
               content: Image.file(file),
               actions: [
                 TextButton(
-                  onPressed: () async {
-                    //Share.shareFiles(['/image.jpg'], text: 'Great picture');
-                    // ignore: deprecated_member_use
-                    await Share.shareFiles([file.path],
-                        mimeTypes: ["image/png"], text: "Meu Código");
-                    //file.delete();
-                  },
-                  child: const Text("Compartilhar"),
-                ),
+                    onPressed: () async {
+                      //Share.shareFiles(['/image.jpg'], text: 'Great picture');
+                      // ignore: deprecated_member_use
+                      await Share.shareFiles([file.path],
+                          mimeTypes: ["image/png"], text: "Meu Código");
+                      //file.delete();
+                    },
+                    child: const Text("Compartilhar")),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();

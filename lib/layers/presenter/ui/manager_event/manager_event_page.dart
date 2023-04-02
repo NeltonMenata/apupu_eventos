@@ -4,6 +4,9 @@ import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_co
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import '../../../data/datasources/back4app/event/get_all_event_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/event/get_all_event/get_all_event_repository_imp.dart';
+import '../../../domain/usecases/event/get_all_event_usecase/get_all_event_usecase_imp.dart';
 import '../../geral_components/scaffold_general/scaffold_general.dart';
 
 class ManagerEventPage extends StatefulWidget {
@@ -14,7 +17,13 @@ class ManagerEventPage extends StatefulWidget {
 }
 
 class _ManagerEventPageState extends State<ManagerEventPage> {
-  final controller = ManagerEventController();
+  final controller = ManagerEventController(
+    GetAllEventUseCaseImp(
+      GetAllEventRepositoryImp(
+        GetAllEventDataSourceBack4appImp(),
+      ),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
     //final height = MediaQuery.of(context).size.height;

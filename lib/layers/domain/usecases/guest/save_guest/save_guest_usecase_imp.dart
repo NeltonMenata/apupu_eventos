@@ -1,5 +1,5 @@
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
-import 'package:apupu_eventos/layers/domain/repositories/save_guest/save_guest_repository.dart';
+import '../../../repositories/guest/save_guest/save_guest_repository.dart';
 import 'save_guest_usecase.dart';
 
 class SaveGuestUseCaseImp implements ISaveGuestUseCase {

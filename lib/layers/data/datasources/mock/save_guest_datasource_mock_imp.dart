@@ -1,7 +1,7 @@
 import 'package:apupu_eventos/layers/data/datasources/mock/database_mock.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 
-import '../save_guest_datasource.dart';
+import '../guest/save_guest_datasource.dart';
 
 class SaveGuestDataSourceMockImp implements ISaveGuestDataSource {
   final List<GuestEntity> list = [];

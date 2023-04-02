@@ -1,4 +1,4 @@
-import 'package:apupu_eventos/layers/data/datasources/get_guest_datasource.dart';
+import 'package:apupu_eventos/layers/data/datasources/guest/get_guest_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/mock/database_mock.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 
@@ -12,7 +12,7 @@ class GetGuestDataSourceMockImp implements IGetGuestDataSource {
           objectId: "objectId",
           name: "name",
           contact: "contact",
-          doormanObjectId: "doormanId",
+          workerObjectId: "workerId",
           eventObjectId: "eventObjectId");
     }
 

@@ -5,8 +5,8 @@ import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../../data/datasources/back4app/search_guest_for_contact_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
+import '../../../data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
+import '../../../data/repositories_imp/guest/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
 import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
 
 class SearchGuestPage extends StatefulWidget {
@@ -182,8 +182,36 @@ class _SearchGuestPageState extends State<SearchGuestPage>
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.refresh_outlined),
+        onPressed: () async {
+          if (searchTextController.text.isEmpty) {
+            showResultCustom(
+                context, "Digite o contacto do convidado que deseja procurar!");
+            return;
+          } else if (searchTextController.text.length < 9 ||
+              searchTextController.text.length > 9) {
+            showResultCustom(
+                context, "É obrigatório o campo de procura ter 9 digitos!");
+            return;
+          }
+          /*
+                  Navigator.pushNamed(context, Routes.RESULT_SEARCH_GUEST,
+                      arguments: {
+                        "contact": searchTextController.text,
+                        "eventObjectId": eventObjectId
+                      }).then((value) {
+                    
+                  });
+                  */
+          setState(() {
+            isLoading = true;
+          });
+          await controller.findGuest(searchTextController.text, eventObjectId);
+          setState(() {
+            isLoading = false;
+          });
+          searchTextController.text = "";
+        },
+        child: const Icon(Icons.search_rounded),
       ),
     );
   }

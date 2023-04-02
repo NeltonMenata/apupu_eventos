@@ -17,7 +17,7 @@ class RegisterInOrOutGuestController {
   Future<GuestEntity> getGuest(String eventObjectId) async {
     var qrResult = await FlutterBarcodeScanner.scanBarcode(
         "red", "Cancelar", true, ScanMode.QR);
-    if (qrResult == "-1") {}
+
     return await _getGuestForObjectIdUseCase(qrResult, eventObjectId);
   }
 }
