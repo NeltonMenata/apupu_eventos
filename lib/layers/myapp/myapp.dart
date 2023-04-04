@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Comfortaa"),
-      initialRoute: "/splash",
+      initialRoute: Routes.SPLASH,
       routes: Routes.routes(context),
     );
   }

@@ -59,8 +59,11 @@ class LoginController {
       if (login.username == "" && login.password == "") {
         currentWorker = login;
         Navigator.pushNamedAndRemoveUntil(
-            context, Routes.MANAGER_EVENT_WORKER, (route) => false,
+            context, Routes.MANAGER_EVENT, (route) => false,
             arguments: login.objectId);
+      } else {
+        showResultCustom(context,
+            "Erro ao logar. Verifique a sua conexão com a internet e se os dados do usuário estão correctos!");
       }
     }
   }

@@ -8,6 +8,7 @@ import '../../../data/datasources/back4app/event/get_all_event_datasource_back4a
 import '../../../data/repositories_imp/event/get_all_event/get_all_event_repository_imp.dart';
 import '../../../domain/usecases/event/get_all_event_usecase/get_all_event_usecase_imp.dart';
 import '../../geral_components/scaffold_general/scaffold_general.dart';
+import '../login/login_controller.dart';
 
 class ManagerEventPage extends StatefulWidget {
   const ManagerEventPage({Key? key}) : super(key: key);
@@ -26,6 +27,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
   );
   @override
   Widget build(BuildContext context) {
+    final workerObjectId =
+        ModalRoute.of(context)!.settings.arguments as String?;
     //final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     //const paddingLeft = 15.0;
@@ -45,44 +48,56 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                 "Gerencie seus Eventos, clique  no evento para adicionar convidados!",
             subtitle: "",
             body: FutureBuilder<List<EventEntity>>(
-              future: controller.getAllEvent(context),
+              future: controller.getAllEvent(context, workerObjectId),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!.isEmpty
-                      ? TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.ADD_EVENT)
-                                .then((value) => setState(() {}));
-                          },
-                          child: Column(
-                            children: [
-                              Row(
+                      ? workerObjectId == null
+                          ? TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(context, Routes.ADD_EVENT)
+                                    .then((value) => setState(() {}));
+                              },
+                              child: Column(
                                 children: [
-                                  Flexible(
-                                    child: Text(
-                                      "Nenhum Evento foi adicionado, clique aqui criar um novo!",
-                                      style: TextStyle(
-                                          fontSize: fontSizeTextButton,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          "Nenhum Evento foi adicionado, clique aqui criar um novo!",
+                                          style: TextStyle(
+                                              fontSize: fontSizeTextButton,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                    context, Routes.ADD_EVENT)
+                                                .then(
+                                                    (value) => setState(() {}));
+                                          },
+                                          icon: Icon(
+                                            Icons.arrow_forward_rounded,
+                                            size: width * .09,
+                                            color: Colors.white,
+                                          ))
+                                    ],
                                   ),
-                                  IconButton(
-                                      onPressed: () {
-                                        Navigator.pushNamed(
-                                                context, Routes.ADD_EVENT)
-                                            .then((value) => setState(() {}));
-                                      },
-                                      icon: Icon(
-                                        Icons.arrow_forward_rounded,
-                                        size: width * .09,
-                                        color: Colors.white,
-                                      ))
                                 ],
                               ),
-                            ],
-                          ),
-                        )
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Nenhum Evento foi a adicionado você!",
+                                style: TextStyle(
+                                    fontSize: fontSizeTextButton,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white),
+                              ),
+                            )
                       : Column(
                           children: [
                             ...List.generate(
@@ -198,10 +213,25 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
           ),
         ),
       ),
-      bottomSheet: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child:
-            Text("Volte sempre nesta tela para gerenciar os eventos criados!"),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          width: double.infinity,
+          child: workerObjectId == null
+              ? const Text(
+                  "Volte sempre nesta tela para gerenciar os eventos criados!")
+              : TextButton(
+                  onPressed: () {
+                    LoginController.logout(context);
+                  },
+                  child: Text(
+                    "Terminar Sessão",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSizeSubtitle),
+                  ),
+                ),
+        ), /* Git Hub */
       ),
     );
   }

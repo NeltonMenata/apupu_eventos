@@ -88,7 +88,13 @@ Future<void> showResultCustom(BuildContext context, String valueResult,
     builder: (context) {
       return AlertDialog(
         backgroundColor: isError ? Colors.red : Colors.white,
-        content: Text(valueResult),
+        content: Text(
+          valueResult,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isError ? Colors.white : Colors.black,
+          ),
+        ),
         actions: [
           TextButton(
             child: Text(
