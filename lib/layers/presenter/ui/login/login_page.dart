@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     final paddingTop = height * 0.1;
     const paddingBottom = 15.0;
     final fontSizeTitle = width * .086;
+    final fontSizeTitleLabel = width * .040;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -59,26 +60,46 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: TextField(
-                  controller: username,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: "Nome de Usuário",
-                      label: Text("Nome de Usuário"),
-                      suffixIcon: Icon(Icons.person_outlined)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Nome do Usuário",
+                      style: TextStyle(
+                          fontSize: fontSizeTitleLabel,
+                          fontWeight: FontWeight.w900),
+                    ),
+                    TextField(
+                      controller: username,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Nome de Usuário",
+                          suffixIcon: Icon(Icons.person_outlined)),
+                    ),
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: TextField(
-                  controller: password,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: "Senha de Usuário",
-                    label: Text("Senha de Usuário"),
-                    suffixIcon: Icon(Icons.password_outlined),
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Senha do Usuário",
+                      style: TextStyle(
+                          fontSize: fontSizeTitleLabel,
+                          fontWeight: FontWeight.w900),
+                    ),
+                    TextField(
+                      controller: password,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: "Senha",
+                        suffixIcon: Icon(Icons.password_outlined),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(

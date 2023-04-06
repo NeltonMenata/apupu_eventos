@@ -49,14 +49,11 @@ class _HomePageState extends State<HomePage> {
                 currentAccountPicture: Image.asset(Utils.assetLogo),
               ),
               ListTile(
-                title: const Text("Adicionar Porteiros"),
+                title: const Text("Criar Trabalhador"),
                 trailing: const Icon(Icons.group_add_outlined),
-                onTap: () {},
-              ),
-              ListTile(
-                title: const Text("Exibir Relatório do Evento"),
-                onTap: () {},
-                trailing: const Icon(Icons.report_outlined),
+                onTap: () {
+                  Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
+                },
               ),
               const Spacer(),
               ListTile(

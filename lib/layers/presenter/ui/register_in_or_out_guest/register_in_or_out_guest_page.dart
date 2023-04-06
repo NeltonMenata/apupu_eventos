@@ -82,10 +82,12 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 currentAccountPicture: Image.asset(Utils.assetLogo),
               ),
               ListTile(
-                title: const Text("Adicionar Porteiros"),
+                title: const Text("Gerir Trabalhador do Evento"),
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser?;
                   if (user != null) {
+                    Navigator.pushNamed(context, Routes.MANAGER_WORKER,
+                        arguments: currentEvent);
                   } else {
                     showResultCustom(context, "Área restrita!");
                   }

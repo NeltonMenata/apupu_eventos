@@ -119,7 +119,8 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                         ListTile(
                           leading: CircleAvatar(
                             backgroundColor: Colors.grey,
-                            child: QrImage(data: index.toString()),
+                            child: QrImage(
+                                data: controller.listGuest[index].objectId),
                           ),
                           title: Text(
                             controller.listGuest[index].name,

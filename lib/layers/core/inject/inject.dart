@@ -5,7 +5,7 @@ import 'package:apupu_eventos/layers/data/datasources/back4app/guest/get_all_gue
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/get_guest_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/save_guest_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_worker/worker_login_datasource_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_worker/worker_login_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/get_all_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/save_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/guest/done_in_or_out_guest_datasource.dart';
@@ -86,7 +86,8 @@ class Inject {
       SaveEventDataSourceBack4appImp(),
     );
     //######## - Worker - DATASOURCE
-    getIt.registerSingleton<IWorkerLoginDataSource>(WorkerLoginDataSourceImp());
+    getIt.registerSingleton<IWorkerLoginDataSource>(
+        WorkerLoginDataSourceBack4appImp());
     //REPOSITORY
     //######## - Guest - REPOSITORY
     getIt.registerSingleton<IDoneInOrOutGuestRepository>(
@@ -129,7 +130,7 @@ class Inject {
 
     //####### - Worker - REPOSITORY
     getIt.registerSingleton<IWorkerLoginRepository>(
-        WorkerLoginRepositoryImp(getIt()));
+        WorkerLoginRepositoryImp(WorkerLoginDataSourceBack4appImp()));
     //USECASE
     //####### - Guest - USECASE
     getIt.registerSingleton<IDoneInOrOutGuestUseCase>(

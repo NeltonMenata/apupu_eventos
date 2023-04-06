@@ -1,6 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/manager_worker/manager_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/splash/splash_page.dart';
@@ -18,11 +20,12 @@ abstract class Routes {
   static const ADD_EVENT = "/add_event";
   static const ADD_GUEST = "/add_guest";
   static const MANAGER_EVENT = "/manager_event";
-
+  static const CREATE_WORKER = "/create_worker";
   static const REGISTER_GUEST = "/register_guest";
   static const SEARCH_GUEST = "/search_guest";
   static const RESULT_SEARCH_GUEST = "/result_search_guest";
   static const LOGIN = "/login";
+  static const MANAGER_WORKER = "/manager_worker";
 
   // Routers for Worker
 
@@ -34,10 +37,12 @@ abstract class Routes {
       ADD_EVENT: (context) => const AddEventPage(),
       ADD_GUEST: (context) => const AddGuestPage(),
       MANAGER_EVENT: (context) => const ManagerEventPage(),
+      CREATE_WORKER: (context) => const CreateWorkerPage(),
       REGISTER_GUEST: (context) => RegisterInOrOutGuestPage(),
       SEARCH_GUEST: (context) => const SearchGuestPage(),
       RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),
-      LOGIN: (context) => LoginPage()
+      LOGIN: (context) => LoginPage(),
+      MANAGER_WORKER: (context) => ManagerWorkerPage()
     };
   }
 }

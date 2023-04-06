@@ -1,4 +1,4 @@
-import 'package:apupu_eventos/layers/core/inject/inject.dart';
+//import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
