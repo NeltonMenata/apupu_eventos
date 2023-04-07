@@ -199,7 +199,7 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
           ),
           const Spacer(),
           Text(
-            "Usuário Normal: ",
+            "Não Porteiro: ",
             style: TextStyle(
               color: Colors.brown[700],
               fontWeight: FontWeight.bold,

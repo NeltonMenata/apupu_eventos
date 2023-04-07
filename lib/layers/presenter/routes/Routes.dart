@@ -4,6 +4,7 @@ import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_pa
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_worker/manager_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/splash/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ abstract class Routes {
   static const RESULT_SEARCH_GUEST = "/result_search_guest";
   static const LOGIN = "/login";
   static const MANAGER_WORKER = "/manager_worker";
+  static const REPORT_EVENT = "/report_event";
 
   // Routers for Worker
 
@@ -42,7 +44,8 @@ abstract class Routes {
       SEARCH_GUEST: (context) => const SearchGuestPage(),
       RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),
       LOGIN: (context) => LoginPage(),
-      MANAGER_WORKER: (context) => ManagerWorkerPage()
+      MANAGER_WORKER: (context) => ManagerWorkerPage(),
+      REPORT_EVENT: (context) => ReportEventPage()
     };
   }
 }

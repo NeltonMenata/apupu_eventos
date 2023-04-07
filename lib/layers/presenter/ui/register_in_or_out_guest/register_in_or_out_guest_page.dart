@@ -98,6 +98,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser?;
                   if (user != null) {
+                    Navigator.pushNamed(context, Routes.REPORT_EVENT,
+                        arguments: currentEvent);
                   } else {
                     showResultCustom(context, "Área restrita!");
                   }

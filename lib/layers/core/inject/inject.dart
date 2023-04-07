@@ -112,20 +112,15 @@ class Inject {
     );
     getIt.registerSingleton<ISearchGuestForContactRepository>(
       SearchGuestForContactRepositoryImp(
-        getIt(),
-      ),
+          SearchGuestForContactDataSourceBack4appImp()),
     );
     //####### - Event - REPOSITORY
 
     getIt.registerSingleton<IGetAllEventRepository>(
-      GetAllEventRepositoryImp(
-        getIt(),
-      ),
+      GetAllEventRepositoryImp(GetAllEventDataSourceBack4appImp()),
     );
     getIt.registerSingleton<ISaveEventRepository>(
-      SaveEventRepositoryImp(
-        getIt(),
-      ),
+      SaveEventRepositoryImp(SaveEventDataSourceBack4appImp()),
     );
 
     //####### - Worker - REPOSITORY
@@ -134,46 +129,38 @@ class Inject {
     //USECASE
     //####### - Guest - USECASE
     getIt.registerSingleton<IDoneInOrOutGuestUseCase>(
-      DoneInOrOutGuestUseCaseImp(
-        getIt(),
-      ),
+      DoneInOrOutGuestUseCaseImp(DoneInOrOutGuestRepositoryImp(
+          DoneInOrOutGuestDatasourceBack4appImp())),
     );
     getIt.registerSingleton<IGetAllGuestUseCase>(
       GetAllGuestUseCaseImp(
-        getIt(),
-      ),
+          GetAllGuestRepositoryImp(GetAllGuestDataSourceBack4appImp())),
     );
     getIt.registerSingleton<IGetGuestForObjectIdUseCase>(
       GetGuestForObjectIdUseCaseImp(
-        getIt(),
-      ),
+          GetGuestForObjectIdRepositoryImp(GetGuestDataSourceBack4appImp())),
     );
     getIt.registerSingleton<ISaveGuestUseCase>(
       SaveGuestUseCaseImp(
-        getIt(),
-      ),
+          SaveGuestRepositoryImp(SaveGuestDataSourceBack4appImp())),
     );
     getIt.registerSingleton<ISearchGuestForContactUseCase>(
-      SearchGuestForContactUseCaseImp(
-        getIt(),
-      ),
+      SearchGuestForContactUseCaseImp(SearchGuestForContactRepositoryImp(
+          SearchGuestForContactDataSourceBack4appImp())),
     );
     //####### - Event - USECASE
     getIt.registerSingleton<IGetAllEventUseCase>(
       GetAllEventUseCaseImp(
-        getIt(),
-      ),
+          GetAllEventRepositoryImp(GetAllEventDataSourceBack4appImp())),
     );
     getIt.registerSingleton<ISaveEventUseCase>(
       SaveEventUseCaseImp(
-        getIt(),
-      ),
+          SaveEventRepositoryImp(SaveEventDataSourceBack4appImp())),
     );
     //####### - Worker - USECASE
     getIt.registerSingleton<ILoginWorkerUseCase>(
       LoginWorkerUseCaseImp(
-        getIt(),
-      ),
+          WorkerLoginRepositoryImp(WorkerLoginDataSourceBack4appImp())),
     );
 
     //CONTROLLER

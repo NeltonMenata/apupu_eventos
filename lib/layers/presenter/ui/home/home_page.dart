@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                 trailing: const Icon(Icons.logout_outlined),
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser;
-                  user.logout();
+                  await user.logout();
                   Navigator.pushNamedAndRemoveUntil(
                       context, Routes.LOGIN, (route) => false);
                 },
