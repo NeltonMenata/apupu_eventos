@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,7 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 
-  final controller = LoginController();
+  final controller = getIt<LoginController>();
 }
 
 class _LoginPageState extends State<LoginPage> {

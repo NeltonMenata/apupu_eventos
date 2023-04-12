@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_guest/add_guest_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
@@ -16,7 +17,7 @@ class AddGuestPage extends StatefulWidget {
 class _AddGuestPageState extends State<AddGuestPage> {
   final contactController = TextEditingController();
   final nameController = TextEditingController();
-  final controller = AddGuestController();
+  final controller = getIt<AddGuestController>();
 
   bool isSave = false;
 

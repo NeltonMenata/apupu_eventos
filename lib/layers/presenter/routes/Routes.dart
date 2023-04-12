@@ -1,4 +1,4 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, file_names
 
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';

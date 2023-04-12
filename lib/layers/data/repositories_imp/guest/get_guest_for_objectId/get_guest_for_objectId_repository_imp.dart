@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import '../../../../domain/repositories/guest/get_guest_for_objectId/get_guest_for_objectId_repository.dart';
 import '../../../datasources/guest/get_guest_datasource.dart';

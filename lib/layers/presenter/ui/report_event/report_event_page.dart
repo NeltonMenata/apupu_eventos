@@ -1,37 +1,13 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/guest/count_guest_for_event_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/guest/count_guest_for_worker_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/get_all_worker_in_event/get_all_worker_in_event_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/guest/count_guest_for_event/count_guest_for_event_repository_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/guest/count_guest_for_worker/count_guest_for_worker_repository_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/worker/get_all_worker_in_event/get_all_worker_in_event_imp.dart';
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity_minimal.dart';
-import 'package:apupu_eventos/layers/domain/usecases/guest/count_guest_for_event/count_guest_for_event_usecase_imp.dart';
-import 'package:apupu_eventos/layers/domain/usecases/guest/count_guest_for_worker/count_guest_for_worker_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_controller.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/usecases/worker/get_all_worker_in_event/get_all_worker_in_event_usecase_imp.dart';
 
 class ReportEventPage extends StatefulWidget {
   ReportEventPage({Key? key}) : super(key: key);
 
-  final controller = ReportEventController(
-    GetAllWorkerInEventUseCaseImp(
-      GetAllWorkerInEventRepositoryImp(
-        GetAllWorkerInEventDataSourceBack4appImp(),
-      ),
-    ),
-    CountGuestForEventUseCaseImp(
-      CountGuestForEventRepositoryImp(
-        CountGuestForEventDataSourceBack4appImp(),
-      ),
-    ),
-    CountGuestForWorkerUseCaseImp(
-      CountGuestForWorkerRepositoryImp(
-        CountGuestForWorkerDataSourceBack4appImp(),
-      ),
-    ),
-  );
+  final controller = getIt<ReportEventController>();
 
   @override
   State<ReportEventPage> createState() => _ReportEventPageState();
@@ -42,9 +18,9 @@ class _ReportEventPageState extends State<ReportEventPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    const paddingLeft = 15.0;
-    final paddingTop = height * 0.1;
-    const paddingBottom = 15.0;
+    // const paddingLeft = 15.0;
+    // final paddingTop = height * 0.1;
+    // const paddingBottom = 15.0;
     final fontSizeTitle = width * .085;
     final fontSizeSubtitle = width * .044;
     final allPadding = width * .04;
@@ -60,7 +36,7 @@ class _ReportEventPageState extends State<ReportEventPage> {
                 padding: EdgeInsets.only(top: allPadding, left: allPadding),
                 height: height * .2,
                 width: double.infinity,
-                decoration: BoxDecoration(color: Colors.orange),
+                decoration: const BoxDecoration(color: Colors.orange),
                 child: Text(
                   "Relatório do Evento ${currentEvent.name}",
                   style: TextStyle(
@@ -176,7 +152,7 @@ class _ReportEventPageState extends State<ReportEventPage> {
                                                               .toStringAsFixed(
                                                                   0) +
                                                           " kz",
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white)),
                                                 ],
                                               ),

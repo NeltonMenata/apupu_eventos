@@ -1,17 +1,11 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/create_worker/create_worker_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/create_worker/create_worker_usecase.dart';
-import 'package:apupu_eventos/layers/domain/usecases/worker/create_worker/create_worker_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
-import '../../../data/repositories_imp/worker/create_worker/create_worker_repository_imp.dart';
 
 class CreateWorkerController {
-  final ICreateWorkerUseCase _createWorkertUseCase = CreateWorkerUseCaseImp(
-    CreateWorkerRepositoryImp(
-      CreateWorkerDataSourceBack4appImp(),
-    ),
-  );
+  final _createWorkertUseCase = getIt<ICreateWorkerUseCase>();
 
   Future<void> createWorker(
     BuildContext context, {

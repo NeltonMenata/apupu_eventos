@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
@@ -6,12 +7,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import '../../../data/datasources/back4app/guest/get_guest_datasource_back4app_imp.dart';
-import '../../../data/datasources/back4app/guest/save_guest_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/guest/get_guest_for_objectId/get_guest_for_objectId_repository_imp.dart';
-import '../../../data/repositories_imp/guest/save_guest/save_guest_repository_imp.dart';
-import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId_imp.dart';
-import '../../../domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
 import '../../utils/utils.dart';
 import '../../utils/widget_to_image.dart';
 import 'register_in_or_out_guest_controller.dart';
@@ -19,18 +14,7 @@ import 'register_in_or_out_guest_controller.dart';
 class RegisterInOrOutGuestPage extends StatefulWidget {
   RegisterInOrOutGuestPage({Key? key}) : super(key: key);
 
-  final controller = RegisterInOrOutGuestController(
-    SaveGuestUseCaseImp(
-      SaveGuestRepositoryImp(
-        SaveGuestDataSourceBack4appImp(),
-      ),
-    ),
-    GetGuestForObjectIdUseCaseImp(
-      GetGuestForObjectIdRepositoryImp(
-        GetGuestDataSourceBack4appImp(),
-      ),
-    ),
-  );
+  final controller = getIt<RegisterInOrOutGuestController>();
 
   @override
   State<RegisterInOrOutGuestPage> createState() {
@@ -77,7 +61,10 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
           child: Column(
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text(currentEvent.name),
+                accountName: Text(
+                  currentEvent.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 accountEmail: Text(currentEvent.organization),
                 currentAccountPicture: Image.asset(Utils.assetLogo),
               ),

@@ -1,7 +1,6 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_worker/worker_login_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/worker/worker_login/worker_login_repository_imp.dart';
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/worker/login/login_worker_usecase_imp.dart';
+import 'package:apupu_eventos/layers/domain/usecases/worker/login/login_worker_usecase.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -50,11 +49,7 @@ class LoginController {
             context, "Erro ao logar. Verifique a sua conexão com a internet!");
       }
     } else {
-      final _loginWorker = LoginWorkerUseCaseImp(
-        WorkerLoginRepositoryImp(
-          WorkerLoginDataSourceBack4appImp(),
-        ),
-      );
+      final _loginWorker = getIt<ILoginWorkerUseCase>();
       final login = await _loginWorker(username, password);
       if (login.username == "" && login.password == "") {
         currentWorker = login;

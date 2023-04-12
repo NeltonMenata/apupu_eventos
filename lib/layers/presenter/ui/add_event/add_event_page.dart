@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_event/add_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  final controller = AddEventController();
+  final controller = getIt<AddEventController>();
   final dateController = TextEditingController();
   final nameController = TextEditingController();
   final organizationNameController = TextEditingController();

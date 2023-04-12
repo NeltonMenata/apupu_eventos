@@ -1,13 +1,10 @@
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import '../../../data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/guest/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
-import '../../../domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
 
 class SearchGuestPage extends StatefulWidget {
   const SearchGuestPage({Key? key}) : super(key: key);
@@ -21,9 +18,7 @@ class _SearchGuestPageState extends State<SearchGuestPage>
   bool isLoading = false;
 
   final searchTextController = TextEditingController();
-  final controller = SearchGuestController(SearchGuestForContactUseCaseImp(
-      SearchGuestForContactRepositoryImp(
-          SearchGuestForContactDataSourceBack4appImp())));
+  final controller = getIt<SearchGuestController>();
 
   @override
   void initState() {
@@ -74,15 +69,6 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                         "É obrigatório o campo de procura ter 9 digitos!");
                     return;
                   }
-                  /*
-                  Navigator.pushNamed(context, Routes.RESULT_SEARCH_GUEST,
-                      arguments: {
-                        "contact": searchTextController.text,
-                        "eventObjectId": eventObjectId
-                      }).then((value) {
-                    
-                  });
-                  */
                   setState(() {
                     isLoading = true;
                   });
@@ -194,15 +180,6 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                 context, "É obrigatório o campo de procura ter 9 digitos!");
             return;
           }
-          /*
-                  Navigator.pushNamed(context, Routes.RESULT_SEARCH_GUEST,
-                      arguments: {
-                        "contact": searchTextController.text,
-                        "eventObjectId": eventObjectId
-                      }).then((value) {
-                    
-                  });
-                  */
           setState(() {
             isLoading = true;
           });

@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class CreateWorkerPage extends StatefulWidget {
 }
 
 class _CreateWorkerPageState extends State<CreateWorkerPage> {
-  final controller = CreateWorkerController();
+  final controller = getIt<CreateWorkerController>();
   final usernameController = TextEditingController();
   final nameController = TextEditingController();
   final passwordController = TextEditingController();

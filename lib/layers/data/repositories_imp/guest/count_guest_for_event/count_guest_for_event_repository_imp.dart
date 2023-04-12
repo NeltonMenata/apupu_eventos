@@ -4,6 +4,7 @@ import 'package:apupu_eventos/layers/domain/repositories/guest/count_guest_for_e
 class CountGuestForEventRepositoryImp implements ICountGuestForEventRepository {
   final ICountGuestForEventDataSource _countGuestForEventDataSource;
   CountGuestForEventRepositoryImp(this._countGuestForEventDataSource);
+  @override
   Future<int> call(String eventObjectId) async {
     return await _countGuestForEventDataSource(eventObjectId);
   }

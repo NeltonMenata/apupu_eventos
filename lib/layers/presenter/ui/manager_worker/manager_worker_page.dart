@@ -1,45 +1,13 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/remove_worker_event/remove_worker_event_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/worker/verify_worker_event/verify_worker_event_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/worker/remove_worker_event/remove_worker_event_repository_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/worker/verify_worker_event/verify_worker_event_repository_imp.dart';
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/worker/remove_worker_event/remove_worker_event_usecase_imp.dart';
-import 'package:apupu_eventos/layers/domain/usecases/worker/verify_worker_event/verify_worker_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/geral_components/scaffold_general/scaffold_general.dart';
 import 'package:flutter/material.dart';
-import '../../../data/datasources/back4app/worker/add_worker_event/add_worker_event_datasource_back4app_imp.dart';
-import '../../../data/datasources/back4app/worker/get_all_worker/get_all_worker_datasource_back4app_imp.dart';
-import '../../../data/repositories_imp/worker/add_worker_event/add_worker_event_repository_imp.dart';
-import '../../../data/repositories_imp/worker/get_all_worker/get_all_worker_repository_imp.dart';
 import '../../../domain/entities/worker/worker_entity.dart';
-import '../../../domain/usecases/worker/add_worker_event/add_worker_event_usecase_imp.dart';
-import '../../../domain/usecases/worker/get_all_worker/get_all_worker_usecase_imp.dart';
 import 'manager_worker_controller.dart';
 
 class ManagerWorkerPage extends StatefulWidget {
   ManagerWorkerPage({Key? key}) : super(key: key);
-  final controller = ManagerWorkerController(
-    GetAllWorkerUseCaseImp(
-      GetAllWorkerRepositoryImp(
-        GetAllWorkerDataSourceBack4appImp(),
-      ),
-    ),
-    VerifyWorkerEventUseCaseImp(
-      VerifyWorkerEventRepositoryImp(
-        VerifyWorkerEventDataSourceBack4appImp(),
-      ),
-    ),
-    AddWorkerEventUseCaseImp(
-      AddWorkerEventRepositoryImp(
-        AddWorkerEventDataSourceBack4appImp(),
-      ),
-    ),
-    RemoveWorkerEventUseCaseImp(
-      RemoveWorkerEventRepositoryImp(
-        RemoveWorkerEventDataSourceBack4appImp(),
-      ),
-    ),
-  );
+  final controller = getIt<ManagerWorkerController>();
   @override
   State<ManagerWorkerPage> createState() => _ManagerWorkerPageState();
 }
