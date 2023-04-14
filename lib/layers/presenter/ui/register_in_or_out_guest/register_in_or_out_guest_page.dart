@@ -407,7 +407,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                       onPressed: () async {
                         await Navigator.of(context)
                             .pushNamed(Routes.SEARCH_GUEST,
-                                arguments: currentEvent.objectId)
+                                arguments: currentEvent)
                             .then((value) {
                           setState(() {});
                         });
