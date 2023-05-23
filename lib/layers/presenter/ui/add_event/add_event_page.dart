@@ -99,12 +99,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                 fontSize: fontSize,
                                 fontWeight: FontWeight.w900),
                           ),
-                          TextFormField(
-                            controller: dateController,
-                            decoration: const InputDecoration(
-                              suffixIcon: Icon(Icons.event_outlined),
-                              border: OutlineInputBorder(),
-                            ),
+                          GestureDetector(
                             onTap: () async {
                               // print(DateTime.now() + 1);
                               date = await showDatePicker(
@@ -120,6 +115,16 @@ class _AddEventPageState extends State<AddEventPage> {
 
                               setState(() {});
                             },
+                            child: TextFormField(
+                              controller: dateController,
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                disabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey)),
+                                suffixIcon: Icon(Icons.event_outlined),
+                                border: OutlineInputBorder(),
+                              ),
+                            ),
                           )
                         ],
                       ),

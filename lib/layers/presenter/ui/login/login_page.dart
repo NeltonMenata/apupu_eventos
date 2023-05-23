@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Nome do Usuário",
+                      "Nome de Usuário",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
@@ -73,9 +73,12 @@ class _LoginPageState extends State<LoginPage> {
                     TextField(
                       controller: username,
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Nome de Usuário",
-                          suffixIcon: Icon(Icons.person_outlined)),
+                        disabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
+                        border: OutlineInputBorder(),
+                        hintText: "Nome de Usuário",
+                        suffixIcon: Icon(Icons.person_outlined),
+                      ),
                     ),
                   ],
                 ),
@@ -86,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Senha do Usuário",
+                      "Senha de Usuário",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
@@ -99,6 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: "Senha",
                         suffixIcon: Icon(Icons.password_outlined),
                       ),
+                      onSubmitted: (value) {},
                     ),
                   ],
                 ),
@@ -135,17 +139,15 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     const Text("Logar como Administrador?"),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Checkbox(
-                          onChanged: (value) {
-                            setState(() {
-                              widget.controller.isAdmin =
-                                  !widget.controller.isAdmin;
-                            });
-                          },
-                          value: widget.controller.isAdmin,
-                        ))
+                    Checkbox(
+                      onChanged: (value) async {
+                        setState(() {
+                          widget.controller.isAdmin =
+                              !widget.controller.isAdmin;
+                        });
+                      },
+                      value: widget.controller.isAdmin,
+                    )
                   ],
                 ),
                 onPressed: () {

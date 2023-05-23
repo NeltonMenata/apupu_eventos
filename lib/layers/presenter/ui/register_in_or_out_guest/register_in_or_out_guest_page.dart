@@ -66,10 +66,24 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 accountEmail: Text(currentEvent.organization),
-                currentAccountPicture: Image.asset(Utils.assetLogo),
+                currentAccountPicture: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: currentEvent.imgCartaz != null
+                      ? currentEvent.imgCartaz!.isNotEmpty &&
+                              currentEvent.imgCartaz! != Utils.assetLogo
+                          ? CachedNetworkImage(
+                              imageUrl: currentEvent.imgCartaz!,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(Utils.assetLogo, fit: BoxFit.cover)
+                      : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
+                ),
               ),
               ListTile(
-                title: const Text("Gerir Trabalhador do Evento"),
+                title: const Text(
+                  "Gerir Trabalhador do Evento",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser?;
                   if (user != null) {
@@ -81,7 +95,10 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 },
               ),
               ListTile(
-                title: const Text("Exibir Relatório do Evento"),
+                title: const Text(
+                  "Exibir Relatório do Evento",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 onTap: () async {
                   final user = await ParseUser.currentUser() as ParseUser?;
                   if (user != null) {
@@ -96,12 +113,16 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
           ),
         ),
       ),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(currentEvent.organization),
+      ),
       body: Center(
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height * .1,
+                top: MediaQuery.of(context).size.height * .01,
                 left: 10.0,
               ),
               child: Column(
@@ -258,7 +279,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                               child: Text(
                                 statusGuest,
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.black87,
                                     fontWeight: FontWeight.bold,
                                     fontSize: width * .04),
                               ),
@@ -278,7 +299,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                               child: Text(
                                 statusGuest,
                                 style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.black87,
                                     fontWeight: FontWeight.bold,
                                     fontSize: width * .04),
                               ),
@@ -339,9 +360,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                       },
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.qr_code_scanner_outlined,
-                            color: Colors.grey,
+                            color: Colors.grey.shade700,
                           ),
                           Text(
                             "Registrar",
@@ -359,9 +380,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                       },
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.share_outlined,
-                            color: Colors.grey,
+                            color: Colors.grey.shade700,
                           ),
                           Text(
                             "Compartilhar",
@@ -389,9 +410,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                       },
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.group_add_outlined,
-                            color: Colors.grey,
+                            color: Colors.grey.shade700,
                           ),
                           Text(
                             "Adicionar",
@@ -414,9 +435,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                       },
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.search_outlined,
-                            color: Colors.grey,
+                            color: Colors.grey.shade700,
                           ),
                           Text(
                             "Procurar",

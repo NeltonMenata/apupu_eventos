@@ -12,7 +12,10 @@ class MyApp extends StatelessWidget {
       //themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       //darkTheme: ThemeData.dark(),
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: "Comfortaa"),
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          fontFamily: "Comfortaa",
+          scaffoldBackgroundColor: Colors.grey.shade100),
       initialRoute: Routes.SPLASH,
       routes: Routes.routes(context),
     );

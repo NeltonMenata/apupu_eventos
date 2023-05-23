@@ -1,5 +1,4 @@
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
-
 import '../../../domain/usecases/guest/done_in_or_out_guest/done_in_or_out_guest.dart';
 
 mixin DoneInOrOutGuestMixin {

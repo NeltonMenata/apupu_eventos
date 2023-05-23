@@ -18,11 +18,11 @@ class _HomePageState extends State<HomePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 10.0;
-    final paddingTop = height * 0.1;
+    final paddingTop = height * 0.03;
     const paddingBottom = 15.0;
     final fontSizeTitle = width * .08;
     final fontSizeSubtitle = width * .05;
-    final allPadding = width * .020;
+    //final allPadding = width * .020;
     final allPaddingContainer = width * .015;
 
     return WillPopScope(
@@ -67,12 +67,19 @@ class _HomePageState extends State<HomePage> {
                 ListTile(
                   title: const Text(
                     "Terminar Sessão",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.red),
                   ),
-                  trailing: const Icon(Icons.logout_outlined),
+                  trailing: const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.red,
+                  ),
                   onTap: () async {
-                    final user = await ParseUser.currentUser() as ParseUser;
-                    await user.logout();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Terminando a sessão. Aguarde!"),
+                    ));
+                    final user = await ParseUser.currentUser() as ParseUser?;
+                    await user?.logout();
                     Navigator.pushNamedAndRemoveUntil(
                         context, Routes.LOGIN, (route) => false);
                   },
@@ -81,7 +88,25 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body: Center(
+        appBar: AppBar(
+          centerTitle: true,
+          title: FutureBuilder(
+              future: ParseUser.currentUser(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final user = snapshot.data as ParseUser;
+                  final name = user.get("name");
+                  return Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text("Erro na conexão");
+                }
+                return const Text("User Login");
+              }),
+        ),
+        body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -104,6 +129,190 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(allPaddingContainer),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black87)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.ADD_EVENT);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        top: allPaddingContainer, right: allPaddingContainer),
+                    width: double.infinity, //width * .35,
+                    height: height * .15,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.event,
+                          size: width * .13,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * .03),
+                          child: Text(
+                            "Adicionar novo Evento",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .05),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(allPaddingContainer),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black87)),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.MANAGER_EVENT);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        top: allPaddingContainer, right: allPaddingContainer),
+                    width: double.infinity, //width * .35,
+                    height: height * .15,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.settings_applications,
+                          size: width * .13,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * .03),
+                          child: Text(
+                            "Gerenciar Eventos",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .05),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(allPaddingContainer),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black87)),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        top: allPaddingContainer, right: allPaddingContainer),
+                    width: double.infinity, //width * .35,
+                    height: height * .15,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.group_add_outlined,
+                          size: width * .13,
+                          color: Colors.white,
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * .03),
+                          child: Text(
+                            "Criar Porteiro",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .05),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              /*
+              Padding(
+                padding: EdgeInsets.all(allPaddingContainer),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black87)),
+                  onPressed: () async {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Terminando a sessão. Aguarde!"),
+                    ));
+                    final user = await ParseUser.currentUser() as ParseUser?;
+                    await user?.logout();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Routes.LOGIN, (route) => false);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.only(
+                        top: allPaddingContainer, right: allPaddingContainer),
+                    width: double.infinity, //width * .35,
+                    height: height * .15,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.logout,
+                          size: width * .13,
+                          color: Colors.red,
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: width * .03),
+                          child: Text(
+                            "Terminar Sessão",
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .05),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              */
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/*
+
+
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.all(allPadding),
@@ -204,43 +413,31 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
+                        /*
                         Expanded(
-                            child: Padding(
-                          padding: EdgeInsets.all(allPaddingContainer),
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            height: 100,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                image: const DecorationImage(
-                                    fit: BoxFit.cover,
-                                    colorFilter:
-                                        ColorFilter.srgbToLinearGamma(),
-                                    image: AssetImage(
-                                        "assets/images/home_bg.jpg")),
-                                borderRadius: BorderRadius.circular(15)),
+                          child: Padding(
+                            padding: EdgeInsets.all(allPaddingContainer),
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              height: 100,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  image: const DecorationImage(
+                                      fit: BoxFit.cover,
+                                      colorFilter:
+                                          ColorFilter.srgbToLinearGamma(),
+                                      image: AssetImage(
+                                          "assets/images/home_bg.jpg")),
+                                  borderRadius: BorderRadius.circular(15)),
+                            ),
                           ),
-                        ))
+                        )
+
+                        */
                       ],
                     ),
                   ),
                 ),
               )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
-  ButtonStyle _buttonStyle(Color color, double bRadius) {
-    return ButtonStyle(
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(bRadius),
-        ),
-      ),
-      backgroundColor: MaterialStateProperty.all<Color>(color),
-    );
-  }
-}
+*/
