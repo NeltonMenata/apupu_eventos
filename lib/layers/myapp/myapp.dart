@@ -14,6 +14,9 @@ class MyApp extends StatelessWidget {
       //darkTheme: ThemeData.dark(),
       theme: ThemeData(
           primarySwatch: Colors.blue,
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+            TargetPlatform.android: CupertinoPageTransitionsBuilder()
+          }),
           fontFamily: "Comfortaa",
           scaffoldBackgroundColor: Colors.grey.shade100),
       initialRoute: Routes.SPLASH,

@@ -33,7 +33,7 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
       EventDto(
           dateOfRealization: DateTime.now(),
           imgCartaz: Utils.assetLogo,
-          name: "Fake Object",
+          name: "Sem Internet",
           objectId: "",
           organization: "",
           price: 0)
