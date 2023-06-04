@@ -5,19 +5,35 @@ import 'package:apupu_eventos/layers/domain/entities/product/product_entity.dart
 import 'package:apupu_eventos/layers/domain/entities/sale/sale_entity.dart';
 
 class SaleDto extends SaleEntity {
-  final String objectId;
-  final ProductEntity product;
-  final int quantity;
+  final String? objectId;
+  final List<ProductEntity> products;
+  final String eventObjectId;
+  final String workerObjectId;
+  final String guestObjectId;
   final String? error;
 
-  SaleDto(this.objectId, this.product, this.quantity, this.error)
-      : super(objectId, product, quantity);
+  SaleDto(
+      {this.objectId,
+      required this.products,
+      required this.eventObjectId,
+      required this.workerObjectId,
+      required this.guestObjectId,
+      this.error})
+      : super(
+            objectId: objectId,
+            products: products,
+            eventObjectId: eventObjectId,
+            workerObjectId: workerObjectId,
+            guestObjectId: guestObjectId,
+            error: error);
 
   toJson() {
     final map = {
       "objectId": objectId,
-      "product": product,
-      "quantity": quantity,
+      "products": products,
+      "eventObjectId": eventObjectId,
+      "workerObjectId": workerObjectId,
+      "guestObjectId": guestObjectId,
       "totalValue": getTotalValueForSale
     };
     return jsonEncode(map);
@@ -25,6 +41,11 @@ class SaleDto extends SaleEntity {
 
   factory SaleDto.fromJson(Map<String, dynamic> map) {
     return SaleDto(
-        map["objectId"], map["product"], map["quantity"], map["error"]);
+        objectId: map["objectId"],
+        products: map["products"],
+        eventObjectId: map["eventObjectId"],
+        workerObjectId: map["workerObjectId"],
+        guestObjectId: map["guestObjectId"],
+        error: map["error"]);
   }
 }

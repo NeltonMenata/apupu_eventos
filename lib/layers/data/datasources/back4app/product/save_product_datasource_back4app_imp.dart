@@ -3,7 +3,7 @@ import 'package:apupu_eventos/layers/data/dtos/product_dto.dart';
 import 'package:apupu_eventos/layers/domain/entities/product/product_entity.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
-class SaveProductDataSourceImp implements ISaveProductDataSource {
+class SaveProductDataSourceBack4appImp implements ISaveProductDataSource {
   @override
   Future<ProductEntity> call(ProductEntity product) async {
     try {
@@ -16,16 +16,30 @@ class SaveProductDataSourceImp implements ISaveProductDataSource {
 
       if (saveProduct.statusCode == 200) {
         if (saveProduct.result["error"] != null) {
-          return ProductDto("objectId", "name", 0, saveProduct.result["error"]);
+          return ProductDto(
+              objectId: "objectId",
+              name: "name",
+              price: 0,
+              eventObjectId: "eventObjectId",
+              error: saveProduct.result["error"]);
         } else {
           return ProductDto.fromJson(saveProduct.result);
         }
       } else {
         return ProductEntity(
-            "objectId", "name", 0, "Verifique a sua conexão com a internet!");
+            objectId: "objectId",
+            name: "name",
+            price: 0,
+            eventObjectId: "eventObjectId",
+            error: "Verifique a sua conexão com a internet!");
       }
     } catch (e) {
-      return ProductEntity("objectId", "name", 0, e.toString());
+      return ProductEntity(
+          objectId: "objectId",
+          name: "name",
+          price: 0,
+          eventObjectId: "eventObjectId",
+          error: e.toString());
     }
   }
 }

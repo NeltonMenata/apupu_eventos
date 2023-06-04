@@ -55,64 +55,86 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
     final fontSizeMenu = width * .033;
 
     return Scaffold(
-      drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20.0),
-          child: Column(
-            children: [
-              UserAccountsDrawerHeader(
-                accountName: Text(
-                  currentEvent.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+      drawer: FutureBuilder(
+          future: ParseUser.currentUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Visibility(
+                visible: snapshot.data != null,
+                child: Drawer(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    child: Column(
+                      children: [
+                        UserAccountsDrawerHeader(
+                          accountName: Text(
+                            currentEvent.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          accountEmail: Text(currentEvent.organization),
+                          currentAccountPicture: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: currentEvent.imgCartaz != null
+                                ? currentEvent.imgCartaz!.isNotEmpty &&
+                                        currentEvent.imgCartaz! !=
+                                            Utils.assetLogo
+                                    ? CachedNetworkImage(
+                                        imageUrl: currentEvent.imgCartaz!,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(Utils.assetLogo,
+                                        fit: BoxFit.cover)
+                                : Image.asset(Utils.assetLogo,
+                                    fit: BoxFit.cover),
+                          ),
+                        ),
+                        ListTile(
+                          title: const Text(
+                            "Gerir Trabalhador do Evento",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.MANAGER_WORKER,
+                                arguments: currentEvent);
+                          },
+                        ),
+                        ListTile(
+                          title: const Text(
+                            "Exibir Relatório do Evento",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.REPORT_EVENT,
+                                arguments: currentEvent);
+                          },
+                        ),
+                        ListTile(
+                          title: const Text(
+                            "Criar Produtos de Venda no Evento",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed(Routes.CREATE_PRODUCT);
+                          },
+                        ),
+                        ListTile(
+                          title: const Text(
+                            "Realizar uma Venda",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.MAKE_SALE);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                accountEmail: Text(currentEvent.organization),
-                currentAccountPicture: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: currentEvent.imgCartaz != null
-                      ? currentEvent.imgCartaz!.isNotEmpty &&
-                              currentEvent.imgCartaz! != Utils.assetLogo
-                          ? CachedNetworkImage(
-                              imageUrl: currentEvent.imgCartaz!,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(Utils.assetLogo, fit: BoxFit.cover)
-                      : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
-                ),
-              ),
-              ListTile(
-                title: const Text(
-                  "Gerir Trabalhador do Evento",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onTap: () async {
-                  final user = await ParseUser.currentUser() as ParseUser?;
-                  if (user != null) {
-                    Navigator.pushNamed(context, Routes.MANAGER_WORKER,
-                        arguments: currentEvent);
-                  } else {
-                    showResultCustom(context, "Área restrita!");
-                  }
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  "Exibir Relatório do Evento",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onTap: () async {
-                  final user = await ParseUser.currentUser() as ParseUser?;
-                  if (user != null) {
-                    Navigator.pushNamed(context, Routes.REPORT_EVENT,
-                        arguments: currentEvent);
-                  } else {
-                    showResultCustom(context, "Área restrita!");
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+              );
+            }
+            return const SizedBox();
+          }),
       appBar: AppBar(
         centerTitle: true,
         title: Text(currentEvent.organization),
@@ -365,7 +387,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             color: Colors.grey.shade700,
                           ),
                           Text(
-                            "Registrar",
+                            "Registrar\nEntrada",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: fontSizeMenu,
                                 fontWeight: FontWeight.bold,
@@ -385,7 +408,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             color: Colors.grey.shade700,
                           ),
                           Text(
-                            "Compartilhar",
+                            "Partilhar\nQR Code",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: fontSizeMenu,
                                 fontWeight: FontWeight.bold,
@@ -415,7 +439,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             color: Colors.grey.shade700,
                           ),
                           Text(
-                            "Adicionar",
+                            "Adicionar\nConvidado",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: fontSizeMenu,
                                 fontWeight: FontWeight.bold,
@@ -440,7 +465,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             color: Colors.grey.shade700,
                           ),
                           Text(
-                            "Procurar",
+                            "Procurar\nConvidado",
                             style: TextStyle(
                                 fontSize: fontSizeMenu,
                                 fontWeight: FontWeight.bold,

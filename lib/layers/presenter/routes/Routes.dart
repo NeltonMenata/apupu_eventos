@@ -1,7 +1,9 @@
 // ignore_for_file: constant_identifier_names, file_names
 
+import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/make_sale/make_sale_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_worker/manager_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_page.dart';
@@ -28,6 +30,8 @@ abstract class Routes {
   static const LOGIN = "/login";
   static const MANAGER_WORKER = "/manager_worker";
   static const REPORT_EVENT = "/report_event";
+  static const MAKE_SALE = "/make_sale";
+  static const CREATE_PRODUCT = "/create_product";
 
   // Routers for Worker
 
@@ -45,7 +49,9 @@ abstract class Routes {
       RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),
       LOGIN: (context) => LoginPage(),
       MANAGER_WORKER: (context) => ManagerWorkerPage(),
-      REPORT_EVENT: (context) => ReportEventPage()
+      REPORT_EVENT: (context) => ReportEventPage(),
+      MAKE_SALE: (context) => const MakeSalePage(),
+      CREATE_PRODUCT: (context) => const CreateProductPage()
     };
   }
 }

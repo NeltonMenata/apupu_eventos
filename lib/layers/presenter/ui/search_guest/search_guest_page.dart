@@ -62,7 +62,9 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                 controller: searchTextController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
-                    hintText: "Procure pelo Contacto",
+                    hintText: "Digite aqui o Contacto",
+                    hintStyle: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black87),
                     border: InputBorder.none),
               ),
             ),
@@ -99,7 +101,8 @@ class _SearchGuestPageState extends State<SearchGuestPage>
         child: ScaffoldGeneral(
           paddingTop: 15,
           title: "Procurar convidados",
-          subtitle: "Encontre os convidados e registe a sua entrada no evento!",
+          subtitle:
+              "Encontre os convidados e registe a sua entrada ou saída no evento!",
           //body: Container(),
 
           body: isLoading
