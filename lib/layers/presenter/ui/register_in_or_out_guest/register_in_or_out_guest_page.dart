@@ -114,8 +114,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(Routes.CREATE_PRODUCT);
+                            Navigator.of(context).pushNamed(
+                                Routes.CREATE_PRODUCT,
+                                arguments: currentEvent);
                           },
                         ),
                         ListTile(
@@ -124,7 +125,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.MAKE_SALE);
+                            Navigator.pushNamed(context, Routes.MAKE_SALE,
+                                arguments: currentEvent);
                           },
                         ),
                       ],

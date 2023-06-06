@@ -13,7 +13,7 @@ class GetAllProductDataSourceBack4appImp implements IGetAllProductDataSource {
 
       if (getAllProd.statusCode == 200) {
         final List<ProductEntity> allProd = [];
-        print(getAllProd.result);
+
         for (var e in getAllProd.result) {
           allProd.add(
             ProductDto(

@@ -50,7 +50,7 @@ class ProductDto extends ProductEntity {
     return json;
   }
 
-  factory ProductDto.fromJson(Map<String, dynamic> map) {
+  factory ProductDto.fromJson(Map<dynamic, dynamic> map) {
     return ProductDto(
       objectId: map["objectId"],
       name: map["name"],

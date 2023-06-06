@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/get_all_product_datasorce_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/save_product_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/product/get_all_product/get_all_product_repository_imp.dart';
@@ -10,6 +11,7 @@ import 'package:apupu_eventos/layers/domain/usecases/product/save_product/save_p
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_controller.dart';
 import 'package:flutter/material.dart';
 
+import '../../../domain/entities/event/event_entity.dart';
 import '../../utils/utils.dart';
 
 class CreateProductPage extends StatefulWidget {
@@ -20,23 +22,14 @@ class CreateProductPage extends StatefulWidget {
 }
 
 class _CreateProductPageState extends State<CreateProductPage> {
-  final controller = CreateProductController(
-    GetAllProductUseCaseImp(
-      GetAllProductRepositoryImp(
-        GetAllProductDataSourceBack4appImp(),
-      ),
-    ),
-    SaveProductUseCaseImp(
-      SaveProductRepositoryImp(
-        SaveProductDataSourceBack4appImp(),
-      ),
-    ),
-  );
+  final controller = getIt<CreateProductController>();
   final priceController = TextEditingController();
   final nameController = TextEditingController();
   bool isSave = false;
   @override
   Widget build(BuildContext context) {
+    final currentEvent =
+        ModalRoute.of(context)?.settings.arguments as EventEntity;
     final width = MediaQuery.of(context).size.width;
     const allPadding = 8.0;
     final fontSize = width * .05;
@@ -51,7 +44,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
           children: [
             Expanded(
               child: FutureBuilder<List<ProductEntity>>(
-                  future: controller.getAllProduct("ORj3rqhcN8"),
+                  future: controller.getAllProduct(currentEvent.objectId),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return SingleChildScrollView(
@@ -89,7 +82,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                         ),
                                       ),
                                       title: Text(
-                                        e.name!,
+                                        e.name!.toUpperCase(),
                                         style: TextStyle(
                                             fontSize: width * .05,
                                             fontWeight: FontWeight.bold),
@@ -131,7 +124,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                       keyboardType: TextInputType.name,
                       controller: nameController,
                       decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.attach_money_outlined),
+                          suffixIcon: Icon(Icons.fastfood_rounded),
                           border: OutlineInputBorder()),
                     )
                   ]),
@@ -139,65 +132,77 @@ class _CreateProductPageState extends State<CreateProductPage> {
             Padding(
               padding: const EdgeInsets.all(allPadding),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Preço do Produto",
-                      style: TextStyle(
-                          fontSize: fontSize, fontWeight: FontWeight.w900),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Preço do Produto",
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.w900),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: priceController,
+                    decoration: const InputDecoration(
+                      suffixIcon: Icon(Icons.attach_money_outlined),
+                      border: OutlineInputBorder(),
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: priceController,
-                      decoration: const InputDecoration(
-                          suffixIcon: Icon(Icons.attach_money_outlined),
-                          border: OutlineInputBorder()),
-                    )
-                  ]),
+                  )
+                ],
+              ),
             ),
             Padding(
-                padding: const EdgeInsets.all(allPadding),
-                child: isSave
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ElevatedButton(
-                        onPressed: () async {
-                          if (nameController.text.isEmpty ||
-                              priceController.text.isEmpty) {
-                            showResultCustom(
-                                context, "Preencha os campos corretamente!");
-                            return;
-                          }
+              padding: const EdgeInsets.all(allPadding),
+              child: isSave
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ElevatedButton(
+                      onPressed: () async {
+                        if (nameController.text.isEmpty ||
+                            priceController.text.isEmpty) {
+                          showResultCustom(
+                              context, "Preencha os campos corretamente!");
+                          return;
+                        }
 
-                          setState(() {
-                            isSave = !isSave;
-                          });
-                          final product =
-                              await controller.saveProduct(ProductEntity(
-                                  price: int.parse(
-                                    priceController.text,
-                                  ),
-                                  eventObjectId: "ORj3rqhcN8",
-                                  name: nameController.text));
-                          if (product.error != null) {
-                            showResultCustom(context, product.error!,
-                                isError: true);
-                          } else {
-                            showResultCustom(
-                                context, "Produto salvo com sucesso!");
-                          }
-                          setState(() {
-                            nameController.text = "";
-                            priceController.text = "";
-                            isSave = !isSave;
-                          });
-                        },
+                        setState(() {
+                          isSave = !isSave;
+                        });
+                        final product = await controller.saveProduct(
+                            ProductEntity(
+                                price: int.parse(
+                                  priceController.text,
+                                ),
+                                eventObjectId: currentEvent.objectId,
+                                name:
+                                    nameController.text.toLowerCase().trim()));
+                        if (product.error != null) {
+                          showResultCustom(context, product.error!,
+                              isError: true);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text("Produto salvo com sucesso"),
+                                shape: RoundedRectangleBorder(),
+                                backgroundColor: Colors.green),
+                          );
+                        }
+                        setState(() {
+                          nameController.text = "";
+                          priceController.text = "";
+                          isSave = !isSave;
+                        });
+                      },
+                      child: SizedBox(
+                        width: double.infinity,
                         child: Text(
                           "Salvar Produto",
+                          textAlign: TextAlign.center,
                           style: TextStyle(fontSize: fontSize),
                         ),
-                      )),
+                      ),
+                    ),
+            ),
           ],
         ),
       ),
