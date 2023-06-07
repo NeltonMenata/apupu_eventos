@@ -31,7 +31,6 @@ class MakeSaleDataSourceBack4appImp implements IMakeSaleDataSource {
           "products": products,
         },
       );
-
       if (makeSale.statusCode == 200) {
         if (makeSale.result["error"] != null) {
           return SaleEntity(

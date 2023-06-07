@@ -8,6 +8,7 @@ class GuestDto extends GuestEntity {
   final String objectId;
   final String name;
   final String contact;
+  final int? credit;
   final bool isIn;
   final String eventObjectId;
   final String workerObjectId;
@@ -16,6 +17,7 @@ class GuestDto extends GuestEntity {
       {required this.objectId,
       required this.name,
       required this.contact,
+      this.credit,
       required this.isIn,
       required this.eventObjectId,
       required this.workerObjectId})
@@ -23,6 +25,7 @@ class GuestDto extends GuestEntity {
             objectId: objectId,
             name: name,
             contact: contact,
+            credit: credit,
             eventObjectId: eventObjectId,
             workerObjectId: workerObjectId,
             isIn: isIn);

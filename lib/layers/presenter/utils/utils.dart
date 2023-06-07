@@ -77,17 +77,19 @@ class Utils {
     await FlutterBarcodeScanner.scanBarcode(
             "#ff6666", "Cancel", true, ScanMode.QR)
         .then((value) => _qrData.text = value)
-        .catchError((onError) {});
+        .catchError((onError) {
+      print(onError);
+    });
   }
 }
 
 Future<void> showResultCustom(BuildContext context, String valueResult,
-    {bool isError = false}) async {
+    {bool isError = false, Color? color}) async {
   await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: isError ? Colors.red : Colors.white,
+        backgroundColor: isError ? Colors.red : color,
         content: Text(
           valueResult,
           style: TextStyle(

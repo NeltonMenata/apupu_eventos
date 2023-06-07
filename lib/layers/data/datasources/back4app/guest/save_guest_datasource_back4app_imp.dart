@@ -11,6 +11,7 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
       final result = await saveGuest.execute(parameters: {
         "name": guestEntity.name,
         "contact": guestEntity.contact,
+        "credit": guestEntity.credit,
         "eventObjectId": guestEntity.eventObjectId,
         "workerObjectId": guestEntity.workerObjectId
       });
@@ -22,6 +23,7 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
           workerObjectId: result.result["workerObjectId"],
           eventObjectId: result.result["eventObjectId"].toString(),
           contact: result.result["contact"],
+          credit: result.result["credit"],
           isIn: result.result["isIn"],
         );
 
