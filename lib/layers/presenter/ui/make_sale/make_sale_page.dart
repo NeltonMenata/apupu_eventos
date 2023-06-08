@@ -132,326 +132,300 @@ class _MakeSalePageState extends State<MakeSalePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: FutureBuilder(
-            future: ParseUser.currentUser(),
-            builder: (context, snapshotAdmin) {
-              return Column(
-                children: [
-                  FutureBuilder<List<ProductEntity>>(
-                      future: controllerProduct
-                          .getAllProduct(currentEvent.objectId),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text("Recarregue a página");
-                        } else if (snapshot.hasData) {
-                          products.clear();
-                          products.addAll(snapshot.data!
-                              .map((e) => {
-                                    "name": e.name,
-                                    "objectId": e.objectId,
-                                    "quantity": 1,
-                                    "price": e.price,
-                                    "isSelected": false,
-                                  })
-                              .toList());
-                          return Wrap(
-                            direction: Axis.horizontal,
-                            children: [
-                              products.isEmpty
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Acesse a tela de criação de produtos para criar um produto vendível!",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: width * .045),
+        child: Column(
+          children: [
+            FutureBuilder<List<ProductEntity>>(
+                future: controllerProduct.getAllProduct(currentEvent.objectId),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text("Recarregue a página");
+                  } else if (snapshot.hasData) {
+                    products.clear();
+                    products.addAll(snapshot.data!
+                        .map((e) => {
+                              "name": e.name,
+                              "objectId": e.objectId,
+                              "quantity": 1,
+                              "price": e.price,
+                              "isSelected": false,
+                            })
+                        .toList());
+                    return Wrap(
+                      direction: Axis.horizontal,
+                      children: [
+                        products.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Acesse a tela de criação de produtos para criar um produto vendível!",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width * .045),
+                                ),
+                              )
+                            : const SizedBox(),
+                        ...List.generate(products.length, (index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 12.0, left: 8),
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  bool contains = productsSelected.every(
+                                      (element) =>
+                                          element["objectId"] !=
+                                          products[index]["objectId"]);
+                                  if (contains) {
+                                    productsSelected.add(products[index]);
+                                  } else {
+                                    productsSelected.removeWhere((element) {
+                                      bool resultSelected = products[index]
+                                              ["objectId"] ==
+                                          element["objectId"];
+
+                                      if (products[index]["objectId"] ==
+                                          element["objectId"]) {}
+                                      return resultSelected;
+                                    });
+                                  }
+
+                                  sale = SaleEntity(
+                                      products: productsSelected
+                                          .map(
+                                            (e) => ProductDto(
+                                              price: e["price"],
+                                              objectId: e["objectId"],
+                                              eventObjectId:
+                                                  currentEvent.objectId,
+                                              name: e["name"],
+                                              quantity: e["quantity"],
+                                            ),
+                                          )
+                                          .toList(),
+                                      eventObjectId: currentEvent.objectId,
+                                      workerObjectId: workerObjectId ?? "admin",
+                                      guestObjectId:
+                                          currentGuest?.objectId ?? "");
+                                });
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.grey.shade300),
+                                child: Wrap(children: [
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        products[index]["name"]!
+                                                .toString()
+                                                .toUpperCase() +
+                                            ": " +
+                                            products[index]["price"]
+                                                .toString() +
+                                            " kz",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    )
-                                  : const SizedBox(),
-                              ...List.generate(products.length, (index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 12.0, left: 8),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        bool contains = productsSelected.every(
+                                      Visibility(
+                                        visible: !productsSelected.every(
                                             (element) =>
                                                 element["objectId"] !=
-                                                products[index]["objectId"]);
-                                        if (contains) {
-                                          productsSelected.add(products[index]);
-                                        } else {
-                                          productsSelected
-                                              .removeWhere((element) {
-                                            bool resultSelected =
-                                                products[index]["objectId"] ==
-                                                    element["objectId"];
-
-                                            if (products[index]["objectId"] ==
-                                                element["objectId"]) {}
-                                            return resultSelected;
-                                          });
-                                        }
-
-                                        sale = SaleEntity(
-                                            products: productsSelected
-                                                .map(
-                                                  (e) => ProductDto(
-                                                    price: e["price"],
-                                                    objectId: e["objectId"],
-                                                    eventObjectId:
-                                                        currentEvent.objectId,
-                                                    name: e["name"],
-                                                    quantity: e["quantity"],
-                                                  ),
-                                                )
-                                                .toList(),
-                                            eventObjectId:
-                                                currentEvent.objectId,
-                                            workerObjectId:
-                                                workerObjectId ?? "admin",
-                                            guestObjectId:
-                                                currentGuest?.objectId ?? "");
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          color: Colors.grey.shade300),
-                                      child: Wrap(children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              products[index]["name"]!
-                                                      .toString()
-                                                      .toUpperCase() +
-                                                  ": " +
-                                                  products[index]["price"]
-                                                      .toString() +
-                                                  " kz",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Visibility(
-                                              visible: !productsSelected.every(
-                                                  (element) =>
-                                                      element["objectId"] !=
-                                                      products[index]
-                                                          ["objectId"]),
-                                              child: const Icon(
-                                                Icons.check_box_outlined,
-                                                color: Colors.blue,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        // CircleAvatar(
-                                        //   child: Text(
-                                        //     products[index]["name"]!
-                                        //         .toString()
-                                        //         .substring(0, 1)
-                                        //         .toUpperCase(),
-                                        //   ),
-                                        // ),
-                                      ]),
-                                    ),
-                                  ),
-                                );
-                              })
-                            ],
-                          );
-                        } else {
-                          return const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
-                        }
-                      }),
-                  Column(
-                    children: [
-                      const Divider(
-                        color: Colors.black87,
-                        height: 15,
-                        thickness: 3,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12.0),
-                        child: Text(
-                          "Lista de Produtos Selecionados",
-                          style: TextStyle(
-                              fontSize: width * .05,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      ...List.generate(
-                        productsSelected.length,
-                        (index) => Column(
-                          children: [
-                            ListTile(
-                              leading: CircleAvatar(
-                                child: Text(
-                                  productsSelected[index]["name"]!
-                                      .toString()
-                                      .substring(0, 1)
-                                      .toUpperCase(),
-                                  style: TextStyle(
-                                      fontSize: width * .06,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      productsSelected[index]["name"]!
-                                          .toString()
-                                          .toUpperCase(),
-                                      maxLines: 1,
-                                      softWrap: true,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      GestureDetector(
-                                        child: CircleAvatar(
-                                          child: const Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                          ),
-                                          backgroundColor:
-                                              Colors.green.shade700,
-                                        ),
-                                        onTap: () {
-                                          setState(() {
-                                            int? quant = productsSelected[index]
-                                                ["quantity"];
-                                            if (quant != null) {
-                                              if (quant >= 1) {
-                                                quant++;
-                                                productsSelected[index]
-                                                    ["quantity"] = quant;
-
-                                                sale = SaleEntity(
-                                                    products: productsSelected
-                                                        .map(
-                                                          (e) => ProductDto(
-                                                            price: e["price"],
-                                                            objectId:
-                                                                e["objectId"],
-                                                            eventObjectId:
-                                                                currentEvent
-                                                                    .objectId,
-                                                            name: e["name"],
-                                                            quantity:
-                                                                e["quantity"],
-                                                          ),
-                                                        )
-                                                        .toList(),
-                                                    eventObjectId:
-                                                        currentEvent.objectId,
-                                                    workerObjectId:
-                                                        workerObjectId ??
-                                                            "admin",
-                                                    guestObjectId: currentGuest
-                                                            ?.objectId ??
-                                                        "");
-                                              } else {
-                                                return;
-                                              }
-                                            }
-                                          });
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        width: 6,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            int? quant = productsSelected[index]
-                                                ["quantity"];
-                                            if (quant != null) {
-                                              if (quant == 1) {
-                                                return;
-                                              } else {
-                                                quant--;
-                                                productsSelected[index]
-                                                    ["quantity"] = quant;
-
-                                                sale = SaleEntity(
-                                                    products: productsSelected
-                                                        .map(
-                                                          (e) => ProductDto(
-                                                            price: e["price"],
-                                                            objectId:
-                                                                e["objectId"],
-                                                            eventObjectId:
-                                                                currentEvent
-                                                                    .objectId,
-                                                            name: e["name"],
-                                                            quantity:
-                                                                e["quantity"],
-                                                          ),
-                                                        )
-                                                        .toList(),
-                                                    eventObjectId:
-                                                        currentEvent.objectId,
-                                                    workerObjectId:
-                                                        workerObjectId ??
-                                                            "admin",
-                                                    guestObjectId: currentGuest
-                                                            ?.objectId ??
-                                                        "");
-                                              }
-                                            }
-                                          });
-                                        },
-                                        child: CircleAvatar(
-                                          child: const Icon(
-                                            Icons.remove,
-                                            color: Colors.white,
-                                          ),
-                                          backgroundColor: Colors.red.shade700,
+                                                products[index]["objectId"]),
+                                        child: const Icon(
+                                          Icons.check_box_outlined,
+                                          color: Colors.blue,
                                         ),
                                       )
                                     ],
                                   ),
-                                ],
+                                  // CircleAvatar(
+                                  //   child: Text(
+                                  //     products[index]["name"]!
+                                  //         .toString()
+                                  //         .substring(0, 1)
+                                  //         .toUpperCase(),
+                                  //   ),
+                                  // ),
+                                ]),
                               ),
-                              subtitle: Text(
-                                  "Quantidade: " +
-                                      productsSelected[index]["quantity"]
-                                          .toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Divider(),
-                            )
+                          );
+                        })
+                      ],
+                    );
+                  } else {
+                    return const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                }),
+            Column(
+              children: [
+                const Divider(
+                  color: Colors.black87,
+                  height: 15,
+                  thickness: 3,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Text(
+                    "Lista de Produtos Selecionados",
+                    style: TextStyle(
+                        fontSize: width * .05, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                ...List.generate(
+                  productsSelected.length,
+                  (index) => Column(
+                    children: [
+                      ListTile(
+                        leading: CircleAvatar(
+                          child: Text(
+                            productsSelected[index]["name"]!
+                                .toString()
+                                .substring(0, 1)
+                                .toUpperCase(),
+                            style: TextStyle(
+                                fontSize: width * .06,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                productsSelected[index]["name"]!
+                                    .toString()
+                                    .toUpperCase(),
+                                maxLines: 1,
+                                softWrap: true,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  child: CircleAvatar(
+                                    child: const Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                    ),
+                                    backgroundColor: Colors.green.shade700,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      int? quant =
+                                          productsSelected[index]["quantity"];
+                                      if (quant != null) {
+                                        if (quant >= 1) {
+                                          quant++;
+                                          productsSelected[index]["quantity"] =
+                                              quant;
+
+                                          sale = SaleEntity(
+                                              products: productsSelected
+                                                  .map(
+                                                    (e) => ProductDto(
+                                                      price: e["price"],
+                                                      objectId: e["objectId"],
+                                                      eventObjectId:
+                                                          currentEvent.objectId,
+                                                      name: e["name"],
+                                                      quantity: e["quantity"],
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              eventObjectId:
+                                                  currentEvent.objectId,
+                                              workerObjectId:
+                                                  workerObjectId ?? "admin",
+                                              guestObjectId:
+                                                  currentGuest?.objectId ?? "");
+                                        } else {
+                                          return;
+                                        }
+                                      }
+                                    });
+                                  },
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      int? quant =
+                                          productsSelected[index]["quantity"];
+                                      if (quant != null) {
+                                        if (quant == 1) {
+                                          return;
+                                        } else {
+                                          quant--;
+                                          productsSelected[index]["quantity"] =
+                                              quant;
+
+                                          sale = SaleEntity(
+                                              products: productsSelected
+                                                  .map(
+                                                    (e) => ProductDto(
+                                                      price: e["price"],
+                                                      objectId: e["objectId"],
+                                                      eventObjectId:
+                                                          currentEvent.objectId,
+                                                      name: e["name"],
+                                                      quantity: e["quantity"],
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              eventObjectId:
+                                                  currentEvent.objectId,
+                                              workerObjectId:
+                                                  workerObjectId ?? "admin",
+                                              guestObjectId:
+                                                  currentGuest?.objectId ?? "");
+                                        }
+                                      }
+                                    });
+                                  },
+                                  child: CircleAvatar(
+                                    child: const Icon(
+                                      Icons.remove,
+                                      color: Colors.white,
+                                    ),
+                                    backgroundColor: Colors.red.shade700,
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
                         ),
+                        subtitle: Text(
+                            "Quantidade: " +
+                                productsSelected[index]["quantity"].toString(),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                       ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Divider(),
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: height * .08,
-                  )
-                ],
-              );
-            }),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * .08,
+            )
+          ],
+        ),
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -3,6 +3,7 @@
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/make_credit/make_credit_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/make_sale/make_sale_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_worker/manager_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_page.dart';
@@ -32,6 +33,7 @@ abstract class Routes {
   static const REPORT_EVENT = "/report_event";
   static const MAKE_SALE = "/make_sale";
   static const CREATE_PRODUCT = "/create_product";
+  static const MAKE_CREDIT = "/make_credit";
 
   // Routers for Worker
 
@@ -51,7 +53,8 @@ abstract class Routes {
       MANAGER_WORKER: (context) => ManagerWorkerPage(),
       REPORT_EVENT: (context) => ReportEventPage(),
       MAKE_SALE: (context) => const MakeSalePage(),
-      CREATE_PRODUCT: (context) => const CreateProductPage()
+      CREATE_PRODUCT: (context) => const CreateProductPage(),
+      MAKE_CREDIT: (context) => const MakeCreditPage()
     };
   }
 }

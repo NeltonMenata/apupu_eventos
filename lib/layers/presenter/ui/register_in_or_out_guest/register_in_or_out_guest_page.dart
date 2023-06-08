@@ -121,6 +121,16 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                         ),
                         ListTile(
                           title: const Text(
+                            "Adicionar Crédito",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.MAKE_CREDIT,
+                                arguments: currentEvent);
+                          },
+                        ),
+                        ListTile(
+                          title: const Text(
                             "Realizar uma Venda",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),

@@ -13,26 +13,6 @@ class MakeSaleController {
   final IGetGuestForObjectIdUseCase _getGuestForObjectIdUseCase;
   MakeSaleController(this._makeSaleUseCase, this._getGuestForObjectIdUseCase);
 
-  // final List<ProductEntity> products = [
-  //   ProductDto.fromJson(
-  //     {
-  //       "objectId": "WATncvIBnR",
-  //       "name": "Cerveja",
-  //       "quantity": 3,
-  //       "price": 200,
-  //       "eventObjectId": "sZMLNUFq6A"
-  //     },
-  //   ),
-  //   ProductDto.fromJson(
-  //     {
-  //       "objectId": "WATncvIBnR",
-  //       "name": "Arroz",
-  //       "quantity": 1,
-  //       "price": 100,
-  //       "eventObjectId": "sZMLNUFq6A"
-  //     },
-  //   ),
-  // ];
   final List<ProductEntity> productsForSale = [];
   Future<GuestEntity> getGuest(String objectId, String eventObjectId) async {
     return await _getGuestForObjectIdUseCase(objectId, eventObjectId);
