@@ -1,4 +1,6 @@
+import 'package:apupu_eventos/layers/presenter/geral_components/buttons/big_button_navigation.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import '../login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
@@ -15,6 +17,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(currentAdmin?.name);
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 10.0;
@@ -23,13 +27,15 @@ class _HomePageState extends State<HomePage> {
     final fontSizeTitle = width * .08;
     final fontSizeSubtitle = width * .05;
     //final allPadding = width * .020;
-    final allPaddingContainer = width * .015;
 
     return WillPopScope(
       onWillPop: () async {
-        final user = await ParseUser.currentUser() as ParseUser;
-        await user.logout();
-        return true;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Clique em Terminar Sessão para sair!"),
+          ),
+        );
+        return false;
       },
       child: Scaffold(
         drawer: Drawer(
@@ -38,26 +44,15 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 UserAccountsDrawerHeader(
-                  accountName: FutureBuilder(
-                      future: ParseUser.currentUser(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final user = snapshot.data as ParseUser;
-                          final name = user.get("name");
-                          return Text(
-                            name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Text("Erro na conexão");
-                        }
-                        return const Text("User Login");
-                      }),
+                  accountName: Text(
+                    currentAdmin?.name ?? "Not connected",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   accountEmail: const Text("Gerenciador"),
                   currentAccountPicture: Image.asset(Utils.assetLogo),
                 ),
                 ListTile(
-                  title: const Text("Criar Trabalhador"),
+                  title: const Text("Criar Porteiro/Barman"),
                   trailing: const Icon(Icons.group_add_outlined),
                   onTap: () {
                     Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
@@ -89,23 +84,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         appBar: AppBar(
-          centerTitle: true,
-          title: FutureBuilder(
-              future: ParseUser.currentUser(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final user = snapshot.data as ParseUser;
-                  final name = user.get("name");
-                  return Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  );
-                } else if (snapshot.hasError) {
-                  return const Text("Erro na conexão");
-                }
-                return const Text("User Login");
-              }),
-        ),
+            centerTitle: true,
+            title: Text(
+              currentAdmin?.name ?? "Not connected",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            )),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -129,179 +112,38 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(allPaddingContainer),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black87)),
-                  onPressed: () {
+              BigButtonNavigation(
+                  title: "Adicionar novo Evento",
+                  icon: Icons.event,
+                  action: () {
                     Navigator.pushNamed(context, Routes.ADD_EVENT);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: allPaddingContainer, right: allPaddingContainer),
-                    width: double.infinity, //width * .35,
-                    height: height * .15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.event,
-                          size: width * .13,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * .03),
-                          child: Text(
-                            "Adicionar novo Evento",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .05),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(allPaddingContainer),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black87)),
-                  onPressed: () {
+                  }),
+              BigButtonNavigation(
+                  title: "Gerenciar Eventos",
+                  icon: Icons.settings_applications,
+                  action: () {
                     Navigator.pushNamed(context, Routes.MANAGER_EVENT);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: allPaddingContainer, right: allPaddingContainer),
-                    width: double.infinity, //width * .35,
-                    height: height * .15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.settings_applications,
-                          size: width * .13,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * .03),
-                          child: Text(
-                            "Gerenciar Eventos",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .05),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(allPaddingContainer),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black87)),
-                  onPressed: () {
+                  }),
+              BigButtonNavigation(
+                  title: "Criar Porteiro/Barman",
+                  icon: Icons.group_add_outlined,
+                  action: () {
                     Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: allPaddingContainer, right: allPaddingContainer),
-                    width: double.infinity, //width * .35,
-                    height: height * .15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.group_add_outlined,
-                          size: width * .13,
-                          color: Colors.white,
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * .03),
-                          child: Text(
-                            "Criar Porteiro",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .05),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                  }),
+              BigButtonNavigation(
+                title: "Terminar Sessão",
+                icon: Icons.logout,
+                color: Colors.red,
+                action: () async {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Terminando a sessão. Aguarde!"),
+                  ));
+                  final user = await ParseUser.currentUser() as ParseUser?;
+                  await user?.logout();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, Routes.LOGIN, (route) => false);
+                },
               ),
-
-              /*
-              Padding(
-                padding: EdgeInsets.all(allPaddingContainer),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black87)),
-                  onPressed: () async {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Terminando a sessão. Aguarde!"),
-                    ));
-                    final user = await ParseUser.currentUser() as ParseUser?;
-                    await user?.logout();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, Routes.LOGIN, (route) => false);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(
-                        top: allPaddingContainer, right: allPaddingContainer),
-                    width: double.infinity, //width * .35,
-                    height: height * .15,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          size: width * .13,
-                          color: Colors.red,
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: width * .03),
-                          child: Text(
-                            "Terminar Sessão",
-                            style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .05),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              */
             ],
           ),
         ),
@@ -309,135 +151,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-/*
-
-
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(allPadding),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Colors.black, Colors.blue]),
-                        borderRadius: BorderRadius.circular(15)),
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.all(allPaddingContainer),
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      shape: MaterialStateProperty.all(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(15))),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white)),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.ADD_EVENT);
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        top: allPaddingContainer,
-                                        right: allPaddingContainer),
-                                    width: double.infinity, //width * .35,
-                                    height: height * .15,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.event,
-                                          size: width * .13,
-                                          color: Colors.grey,
-                                        ),
-                                        const Text(
-                                          "Adicionar novo Evento",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.all(allPaddingContainer),
-                                child: ElevatedButton(
-                                  style: _buttonStyle(Colors.blue, 15),
-                                  onPressed: () {
-                                    Navigator.pushNamed(
-                                        context, Routes.MANAGER_EVENT);
-                                  },
-                                  /*
-                                    icon: const Icon(Icons.settings_applications),
-                                    label: const Text("Gerenciar Eventos")),
-                                    */
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        top: allPaddingContainer,
-                                        right: allPaddingContainer),
-                                    width: double.infinity, //width * .35,
-                                    height: height * .15,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.settings_applications,
-                                          size: width * .13,
-                                        ),
-                                        const Text(
-                                          "Gerenciar Eventos",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        /*
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(allPaddingContainer),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 100,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      fit: BoxFit.cover,
-                                      colorFilter:
-                                          ColorFilter.srgbToLinearGamma(),
-                                      image: AssetImage(
-                                          "assets/images/home_bg.jpg")),
-                                  borderRadius: BorderRadius.circular(15)),
-                            ),
-                          ),
-                        )
-
-                        */
-                      ],
-                    ),
-                  ),
-                ),
-              )
-
-*/

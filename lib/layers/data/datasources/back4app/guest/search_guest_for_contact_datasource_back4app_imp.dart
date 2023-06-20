@@ -20,6 +20,7 @@ class SearchGuestForContactDataSourceBack4appImp
             workerObjectId: e["workerObjectId"],
             eventObjectId: e["eventObjectId"],
             contact: e["contact"],
+            isVip: e["isVip"],
             isIn: e["isIn"],
           ),
         );

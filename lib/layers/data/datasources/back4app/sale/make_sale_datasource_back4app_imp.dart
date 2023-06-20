@@ -20,7 +20,6 @@ class MakeSaleDataSourceBack4appImp implements IMakeSaleDataSource {
           )
           .toList();
 
-      print(products);
       final makeSaleFun = ParseCloudFunction("makeSale");
 
       final makeSale = await makeSaleFun.execute(

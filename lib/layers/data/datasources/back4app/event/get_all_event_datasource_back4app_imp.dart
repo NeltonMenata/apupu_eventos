@@ -6,10 +6,14 @@ import '../../event/get_all_event_datasource.dart';
 
 class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
   @override
-  Future<List<EventEntity>> call([String? workerObjectId]) async {
+  Future<List<EventEntity>> call(
+      [String? workerObjectId, String? managerObjectId]) async {
     final functionAllEvent = ParseCloudFunction("getAllEvent");
-    final allEvent = await functionAllEvent
-        .execute(parameters: {"workerObjectId": workerObjectId});
+    final allEvent = await functionAllEvent.execute(parameters: {
+      "workerObjectId": workerObjectId,
+      "managerObjectId": managerObjectId
+    });
+
     if (allEvent.statusCode == 200) {
       final List<EventDto> list = [];
       allEvent.result.forEach((e) {
@@ -20,8 +24,11 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
             name: e["name"].toString(),
             objectId: e["objectId"].toString(),
             organization: e["organization"].toString(),
-            price: double.parse(
+            price: int.parse(
               e["price"].toString(),
+            ),
+            priceVip: int.tryParse(
+              e["priceVip"].toString(),
             ),
           ),
         );

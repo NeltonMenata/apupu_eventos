@@ -2,6 +2,7 @@
 
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/credit_and_sale_worker/credit_and_sale_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/make_credit/make_credit_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/make_sale/make_sale_page.dart';
@@ -16,6 +17,7 @@ import '../ui/add_event/add_event_page.dart';
 import '../ui/add_guest/add_guest_page.dart';
 import '../ui/home/home_page.dart';
 import '../ui/manager_event/manager_event_page.dart';
+import '../ui/menu_report_event/menu_report_event_page.dart';
 import '../ui/result_search_guest/result_search_guest.dart';
 
 abstract class Routes {
@@ -34,6 +36,8 @@ abstract class Routes {
   static const MAKE_SALE = "/make_sale";
   static const CREATE_PRODUCT = "/create_product";
   static const MAKE_CREDIT = "/make_credit";
+  static const CREDIT_AND_SALE_WORKER = "/credit_and_sale_worker";
+  static const MENU_REPORT_EVENT = "/menu_report_event";
 
   // Routers for Worker
 
@@ -54,7 +58,9 @@ abstract class Routes {
       REPORT_EVENT: (context) => ReportEventPage(),
       MAKE_SALE: (context) => const MakeSalePage(),
       CREATE_PRODUCT: (context) => const CreateProductPage(),
-      MAKE_CREDIT: (context) => const MakeCreditPage()
+      MAKE_CREDIT: (context) => const MakeCreditPage(),
+      CREDIT_AND_SALE_WORKER: (context) => const CreditAndSaleWorker(),
+      MENU_REPORT_EVENT: (context) => MenuReportEventPage()
     };
   }
 }

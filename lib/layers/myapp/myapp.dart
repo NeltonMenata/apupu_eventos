@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
             TargetPlatform.android: CupertinoPageTransitionsBuilder()
           }),
           fontFamily: "Comfortaa",
-          scaffoldBackgroundColor: Colors.grey.shade100),
+          scaffoldBackgroundColor: Colors.grey.shade200),
       initialRoute: Routes.SPLASH,
       routes: Routes.routes(context),
     );

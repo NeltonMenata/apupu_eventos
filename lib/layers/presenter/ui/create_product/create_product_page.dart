@@ -1,13 +1,6 @@
 import 'dart:math';
-
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/product/get_all_product_datasorce_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/datasources/back4app/product/save_product_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/product/get_all_product/get_all_product_repository_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/product/save_product/save_product_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/product/product_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/product/get_all_product/get_all_product_usecase_imp.dart';
-import 'package:apupu_eventos/layers/domain/usecases/product/save_product/save_product_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +18,9 @@ class _CreateProductPageState extends State<CreateProductPage> {
   final controller = getIt<CreateProductController>();
   final priceController = TextEditingController();
   final nameController = TextEditingController();
+  //final List<ProductEntity> allProducts = [];
+  bool isLoading = false;
+  bool complete = true;
   bool isSave = false;
   @override
   Widget build(BuildContext context) {
@@ -33,6 +29,18 @@ class _CreateProductPageState extends State<CreateProductPage> {
     final width = MediaQuery.of(context).size.width;
     const allPadding = 8.0;
     final fontSize = width * .05;
+    if (complete) {
+      controller.getAllProduct(currentEvent.objectId).then(
+        (value) {
+          setState(() {
+            controller.products.clear();
+            controller.products.addAll(value);
+            isLoading = false;
+            complete = false;
+          });
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -43,15 +51,13 @@ class _CreateProductPageState extends State<CreateProductPage> {
         child: Column(
           children: [
             Expanded(
-              child: FutureBuilder<List<ProductEntity>>(
-                  future: controller.getAllProduct(currentEvent.objectId),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return SingleChildScrollView(
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : SingleChildScrollView(
                         child: Column(
                           children: [
                             Visibility(
-                              visible: snapshot.data!.isEmpty,
+                              visible: controller.products.isEmpty,
                               child: Text(
                                 "Nenhum produto foi encontrado, crie um novo!",
                                 style: TextStyle(
@@ -60,7 +66,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                     fontSize: width * .08),
                               ),
                             ),
-                            ...snapshot.data!.map((e) {
+                            ...controller.products.map((e) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Column(
@@ -101,11 +107,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                             }).toList(),
                           ],
                         ),
-                      );
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  }),
-            ),
+                      )),
             const Divider(
               height: 2,
               color: Colors.black,
@@ -180,6 +182,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                           showResultCustom(context, product.error!,
                               isError: true);
                         } else {
+                          controller.products.insert(0, product);
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                                 content: Text("Produto salvo com sucesso"),
@@ -207,5 +210,11 @@ class _CreateProductPageState extends State<CreateProductPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    isLoading = true;
+    super.initState();
   }
 }

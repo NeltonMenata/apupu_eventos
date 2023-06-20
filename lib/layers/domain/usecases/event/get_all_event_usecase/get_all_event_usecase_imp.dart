@@ -6,7 +6,8 @@ class GetAllEventUseCaseImp implements IGetAllEventUseCase {
   final IGetAllEventRepository _getAllEventRepository;
   GetAllEventUseCaseImp(this._getAllEventRepository);
   @override
-  Future<List<EventEntity>> call([String? workerObjectId]) async {
-    return await _getAllEventRepository(workerObjectId);
+  Future<List<EventEntity>> call(
+      [String? workerObjectId, String? managerObjectId]) async {
+    return await _getAllEventRepository(workerObjectId, managerObjectId);
   }
 }

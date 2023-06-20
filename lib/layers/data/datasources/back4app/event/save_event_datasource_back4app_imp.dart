@@ -20,6 +20,8 @@ class SaveEventDataSourceBack4appImp implements ISaveEventDataSource {
         "dateOfRealization": event.dateOfRealization.toIso8601String(),
         "organization": event.organization,
         "price": event.price,
+        "priceVip": event.priceVip,
+        "managerObjectId": event.managerObjectId,
         "imgCartaz": imgFile?.url
       });
 

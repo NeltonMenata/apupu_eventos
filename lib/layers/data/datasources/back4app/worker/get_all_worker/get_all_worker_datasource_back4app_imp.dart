@@ -4,10 +4,11 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class GetAllWorkerDataSourceBack4appImp implements IGetAllWorkerDataSource {
   @override
-  Future<List<WorkerEntity>> call() async {
+  Future<List<WorkerEntity>> call([String? managerObjectId]) async {
     final getAllWorker = ParseCloudFunction("getAllWorker");
 
-    final result = await getAllWorker.execute();
+    final result = await getAllWorker
+        .execute(parameters: {"managerObjectId": managerObjectId});
     if (result.statusCode == 200) {
       final List<WorkerEntity> list = [];
       result.result.forEach((e) {

@@ -13,19 +13,20 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
         "contact": guestEntity.contact,
         "credit": guestEntity.credit,
         "eventObjectId": guestEntity.eventObjectId,
+        "isVip": guestEntity.isVip,
         "workerObjectId": guestEntity.workerObjectId
       });
 
       if (result.statusCode == 200) {
         return GuestEntity(
-          objectId: result.result["objectId"],
-          name: result.result["name"],
-          workerObjectId: result.result["workerObjectId"],
-          eventObjectId: result.result["eventObjectId"].toString(),
-          contact: result.result["contact"],
-          credit: result.result["credit"],
-          isIn: result.result["isIn"],
-        );
+            objectId: result.result["objectId"],
+            name: result.result["name"],
+            workerObjectId: result.result["workerObjectId"],
+            eventObjectId: result.result["eventObjectId"].toString(),
+            contact: result.result["contact"],
+            credit: result.result["credit"],
+            isIn: result.result["isIn"],
+            isVip: result.result["isVip"]);
 
         // EventDto.fromMap(saveEvent.results![0]);
       }

@@ -72,7 +72,7 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                               height: 50,
                               child: FutureBuilder<bool>(
                                 future: widget.controller.verifyWorkerEvent(
-                                    snapshotWorker.data![index].objectId,
+                                    snapshotWorker.data![index].objectId!,
                                     currentEvent.objectId),
                                 builder: (context, snapshotVerify) {
                                   if (snapshotVerify.hasError) {
@@ -96,12 +96,14 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                                                   .removeWorkerEvent(
                                                       snapshotWorker
                                                           .data![index]
-                                                          .objectId,
+                                                          .objectId!,
                                                       currentEvent.objectId);
                                             });
                                           },
-                                          icon:
-                                              const Icon(Icons.remove_outlined),
+                                          icon: const Icon(
+                                            Icons.remove_outlined,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       );
                                     } else {
@@ -120,11 +122,14 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                                               ));
                                               widget.controller.addWorkerEvent(
                                                   snapshotWorker
-                                                      .data![index].objectId,
+                                                      .data![index].objectId!,
                                                   currentEvent.objectId);
                                             });
                                           },
-                                          icon: const Icon(Icons.add_outlined),
+                                          icon: const Icon(
+                                            Icons.add_outlined,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                       );
                                     }
@@ -167,7 +172,7 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
           ),
           const Spacer(),
           Text(
-            "Não Porteiro: ",
+            "Vendas: ",
             style: TextStyle(
               color: Colors.brown[700],
               fontWeight: FontWeight.bold,

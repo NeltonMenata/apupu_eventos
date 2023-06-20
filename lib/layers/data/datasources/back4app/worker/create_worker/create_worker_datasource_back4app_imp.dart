@@ -12,7 +12,8 @@ class CreateWorkerDataSourceBack4appImp implements ICreateWorkerDataSource {
         "name": worker.name,
         "username": worker.username,
         "password": worker.password,
-        "isDoorman": worker.isDoorman
+        "isDoorman": worker.isDoorman,
+        "managerObjectId": worker.managerObjectId
       });
 
       if (result.statusCode == 200) {

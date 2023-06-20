@@ -2,16 +2,11 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:path_provider/path_provider.dart' as path;
 import 'package:share_plus/share_plus.dart';
 
 class Utils {
   static const assetLogo = "assets/logo/logo.png";
-
-  static final TextEditingController _qrData = TextEditingController();
-
-  TextEditingController get qrData => _qrData;
 
   static capture(GlobalKey? key, BuildContext context) async {
     try {
@@ -72,15 +67,29 @@ class Utils {
           });
     }
   }
+}
 
-  static Future<void> scanCode() async {
-    await FlutterBarcodeScanner.scanBarcode(
-            "#ff6666", "Cancel", true, ScanMode.QR)
-        .then((value) => _qrData.text = value)
-        .catchError((onError) {
-      print(onError);
-    });
+String separatorMoney(String value) {
+  if (value.length > 3) {
+    String newValue = "";
+
+    for (int letter = 0; letter < value.length; letter++) {
+      if (letter == 0 && value.length == 4 ||
+          letter == 0 && value.length == 7) {
+        newValue = newValue + value[letter] + ".";
+      } else if (letter == 2 && value.length == 5) {
+        newValue = newValue + "." + value[letter];
+      } else if (letter == 3 && value.length == 6) {
+        newValue = newValue + "." + value[letter];
+      } else if (letter == 4 && value.length == 7) {
+        newValue = newValue + "." + value[letter];
+      } else {
+        newValue = newValue + value[letter];
+      }
+    }
+    return newValue;
   }
+  return value;
 }
 
 Future<void> showResultCustom(BuildContext context, String valueResult,
@@ -94,7 +103,11 @@ Future<void> showResultCustom(BuildContext context, String valueResult,
           valueResult,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: isError ? Colors.white : Colors.black,
+            color: color != null
+                ? Colors.white
+                : isError
+                    ? Colors.white
+                    : Colors.black,
           ),
         ),
         actions: [
@@ -103,7 +116,11 @@ Future<void> showResultCustom(BuildContext context, String valueResult,
               "Ok",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isError ? Colors.white : Colors.black,
+                color: color != null
+                    ? Colors.white
+                    : isError
+                        ? Colors.white
+                        : Colors.black,
               ),
             ),
             onPressed: () {

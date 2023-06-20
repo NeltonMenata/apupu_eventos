@@ -7,8 +7,6 @@ import 'package:apupu_eventos/layers/domain/usecases/sale/make_sale/make_sale_us
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
-
 import '../../../core/inject/inject.dart';
 import '../../../domain/entities/event/event_entity.dart';
 import '../../../domain/entities/product/product_entity.dart';
@@ -39,6 +37,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
 
   @override
   void initState() {
+    isLoading = true;
     super.initState();
   }
 
@@ -48,15 +47,38 @@ class _MakeSalePageState extends State<MakeSalePage> {
   SaleEntity? sale;
   bool isSale = false;
 
+  bool complete = true;
+
   @override
   Widget build(BuildContext context) {
-    final workerObjectId = LoginController.currentWorker?.objectId;
+    final workerObjectId = currentWorker?.objectId;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
 
     const allPadding = 8.0;
+
+    if (complete) {
+      controllerProduct.getAllProduct(currentEvent.objectId).then(
+        (value) {
+          setState(() {
+            products.clear();
+            products.addAll(value
+                .map((e) => {
+                      "name": e.name,
+                      "objectId": e.objectId,
+                      "quantity": 1,
+                      "price": e.price,
+                      "isSelected": false,
+                    })
+                .toList());
+            isLoading = false;
+            complete = false;
+          });
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -87,14 +109,16 @@ class _MakeSalePageState extends State<MakeSalePage> {
                     });
                     if (currentGuest == null) {
                       showResultCustom(
-                          context, "Selecione o Convidado da Compra");
+                          context, "Selecione o Convidado da Compra",
+                          color: Colors.red);
                       setState(() {
                         isSale = false;
                       });
                       return;
                     } else if (productsSelected.isEmpty) {
                       showResultCustom(
-                          context, "Selecione os produtos a serem vendidos");
+                          context, "Selecione os produtos a serem vendidos",
+                          color: Colors.red);
                       setState(() {
                         isSale = false;
                       });
@@ -134,138 +158,126 @@ class _MakeSalePageState extends State<MakeSalePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            FutureBuilder<List<ProductEntity>>(
-                future: controllerProduct.getAllProduct(currentEvent.objectId),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const Text("Recarregue a página");
-                  } else if (snapshot.hasData) {
-                    products.clear();
-                    products.addAll(snapshot.data!
-                        .map((e) => {
-                              "name": e.name,
-                              "objectId": e.objectId,
-                              "quantity": 1,
-                              "price": e.price,
-                              "isSelected": false,
-                            })
-                        .toList());
-                    return Wrap(
-                      direction: Axis.horizontal,
-                      children: [
-                        products.isEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Acesse a tela de criação de produtos para criar um produto vendível!",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: width * .045),
-                                ),
-                              )
-                            : const SizedBox(),
-                        ...List.generate(products.length, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 12.0, left: 8),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  bool contains = productsSelected.every(
-                                      (element) =>
-                                          element["objectId"] !=
-                                          products[index]["objectId"]);
-                                  if (contains) {
-                                    productsSelected.add(products[index]);
-                                  } else {
-                                    productsSelected.removeWhere((element) {
-                                      bool resultSelected = products[index]
-                                              ["objectId"] ==
-                                          element["objectId"];
-
-                                      if (products[index]["objectId"] ==
-                                          element["objectId"]) {}
-                                      return resultSelected;
-                                    });
-                                  }
-
-                                  sale = SaleEntity(
-                                      products: productsSelected
-                                          .map(
-                                            (e) => ProductDto(
-                                              price: e["price"],
-                                              objectId: e["objectId"],
-                                              eventObjectId:
-                                                  currentEvent.objectId,
-                                              name: e["name"],
-                                              quantity: e["quantity"],
-                                            ),
-                                          )
-                                          .toList(),
-                                      eventObjectId: currentEvent.objectId,
-                                      workerObjectId: workerObjectId ?? "admin",
-                                      guestObjectId:
-                                          currentGuest?.objectId ?? "");
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.grey.shade300),
-                                child: Wrap(children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        products[index]["name"]!
-                                                .toString()
-                                                .toUpperCase() +
-                                            ": " +
-                                            products[index]["price"]
-                                                .toString() +
-                                            " kz",
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Visibility(
-                                        visible: !productsSelected.every(
-                                            (element) =>
-                                                element["objectId"] !=
-                                                products[index]["objectId"]),
-                                        child: const Icon(
-                                          Icons.check_box_outlined,
-                                          color: Colors.blue,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  // CircleAvatar(
-                                  //   child: Text(
-                                  //     products[index]["name"]!
-                                  //         .toString()
-                                  //         .substring(0, 1)
-                                  //         .toUpperCase(),
-                                  //   ),
-                                  // ),
-                                ]),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                "Produtos Disponíveis",
+                style: TextStyle(
+                    fontSize: width * .05, fontWeight: FontWeight.bold),
+              ),
+            ),
+            isLoading
+                ? const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Wrap(
+                    direction: Axis.horizontal,
+                    children: [
+                      products.isEmpty
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Acesse a tela de criação de produtos para criar um produto vendível!",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: width * .045),
                               ),
+                            )
+                          : const SizedBox(),
+                      ...List.generate(products.length, (index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 12.0, left: 8),
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                bool contains = productsSelected.every(
+                                    (element) =>
+                                        element["objectId"] !=
+                                        products[index]["objectId"]);
+                                if (contains) {
+                                  productsSelected.add(products[index]);
+                                } else {
+                                  productsSelected.removeWhere((element) {
+                                    bool resultSelected = products[index]
+                                            ["objectId"] ==
+                                        element["objectId"];
+
+                                    if (products[index]["objectId"] ==
+                                        element["objectId"]) {}
+                                    return resultSelected;
+                                  });
+                                }
+
+                                sale = SaleEntity(
+                                    products: productsSelected
+                                        .map(
+                                          (e) => ProductDto(
+                                            price: e["price"],
+                                            objectId: e["objectId"],
+                                            eventObjectId:
+                                                currentEvent.objectId,
+                                            name: e["name"],
+                                            quantity: e["quantity"],
+                                          ),
+                                        )
+                                        .toList(),
+                                    eventObjectId: currentEvent.objectId,
+                                    workerObjectId: workerObjectId,
+                                    guestObjectId:
+                                        currentGuest?.objectId ?? "");
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.grey.shade300),
+                              child: Wrap(children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      products[index]["name"]!
+                                              .toString()
+                                              .toUpperCase() +
+                                          ": " +
+                                          products[index]["price"].toString() +
+                                          " kz",
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Visibility(
+                                      visible: !productsSelected.every(
+                                          (element) =>
+                                              element["objectId"] !=
+                                              products[index]["objectId"]),
+                                      child: const Icon(
+                                        Icons.check_box_outlined,
+                                        color: Colors.blue,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                // CircleAvatar(
+                                //   child: Text(
+                                //     products[index]["name"]!
+                                //         .toString()
+                                //         .substring(0, 1)
+                                //         .toUpperCase(),
+                                //   ),
+                                // ),
+                              ]),
                             ),
-                          );
-                        })
-                      ],
-                    );
-                  } else {
-                    return const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                }),
+                          ),
+                        );
+                      })
+                    ],
+                  ),
             Column(
               children: [
                 const Divider(
@@ -344,8 +356,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                                   .toList(),
                                               eventObjectId:
                                                   currentEvent.objectId,
-                                              workerObjectId:
-                                                  workerObjectId ?? "admin",
+                                              workerObjectId: workerObjectId,
                                               guestObjectId:
                                                   currentGuest?.objectId ?? "");
                                         } else {
@@ -386,8 +397,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                                   .toList(),
                                               eventObjectId:
                                                   currentEvent.objectId,
-                                              workerObjectId:
-                                                  workerObjectId ?? "admin",
+                                              workerObjectId: workerObjectId,
                                               guestObjectId:
                                                   currentGuest?.objectId ?? "");
                                         }
@@ -436,9 +446,12 @@ class _MakeSalePageState extends State<MakeSalePage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                "Total: ${sale?.getTotalValueForSale ?? 0} kz",
+                "Total: " +
+                    separatorMoney(
+                        (sale?.getTotalValueForSale ?? 0).toString()) +
+                    " kz",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: width * .04),
+                    fontWeight: FontWeight.bold, fontSize: width * .045),
               ),
               const Spacer(),
               currentGuest != null
@@ -476,7 +489,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                   )
                                   .toList(),
                               eventObjectId: currentEvent.objectId,
-                              workerObjectId: workerObjectId ?? "admin",
+                              workerObjectId: workerObjectId,
                               guestObjectId: currentGuest?.objectId ?? "");
                         });
                       },
@@ -485,8 +498,16 @@ class _MakeSalePageState extends State<MakeSalePage> {
                         decoration: BoxDecoration(color: Colors.green.shade600),
                         child: Row(
                           children: [
-                            const Icon(Icons.account_circle_outlined),
-                            Text("${currentGuest?.name}"),
+                            const Icon(Icons.account_circle_outlined,
+                                color: Colors.white),
+                            Text(
+                              "${currentGuest?.name}",
+                              maxLines: 1,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: width * .045),
+                            ),
                           ],
                         ),
                       ),
@@ -531,7 +552,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                   )
                                   .toList(),
                               eventObjectId: currentEvent.objectId,
-                              workerObjectId: workerObjectId ?? "admin",
+                              workerObjectId: workerObjectId,
                               guestObjectId: currentGuest?.objectId ?? "");
                         });
                       },

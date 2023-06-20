@@ -12,20 +12,21 @@ class AddEventController {
       {required String name,
       required DateTime dateOfRealization,
       required String organization,
-      required double price,
+      String? managerObjectId,
+      int? priceVip,
+      required int price,
       File? imgCartaz}) async {
-    name.trim();
-    organization.trim();
-
     try {
       //await Future.delayed(Duration(seconds: 3));
 
       final event = EventEntity(
           objectId: "",
-          name: name,
+          name: name.trim(),
           dateOfRealization: dateOfRealization,
+          managerObjectId: managerObjectId,
           imgCartaz: imgCartaz?.path,
-          organization: organization,
+          priceVip: priceVip,
+          organization: organization.trim(),
           price: price);
       final result = await _saveEventUseCase(event);
       if (result.name == "name" && result.organization == "organization") {

@@ -217,6 +217,19 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                                                                 : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
                                                                           ),
                                                                         ),
+                                                                        Visibility(
+                                                                          visible: controller
+                                                                              .listGuest[index]
+                                                                              .isVip,
+                                                                          child:
+                                                                              const Icon(
+                                                                            Icons.star,
+                                                                            color:
+                                                                                Colors.amber,
+                                                                            size:
+                                                                                35,
+                                                                          ),
+                                                                        ),
                                                                         Column(
                                                                           mainAxisAlignment:
                                                                               MainAxisAlignment.spaceAround,

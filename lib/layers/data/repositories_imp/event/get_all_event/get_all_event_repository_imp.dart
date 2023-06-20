@@ -8,7 +8,7 @@ class GetAllEventRepositoryImp implements IGetAllEventRepository {
   GetAllEventRepositoryImp(this._getAllEventDataSource);
 
   @override
-  Future<List<EventEntity>> call([String? workerObjectId]) async {
+  Future<List<EventEntity>> call([String? workerObjectId, String? managerObjectId]) async {
     return _getAllEventDataSource(workerObjectId);
   }
 }

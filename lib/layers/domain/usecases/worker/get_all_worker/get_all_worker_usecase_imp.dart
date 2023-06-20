@@ -6,7 +6,7 @@ class GetAllWorkerUseCaseImp implements IGetAllWorkerUseCase {
   final IGetAllWorkerRepository _getAllWorkerRepository;
   GetAllWorkerUseCaseImp(this._getAllWorkerRepository);
   @override
-  Future<List<WorkerEntity>> call() async {
-    return await _getAllWorkerRepository();
+  Future<List<WorkerEntity>> call([String? managerObjectId]) async {
+    return await _getAllWorkerRepository(managerObjectId);
   }
 }

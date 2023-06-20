@@ -6,11 +6,13 @@ class BigButtonNavigation extends StatelessWidget {
       required this.icon,
       required this.action,
       this.bgColor,
+      this.color,
       Key? key})
       : super(key: key);
   final String title;
   final IconData icon;
   final MaterialStateProperty<Color>? bgColor;
+  final Color? color;
   final Function action;
 
   @override
@@ -28,7 +30,9 @@ class BigButtonNavigation extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15))),
             backgroundColor:
                 bgColor ?? MaterialStateProperty.all<Color>(Colors.black87)),
-        onPressed: action(),
+        onPressed: () {
+          action();
+        },
         child: Container(
           padding: EdgeInsets.only(
               top: allPaddingContainer, right: allPaddingContainer),
@@ -38,19 +42,17 @@ class BigButtonNavigation extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Icon(
-                icon,
-                size: width * .13,
-                color: Colors.white,
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * .03),
-                child: Text(
-                  title,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: width * .05),
+              Icon(icon, size: width * .13, color: color),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * .03),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                        color: color,
+                        fontWeight: FontWeight.bold,
+                        fontSize: width * .05),
+                  ),
                 ),
               ),
             ],

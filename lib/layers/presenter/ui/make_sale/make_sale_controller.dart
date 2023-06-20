@@ -1,9 +1,7 @@
-import 'package:apupu_eventos/layers/data/dtos/product_dto.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/product/product_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/sale/sale_entity.dart';
 import 'package:apupu_eventos/layers/domain/usecases/sale/make_sale/make_sale_usecase.dart';
-import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId.dart';

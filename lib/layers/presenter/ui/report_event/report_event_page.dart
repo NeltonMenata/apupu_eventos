@@ -27,6 +27,25 @@ class _ReportEventPageState extends State<ReportEventPage> {
 
     final currentEvent =
         ModalRoute.of(context)!.settings.arguments as EventEntity;
+
+    widget.controller
+        .getAllCreditForEvent(currentEvent.objectId)
+        .then((value) => value.forEach((element) {
+              print(element.name);
+              print(element.credit);
+            }));
+
+    widget.controller
+        .getAllSaleForEvent(currentEvent.objectId)
+        .then((value) => value.forEach((element) {
+              print(element.name);
+              print(element.totalValue);
+              int sum = 0;
+              value.forEach((element1) {
+                sum += element1.totalValue;
+              });
+              print("Total: $sum");
+            }));
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

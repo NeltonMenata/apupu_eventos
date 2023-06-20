@@ -9,6 +9,7 @@ class GuestDto extends GuestEntity {
   final String name;
   final String contact;
   final int? credit;
+  final bool isVip;
   final bool isIn;
   final String eventObjectId;
   final String workerObjectId;
@@ -19,6 +20,7 @@ class GuestDto extends GuestEntity {
       required this.contact,
       this.credit,
       required this.isIn,
+      required this.isVip,
       required this.eventObjectId,
       required this.workerObjectId})
       : super(
@@ -26,6 +28,7 @@ class GuestDto extends GuestEntity {
             name: name,
             contact: contact,
             credit: credit,
+            isVip: isVip,
             eventObjectId: eventObjectId,
             workerObjectId: workerObjectId,
             isIn: isIn);
@@ -34,6 +37,7 @@ class GuestDto extends GuestEntity {
       "objectId": objectId,
       "name": name,
       "contact": contact,
+      "isVip": isVip,
       "eventObjectId": eventObjectId,
       "isIn": isIn
     };
@@ -47,6 +51,7 @@ class GuestDto extends GuestEntity {
         name: map["name"],
         contact: map["contact"],
         isIn: map["isIn"],
+        isVip: map["isVip"],
         eventObjectId: map["eventObjectId"],
         workerObjectId: map["workerObjectId"]);
   }

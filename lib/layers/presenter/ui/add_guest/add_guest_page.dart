@@ -20,16 +20,18 @@ class _AddGuestPageState extends State<AddGuestPage> {
   final controller = getIt<AddGuestController>();
 
   bool isSave = false;
+  bool isVip = false;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double fontSizeTitle = width * .045;
-    final workerObjectId = LoginController.currentWorker?.objectId;
+    final workerObjectId = currentWorker?.objectId;
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
     //double fontSizeSubtitle = width * .035;
-
+    const allPadding = 8.0;
+    final fontSize = width * .04;
     return Scaffold(
       body: SingleChildScrollView(
         child: ScaffoldGeneral(
@@ -87,6 +89,42 @@ class _AddGuestPageState extends State<AddGuestPage> {
                     ),
                   ),
                   Padding(
+                    padding: const EdgeInsets.all(allPadding),
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isVip = !isVip;
+                        });
+                      },
+                      child: Container(
+                        width: width * .4,
+                        padding: const EdgeInsets.only(left: 8),
+                        decoration: BoxDecoration(
+                            border: Border.all(),
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Row(children: [
+                          Text(
+                            "É VIP?",
+                            style: TextStyle(
+                                fontSize: fontSize,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w900),
+                          ),
+                          const Spacer(),
+                          Checkbox(
+                            value: isVip,
+                            onChanged: (value) {
+                              setState(() {
+                                isVip = !isVip;
+                              });
+                            },
+                          )
+                        ]),
+                      ),
+                    ),
+                  ),
+                  Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: isSave
                           ? const Center(
@@ -112,6 +150,7 @@ class _AddGuestPageState extends State<AddGuestPage> {
                                       name: nameController.text,
                                       objectId: "objectId",
                                       isIn: false,
+                                      isVip: isVip,
                                       eventObjectId: currentEvent.objectId,
                                       workerObjectId: workerObjectId),
                                 );
@@ -124,9 +163,9 @@ class _AddGuestPageState extends State<AddGuestPage> {
                                 });
                                 Navigator.of(context).pop(guestSaved);
                               },
-                              child: const Text(
+                              child: Text(
                                 "Salvar Convidado",
-                                //style: TextStyle(fontSize: fontSize),
+                                style: TextStyle(fontSize: fontSize),
                               ),
                             )
 

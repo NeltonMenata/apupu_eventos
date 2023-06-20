@@ -18,6 +18,7 @@ class GetGuestDataSourceBack4appImp implements IGetGuestDataSource {
         workerObjectId: result.result["workerObjectId"],
         eventObjectId: result.result["eventObjectId"],
         contact: result.result["contact"],
+        isVip: result.result["isVip"],
         credit: result.result["credit"],
         isIn: result.result["isIn"],
       );
@@ -26,6 +27,7 @@ class GetGuestDataSourceBack4appImp implements IGetGuestDataSource {
         objectId: "objectId get",
         name: "not found",
         contact: "contact",
+        isVip: false,
         eventObjectId: 'eventObjectId get',
         workerObjectId: "worker Object Id",
         isIn: false,

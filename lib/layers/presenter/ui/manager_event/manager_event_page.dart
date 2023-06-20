@@ -21,6 +21,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
   Widget build(BuildContext context) {
     final workerObjectId =
         ModalRoute.of(context)!.settings.arguments as String?;
+
+    final isDoorman = currentWorker?.isDoorman;
     //final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     //const paddingLeft = 15.0;
@@ -171,17 +173,61 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                               color: Colors.grey),
                                         ),
                                       ),
-                                      trailing: Text(
-                                        snapshot.data![index].price
-                                            .toStringAsFixed(2)
-                                            .toString()
-                                            .replaceAll(".", ","),
-                                        style: TextStyle(
-                                            fontSize: fontSizeSubtitle,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                      trailing: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            separatorMoney(snapshot
+                                                    .data![index].price
+                                                    .toString() +
+                                                " kz"),
+                                            style: TextStyle(
+                                                fontSize: fontSizeSubtitle,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                          snapshot.data![index].priceVip != null
+                                              ? Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    const Flexible(
+                                                      child: Icon(
+                                                        Icons.star,
+                                                        color: Colors.amber,
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      child: Text(
+                                                        separatorMoney(
+                                                          snapshot.data![index]
+                                                                  .priceVip
+                                                                  .toString() +
+                                                              " kz",
+                                                        ),
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                fontSizeSubtitle,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              : const SizedBox()
+                                        ],
                                       ),
                                       onTap: () {
+                                        if (isDoorman != null &&
+                                            isDoorman == false) {
+                                          Navigator.of(context).pushNamed(
+                                              Routes.CREDIT_AND_SALE_WORKER,
+                                              arguments: snapshot.data![index]);
+                                          return;
+                                        }
                                         Navigator.of(context).pushNamed(
                                             Routes.REGISTER_GUEST,
                                             arguments: snapshot.data![index]);

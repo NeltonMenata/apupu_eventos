@@ -6,7 +6,7 @@ class GetAllWorkerRepositoryImp implements IGetAllWorkerRepository {
   final IGetAllWorkerDataSource _getAllWorkerDataSource;
   GetAllWorkerRepositoryImp(this._getAllWorkerDataSource);
   @override
-  Future<List<WorkerEntity>> call() async {
-    return await _getAllWorkerDataSource();
+  Future<List<WorkerEntity>> call([String? managerObjectId]) async {
+    return await _getAllWorkerDataSource(managerObjectId);
   }
 }

@@ -5,6 +5,7 @@ import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../utils/utils.dart';
@@ -89,6 +90,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           ),
                         ),
                         ListTile(
+                          leading: const Icon(Icons.group_work_outlined),
                           title: const Text(
                             "Gerir Trabalhador do Evento",
                             style: TextStyle(fontWeight: FontWeight.bold),
@@ -99,18 +101,21 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
+                          leading: const Icon(Icons.dashboard),
                           title: const Text(
                             "Exibir Relatório do Evento",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, Routes.REPORT_EVENT,
+                            Navigator.pushNamed(
+                                context, Routes.MENU_REPORT_EVENT,
                                 arguments: currentEvent);
                           },
                         ),
                         ListTile(
+                          leading: const Icon(Icons.add_box_rounded),
                           title: const Text(
-                            "Criar Produtos de Venda no Evento",
+                            "Criar Produtos do Evento",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
@@ -120,8 +125,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
+                          leading: const Icon(Icons.attach_money_sharp),
                           title: const Text(
-                            "Adicionar Crédito",
+                            "Carregar Cartão de Consumo",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
@@ -130,6 +136,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
+                          leading: const Icon(Icons.fastfood_rounded),
                           title: const Text(
                             "Realizar uma Venda",
                             style: TextStyle(fontWeight: FontWeight.bold),
@@ -241,6 +248,14 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                                                       fit: BoxFit.cover)
                                               : Image.asset(Utils.assetLogo,
                                                   fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: guestCurrent.isVip,
+                                        child: const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                          size: 35,
                                         ),
                                       ),
                                       Column(
@@ -355,8 +370,19 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                         setState(() {
                           isLoading = true;
                         });
+
+                        var qrResult = await FlutterBarcodeScanner.scanBarcode(
+                            "red", "Cancelar", true, ScanMode.QR);
+
+                        if (qrResult == "-1") {
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                          return;
+                        }
                         guestCurrent = await widget.controller
-                            .getGuest(currentEvent.objectId);
+                            .getGuest(qrResult, currentEvent.objectId);
 
                         if (guestCurrent.contact == "contact") {
                           setState(() {

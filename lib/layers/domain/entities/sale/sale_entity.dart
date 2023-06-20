@@ -4,7 +4,7 @@ class SaleEntity {
   final String? objectId;
   final List<ProductEntity> products;
   final String eventObjectId;
-  final String workerObjectId;
+  final String? workerObjectId;
   final String guestObjectId;
   final String? error;
 
@@ -12,7 +12,7 @@ class SaleEntity {
       {this.objectId,
       required this.products,
       required this.eventObjectId,
-      required this.workerObjectId,
+      this.workerObjectId,
       required this.guestObjectId,
       this.error});
 

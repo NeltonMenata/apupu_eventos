@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:apupu_eventos/layers/data/datasources/back4app/credit/make_credit_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/credit/make_credit/make_credit_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/credit/credit_entity.dart';
@@ -9,7 +7,6 @@ import 'package:apupu_eventos/layers/domain/usecases/credit/make_credit/make_cre
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../../../core/inject/inject.dart';
 import '../../../domain/entities/event/event_entity.dart';
 import '../../../domain/entities/product/product_entity.dart';
@@ -49,9 +46,9 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final workerObjectId = LoginController.currentWorker?.objectId;
+    final workerObjectId = currentWorker?.objectId;
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
 
@@ -104,7 +101,7 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
                     final result = await controller.makeCredit(CreditEntity(
                         credit: currentCredit,
                         eventObjectId: currentEvent.objectId,
-                        workerObjectId: workerObjectId ?? "admin",
+                        workerObjectId: workerObjectId,
                         guestObjectId: currentGuest?.objectId ?? ""));
                     if (result.error != null) {
                       showResultCustom(context, result.error!, isError: true);
@@ -114,7 +111,7 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
                       return;
                     }
                     showResultCustom(context,
-                        "Credito realizado com sucesso\n\nCrédito atual: ${result.credit}",
+                        "Credito realizado com sucesso\n\nCrédito atual: ${result.credit} kz",
                         color: Colors.green.shade600);
 
                     setState(() {
@@ -127,7 +124,7 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Creditar",
+                      Text("Carregar",
                           style: TextStyle(
                               fontSize: width * .04,
                               fontWeight: FontWeight.bold,
@@ -140,17 +137,14 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
       ),
       body: Column(
         children: [
-          FutureBuilder<List<ProductEntity>>(builder: (context, snapshot) {
-            return Container();
-          }),
           Column(
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
                 child: Text(
-                  "Créditos",
+                  "CRÉDITOS",
                   style: TextStyle(
-                      fontSize: width * .05, fontWeight: FontWeight.bold),
+                      fontSize: width * .05, fontWeight: FontWeight.w900),
                 ),
               ),
             ],
@@ -263,9 +257,20 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
               height: width * .2,
               color: Colors.green.shade900,
               child: FittedBox(
-                  child: Text(
-                "Valor à creditar: $currentCredit kz",
-                style: const TextStyle(color: Colors.white),
+                  child: Row(
+                children: [
+                  const Text(
+                    "Valor à carregar: ",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Text(
+                    separatorMoney(currentCredit.toString()) + " kz",
+                    style: const TextStyle(
+                      color: Colors.amber,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ))),
           const Spacer(),
           Padding(

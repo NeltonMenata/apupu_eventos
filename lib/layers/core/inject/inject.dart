@@ -1,3 +1,4 @@
+import 'package:apupu_eventos/layers/data/datasources/back4app/credit/get_all_credit_for_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/event/get_all_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/event/save_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/count_guest_for_event_datasource_back4app_imp.dart';
@@ -16,6 +17,7 @@ import 'package:apupu_eventos/layers/data/datasources/back4app/worker/get_all_wo
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_worker/worker_login_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/remove_worker_event/remove_worker_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/verify_worker_event/verify_worker_event_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/credit/get_all_credit_for_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/get_all_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/save_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/guest/count_guest_for_event_datasource.dart';
@@ -34,6 +36,7 @@ import 'package:apupu_eventos/layers/data/datasources/worker/get_all_worker_in_e
 import 'package:apupu_eventos/layers/data/datasources/worker/remove_worker_event/remove_worker_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/verify_worker_event/verify_worker_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/worker_login/worker_login_datasource.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/credit/get_all_credit_for_event_repository/get_all_credit_for_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/event/get_all_event/get_all_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/event/save_event/save_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/count_guest_for_event/count_guest_for_event_repository_imp.dart';
@@ -52,6 +55,7 @@ import 'package:apupu_eventos/layers/data/repositories_imp/worker/get_all_worker
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/remove_worker_event/remove_worker_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/verify_worker_event/verify_worker_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/worker_login/worker_login_repository_imp.dart';
+import 'package:apupu_eventos/layers/domain/repositories/credit/get_all_credit_for_event/get_all_credit_for_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/event/get_all_event_repository/get_all_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/event/save_event/save_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/guest/count_guest_for_event/count_guest_for_event_repository.dart';
@@ -69,6 +73,8 @@ import 'package:apupu_eventos/layers/domain/repositories/worker/get_all_worker_i
 import 'package:apupu_eventos/layers/domain/repositories/worker/remove_worker_event/remove_worker_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/verify_worker_event/verify_worker_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/worker_login/worker_login_repository.dart';
+import 'package:apupu_eventos/layers/domain/usecases/credit/get_all_credit_for_event/get_all_credit_for_event_usecase.dart';
+import 'package:apupu_eventos/layers/domain/usecases/credit/get_all_credit_for_event/get_all_credit_for_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/get_all_event_usecase/get_all_event_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/get_all_event_usecase/get_all_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/save_event_usecase/save_event_imp.dart';
@@ -117,7 +123,14 @@ import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_cont
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_controller.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../data/datasources/back4app/sale/get_all_sale_for_event_datasource_back4app_imp.dart';
+import '../../data/datasources/back4app/worker/login_worker_admin/login_worker_admin_datasource_back4app_imp.dart';
+import '../../data/datasources/sale/get_all_sale_for_event_datasource.dart';
+import '../../data/repositories_imp/sale/get_all_sale_for_event/get_all_sale_for_event_repository_imp.dart';
 import '../../domain/repositories/product/get_all_product/get_all_product_repository.dart';
+import '../../domain/repositories/sale/get_all_sale_for_event/get_all_sale_for_event_repository.dart';
+import '../../domain/usecases/sale/get_all_sale_for_event/get_all_sale_for_event_usecase.dart';
+import '../../domain/usecases/sale/get_all_sale_for_event/get_all_sale_for_event_usecase_imp.dart';
 
 final GetIt getIt = GetIt.I;
 void initInject() {
@@ -182,6 +195,14 @@ void initInject() {
 
   getIt.registerSingleton<IGetAllProductDataSource>(
       GetAllProductDataSourceBack4appImp());
+
+  //###### - Report - DATASOURCE
+
+  getIt.registerSingleton<IGetAllCreditForEventDataSource>(
+      GetAllCreditForEventDataSourceBack4appImp());
+
+  getIt.registerSingleton<IGetAllSaleForEventDataSource>(
+      GetAllSaleForEventDataSourceBack4appImp());
 
   //REPOSITORY
   //######## - Guest - REPOSITORY
@@ -256,6 +277,15 @@ void initInject() {
   getIt.registerSingleton<IGetAllProductRepository>(
       GetAllProductRepositoryImp(getIt<IGetAllProductDataSource>()));
 
+  //###### - Report - REPOSITORY
+
+  getIt.registerSingleton<IGetAllCreditForEventRepository>(
+      GetAllCreditForEventRepositoryImp(
+          getIt<IGetAllCreditForEventDataSource>()));
+
+  getIt.registerSingleton<IGetAllSaleForEventRepository>(
+      GetAllSaleForEventRepositoryImp(getIt<IGetAllSaleForEventDataSource>()));
+
   //USECASE
   //####### - Guest - USECASE
   getIt.registerSingleton<ICountGuestForEventUseCase>(
@@ -312,10 +342,20 @@ void initInject() {
       getIt<IGetAllProductRepository>(),
     ),
   );
+
+  //###### - Report - USECASE
+
+  getIt.registerSingleton<IGetAllCreditForEventUseCase>(
+      GetAllCreditForEventUseCaseImp(getIt<IGetAllCreditForEventRepository>()));
+
+  getIt.registerSingleton<IGetAllSaleForEventUseCase>(
+      GetAllSaleForEventUseCaseImp(getIt<IGetAllSaleForEventRepository>()));
+
   //CONTROLLER
   getIt.registerSingleton<AddEventController>(AddEventController());
   getIt.registerSingleton<AddGuestController>(AddGuestController());
-  getIt.registerSingleton<LoginController>(LoginController());
+  getIt.registerSingleton<LoginController>(
+      LoginController(LoginWorkerAdminDataSourceBack4appImp()));
   getIt.registerSingleton<ManagerEventController>(
       ManagerEventController(getIt<IGetAllEventUseCase>()));
 
@@ -338,7 +378,9 @@ void initInject() {
     ReportEventController(
         getIt<IGetAllWorkerInEventUseCase>(),
         getIt<ICountGuestForEventUseCase>(),
-        getIt<ICountGuestForWorkerUseCase>()),
+        getIt<ICountGuestForWorkerUseCase>(),
+        getIt<IGetAllCreditForEventUseCase>(),
+        getIt<IGetAllSaleForEventUseCase>()),
   );
   getIt.registerSingleton<SearchGuestController>(
       SearchGuestController(getIt<ISearchGuestForContactUseCase>()));

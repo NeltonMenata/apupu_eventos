@@ -19,6 +19,7 @@ class _AddEventPageState extends State<AddEventPage> {
   final nameController = TextEditingController();
   final organizationNameController = TextEditingController();
   final priceController = TextEditingController();
+  final priceVipController = TextEditingController();
 
   DateTime date = DateTime.now();
   Image image = Image.asset(Utils.assetLogo);
@@ -165,6 +166,23 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(allPadding),
+                      child: Column(crossAxisAlignment: crossStart, children: [
+                        const Text(
+                          "Ingresso VIP",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w900),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: priceVipController,
+                          decoration: const InputDecoration(
+                              suffixIcon: Icon(Icons.attach_money_outlined),
+                              border: OutlineInputBorder()),
+                        )
+                      ]),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(allPadding),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -235,7 +253,9 @@ class _AddEventPageState extends State<AddEventPage> {
                                       dateOfRealization: date,
                                       organization:
                                           organizationNameController.text,
-                                      price: double.parse(priceController.text),
+                                      priceVip:
+                                          int.tryParse(priceVipController.text),
+                                      price: int.parse(priceController.text),
                                       imgCartaz: imageFile);
 
                                   setState(() {
@@ -243,6 +263,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                     dateController.text = "";
                                     organizationNameController.text = "";
                                     priceController.text = "";
+                                    priceVipController.text = "";
                                     isSave = !isSave;
                                   });
                                 },

@@ -1,52 +1,35 @@
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
+import 'package:apupu_eventos/layers/data/datasources/worker/worker_login/worker_login_datasource.dart';
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/login/login_worker_usecase.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
-
 import '../../routes/Routes.dart';
 
 class LoginController {
   bool isAdmin = false;
-  static WorkerEntity? currentWorker;
+  final IWorkerLoginDataSource _workerLoginAdminDataSource;
+
+  LoginController(this._workerLoginAdminDataSource);
+
   static logout(BuildContext context) {
     Navigator.of(context)
         .pushNamedAndRemoveUntil(Routes.LOGIN, (route) => false);
+    currentAdmin = null;
     currentWorker = null;
   }
 
   Future<void> login(
       BuildContext context, String username, String password) async {
-    username.trim();
-    password.trim();
     if (isAdmin) {
-      final user = ParseUser(username, password, null);
-      try {
-        final login = await user.login();
-        if (login.statusCode == 200 && login.success) {
-          if (login.results![0].get("blocked")) {
-            showResultCustom(
-                context, "Usuário bloqueado! \nContacte o apoio técnico",
-                isError: true);
-
-            return;
-          }
-
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
-        } else {
-          if (login.statusCode == -1) {
-            showResultCustom(context,
-                "Erro ao Logar, verifique a sua conexão com a Internet!");
-          } else {
-            showResultCustom(
-                context, "Dados de usuário incorrectos, tente novamente!");
-          }
-        }
-      } catch (e) {
-        showResultCustom(
-            context, "Erro ao logar. Verifique a sua conexão com a internet!");
+      final user =
+          await _workerLoginAdminDataSource(username.trim(), password.trim());
+      if (user.error != null) {
+        showResultCustom(context, user.error!, isError: true);
+      } else {
+        currentAdmin = user;
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
       }
     } else {
       final _loginWorker = getIt<ILoginWorkerUseCase>();
@@ -63,3 +46,6 @@ class LoginController {
     }
   }
 }
+
+WorkerEntity? currentWorker;
+WorkerEntity? currentAdmin;
