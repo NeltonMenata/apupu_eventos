@@ -178,10 +178,9 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                             CrossAxisAlignment.end,
                                         children: [
                                           Text(
-                                            separatorMoney(snapshot
-                                                    .data![index].price
-                                                    .toString() +
-                                                " kz"),
+                                            separatorMoney(
+                                                "${snapshot.data![index].price}" +
+                                                    " kz"),
                                             style: TextStyle(
                                                 fontSize: fontSizeSubtitle,
                                                 fontWeight: FontWeight.bold,

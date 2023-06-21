@@ -7,7 +7,7 @@ import '../../geral_components/buttons/big_button_navigation.dart';
 import '../../routes/Routes.dart';
 
 class MenuReportEventPage extends StatefulWidget {
-  MenuReportEventPage({Key? key}) : super(key: key);
+  const MenuReportEventPage({Key? key}) : super(key: key);
 
   @override
   State<MenuReportEventPage> createState() => _MenuReportEventPageState();
@@ -28,29 +28,14 @@ class _MenuReportEventPageState extends State<MenuReportEventPage> {
     final currentEvent =
         ModalRoute.of(context)!.settings.arguments as EventEntity;
 
-    controller
-        .getAllCreditForEvent(currentEvent.objectId)
-        .then((value) => value.forEach((element) {
-              print(element.name);
-              print(element.credit);
-            }));
-
-    controller
-        .getAllSaleForEvent(currentEvent.objectId)
-        .then((value) => value.forEach((element) {
-              print(element.name);
-              print(element.totalValue);
-              int sum = 0;
-              value.forEach((element1) {
-                sum += element1.totalValue;
-              });
-              print("Total: $sum");
-            }));
     return Scaffold(
       body: Column(children: [
         Padding(
           padding: EdgeInsets.only(
-              left: paddingLeft, top: paddingTop, bottom: paddingBottom),
+              left: paddingLeft,
+              right: paddingLeft,
+              top: paddingTop,
+              bottom: paddingBottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -79,14 +64,14 @@ class _MenuReportEventPageState extends State<MenuReportEventPage> {
             icon: Icons.dashboard,
             action: () {
               Navigator.of(context)
-                  .pushNamed(Routes.MAKE_SALE, arguments: currentEvent);
+                  .pushNamed(Routes.REPORT_SALE, arguments: currentEvent);
             }),
         BigButtonNavigation(
             title: "Relatório de Créditos - Cartão de Consumo",
             icon: Icons.dashboard,
             action: () {
               Navigator.of(context)
-                  .pushNamed(Routes.MAKE_SALE, arguments: currentEvent);
+                  .pushNamed(Routes.REPORT_CREDIT, arguments: currentEvent);
             }),
       ]),
     );

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../../../core/inject/inject.dart';
 import '../../../domain/entities/event/event_entity.dart';
-import '../../../domain/entities/product/product_entity.dart';
 import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId.dart';
 import '../login/login_controller.dart';
 import 'make_credit_controller.dart';

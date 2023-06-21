@@ -5,15 +5,14 @@ import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_cont
 import 'package:flutter/material.dart';
 
 class ReportEventPage extends StatefulWidget {
-  ReportEventPage({Key? key}) : super(key: key);
-
-  final controller = getIt<ReportEventController>();
+  const ReportEventPage({Key? key}) : super(key: key);
 
   @override
   State<ReportEventPage> createState() => _ReportEventPageState();
 }
 
 class _ReportEventPageState extends State<ReportEventPage> {
+  final controller = getIt<ReportEventController>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -28,24 +27,6 @@ class _ReportEventPageState extends State<ReportEventPage> {
     final currentEvent =
         ModalRoute.of(context)!.settings.arguments as EventEntity;
 
-    widget.controller
-        .getAllCreditForEvent(currentEvent.objectId)
-        .then((value) => value.forEach((element) {
-              print(element.name);
-              print(element.credit);
-            }));
-
-    widget.controller
-        .getAllSaleForEvent(currentEvent.objectId)
-        .then((value) => value.forEach((element) {
-              print(element.name);
-              print(element.totalValue);
-              int sum = 0;
-              value.forEach((element1) {
-                sum += element1.totalValue;
-              });
-              print("Total: $sum");
-            }));
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -65,8 +46,8 @@ class _ReportEventPageState extends State<ReportEventPage> {
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: FutureBuilder<List<WorkerEntityMinimal>>(
-                    future: widget.controller
-                        .getAllWorkerInEvent(currentEvent.objectId),
+                    future:
+                        controller.getAllWorkerInEvent(currentEvent.objectId),
                     builder: (context, snapshotWorker) {
                       if (snapshotWorker.hasError) {
                         return const Center(
@@ -77,7 +58,7 @@ class _ReportEventPageState extends State<ReportEventPage> {
                           ...List.generate(snapshotWorker.data!.length,
                               (index) {
                             return FutureBuilder<int>(
-                              future: widget.controller.countGuestWorker(
+                              future: controller.countGuestWorker(
                                   snapshotWorker.data![index].objectId,
                                   currentEvent.objectId),
                               builder: (context, snapshotCount) {
@@ -191,7 +172,7 @@ class _ReportEventPageState extends State<ReportEventPage> {
                             );
                           }),
                           FutureBuilder<int>(
-                              future: widget.controller
+                              future: controller
                                   .countGuestEvent(currentEvent.objectId),
                               builder: (context, snapshotCount) {
                                 if (snapshotCount.hasError) {

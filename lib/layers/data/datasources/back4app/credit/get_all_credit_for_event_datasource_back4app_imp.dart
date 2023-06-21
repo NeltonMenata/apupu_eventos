@@ -18,7 +18,6 @@ class GetAllCreditForEventDataSourceBack4appImp
           ReportCreditEntity(e["name"], e["credit"]),
         );
       });
-
       return list;
     }
     return [ReportCreditEntity("Sem Internet", 0)];
