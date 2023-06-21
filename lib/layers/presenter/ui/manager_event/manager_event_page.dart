@@ -179,8 +179,7 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                         children: [
                                           Text(
                                             separatorMoney(
-                                                "${snapshot.data![index].price}" +
-                                                    " kz"),
+                                                "${snapshot.data![index].price} kz"),
                                             style: TextStyle(
                                                 fontSize: fontSizeSubtitle,
                                                 fontWeight: FontWeight.bold,
