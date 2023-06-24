@@ -2,6 +2,7 @@ import 'package:apupu_eventos/layers/domain/entities/report_credit/report_credit
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity_minimal.dart';
 import 'package:apupu_eventos/layers/domain/usecases/credit/get_all_credit_for_event/get_all_credit_for_event_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/sale/get_all_sale_for_event/get_all_sale_for_event_usecase.dart';
+import '../../../domain/entities/report_guest/report_guest_entity.dart';
 import '../../../domain/entities/report_sale/report_sale_entity.dart';
 import '../../../domain/usecases/guest/count_guest_for_event/count_guest_for_event_usecase.dart';
 import '../../../domain/usecases/guest/count_guest_for_worker/count_guest_for_worker_usecase.dart';
@@ -26,11 +27,11 @@ class ReportEventController {
     return await _getAllWorkerInEventUseCase(eventObjectId);
   }
 
-  Future<int> countGuestEvent(String eventObjectId) async {
+  Future<ReportGuestEntity> countGuestEvent(String eventObjectId) async {
     return await _countGuestForEventUseCase(eventObjectId);
   }
 
-  Future<int> countGuestWorker(
+  Future<List<ReportGuestEntity>> countGuestWorker(
       String workerObjectId, String eventObjectId) async {
     return await _countGuestForWorkerUseCase(workerObjectId, eventObjectId);
   }

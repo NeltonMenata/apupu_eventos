@@ -15,12 +15,18 @@ class GetAllSaleForEventDataSourceBack4appImp
       final List<ReportSaleEntity> list = [];
       getAllSale.result.forEach((e) {
         list.add(
-          ReportSaleEntity(e["name"], e["quantity"], e["totalValue"]),
+          ReportSaleEntity(
+              name: e["name"],
+              quantity: e["quantity"],
+              totalValue: e["totalValue"]),
         );
       });
 
       return list;
     }
-    return [ReportSaleEntity("Sem Internet", 0, 0)];
+    return [
+      ReportSaleEntity(
+          name: "", error: "Sem Internet", quantity: 0, totalValue: 0)
+    ];
   }
 }

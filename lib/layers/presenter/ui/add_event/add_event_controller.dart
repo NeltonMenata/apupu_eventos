@@ -15,7 +15,8 @@ class AddEventController {
       String? managerObjectId,
       int? priceVip,
       required int price,
-      File? imgCartaz}) async {
+      File? imgCartaz,
+      int? bonusCredit}) async {
     try {
       //await Future.delayed(Duration(seconds: 3));
 
@@ -27,10 +28,12 @@ class AddEventController {
           imgCartaz: imgCartaz?.path,
           priceVip: priceVip,
           organization: organization.trim(),
-          price: price);
+          price: price,
+          bonusCredit: bonusCredit);
       final result = await _saveEventUseCase(event);
-      if (result.name == "name" && result.organization == "organization") {
-        showResultCustom(context, "Erro ao Salvar evento.", isError: true);
+      if (result.error != null) {
+        showResultCustom(context, "Erro ao Salvar evento.\n\n${result.error}",
+            isError: true);
       } else {
         showResultCustom(context, "Evento Salvo com sucesso");
       }

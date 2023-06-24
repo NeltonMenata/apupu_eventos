@@ -12,6 +12,8 @@ class EventDto extends EventEntity {
   final int price;
   final int? priceVip;
   final String? imgCartaz;
+  final int? bonusCredit;
+  final String? error;
   EventDto(
       {required this.objectId,
       required this.name,
@@ -20,7 +22,9 @@ class EventDto extends EventEntity {
       this.managerObjectId,
       required this.imgCartaz,
       this.priceVip,
-      required this.price})
+      required this.price,
+      this.bonusCredit,
+      this.error})
       : super(
             objectId: objectId,
             name: name,
@@ -29,7 +33,9 @@ class EventDto extends EventEntity {
             managerObjectId: managerObjectId,
             price: price,
             priceVip: priceVip,
-            dateOfRealization: dateOfRealization);
+            dateOfRealization: dateOfRealization,
+            bonusCredit: bonusCredit,
+            error: error);
   String toMap() {
     var map = {
       "objectId": objectId,
@@ -39,7 +45,8 @@ class EventDto extends EventEntity {
       "dateOfRealization": dateOfRealization,
       "managerObjectId": managerObjectId,
       "price": price,
-      "priceVip": priceVip
+      "priceVip": priceVip,
+      "bonusredit": bonusCredit
     };
     var json = jsonEncode(map);
     return json;
@@ -47,14 +54,21 @@ class EventDto extends EventEntity {
 
   factory EventDto.fromMap(Map<String, dynamic> e) {
     return EventDto(
-        dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
-        imgCartaz: e["imgCartaz"],
-        name: e["name"].toString(),
-        objectId: e["objectId"].toString(),
-        managerObjectId: e["managerObjectId"],
-        organization: e["organization"].toString(),
-        priceVip: int.tryParse(e["priceVip"].toString()),
-        price: int.parse(e["price"].toString()));
+        objectId: "objectId",
+        name: "name",
+        dateOfRealization: DateTime.now(),
+        organization: "organization",
+        imgCartaz: "imgCatalog",
+        price: 0);
+    // dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
+    // imgCartaz: e["imgCartaz"],
+    // name: e["name"].toString(),
+    // objectId: e["objectId"].toString(),
+    // managerObjectId: e["managerObjectId"],
+    // organization: e["organization"].toString(),
+    // priceVip: e["priceVip"],
+    // price: e["price"],
+    // bonusCredit: e["bonusCredit"]);
   }
 
   @override

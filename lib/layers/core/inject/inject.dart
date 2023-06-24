@@ -1,4 +1,5 @@
 import 'package:apupu_eventos/layers/data/datasources/back4app/credit/get_all_credit_for_event_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/back4app/credit/make_credit_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/event/get_all_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/event/save_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/count_guest_for_event_datasource_back4app_imp.dart';
@@ -10,6 +11,7 @@ import 'package:apupu_eventos/layers/data/datasources/back4app/guest/save_guest_
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/get_all_product_datasorce_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/save_product_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/back4app/sale/make_sale_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/add_worker_event/add_worker_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/create_worker/create_worker_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/get_all_worker/get_all_worker_datasource_back4app_imp.dart';
@@ -18,6 +20,7 @@ import 'package:apupu_eventos/layers/data/datasources/back4app/worker/login_work
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/remove_worker_event/remove_worker_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/worker/verify_worker_event/verify_worker_event_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/credit/get_all_credit_for_event_datasource.dart';
+import 'package:apupu_eventos/layers/data/datasources/credit/make_credit_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/get_all_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/event/save_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/guest/count_guest_for_event_datasource.dart';
@@ -29,6 +32,7 @@ import 'package:apupu_eventos/layers/data/datasources/guest/save_guest_datasourc
 import 'package:apupu_eventos/layers/data/datasources/guest/search_guest_for_contact_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/product/get_all_product_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/product/save_product_datasource.dart';
+import 'package:apupu_eventos/layers/data/datasources/sale/make_sale_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/add_worker_event/add_worker_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/create_worker/create_worker_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/get_all_worker/get_all_worker_datasource.dart';
@@ -37,6 +41,7 @@ import 'package:apupu_eventos/layers/data/datasources/worker/remove_worker_event
 import 'package:apupu_eventos/layers/data/datasources/worker/verify_worker_event/verify_worker_event_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/worker/worker_login/worker_login_datasource.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/credit/get_all_credit_for_event_repository/get_all_credit_for_event_repository_imp.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/credit/make_credit/make_credit_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/event/get_all_event/get_all_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/event/save_event/save_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/count_guest_for_event/count_guest_for_event_repository_imp.dart';
@@ -48,6 +53,7 @@ import 'package:apupu_eventos/layers/data/repositories_imp/guest/save_guest/save
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/product/get_all_product/get_all_product_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/product/save_product/save_product_repository_imp.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/sale/make_sale/make_sale_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/add_worker_event/add_worker_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/create_worker/create_worker_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/get_all_worker/get_all_worker_repository_imp.dart';
@@ -56,6 +62,7 @@ import 'package:apupu_eventos/layers/data/repositories_imp/worker/remove_worker_
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/verify_worker_event/verify_worker_event_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/worker/worker_login/worker_login_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/repositories/credit/get_all_credit_for_event/get_all_credit_for_event_repository.dart';
+import 'package:apupu_eventos/layers/domain/repositories/credit/make_credit/make_credit_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/event/get_all_event_repository/get_all_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/event/save_event/save_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/guest/count_guest_for_event/count_guest_for_event_repository.dart';
@@ -66,6 +73,7 @@ import 'package:apupu_eventos/layers/domain/repositories/guest/get_guest_for_obj
 import 'package:apupu_eventos/layers/domain/repositories/guest/save_guest/save_guest_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/guest/search_guest_for_contact/get_guest_for_objectId_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/product/save_product/save_product_repository.dart';
+import 'package:apupu_eventos/layers/domain/repositories/sale/make_sale/make_sale_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/add_worker_event/add_worker_event_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/create_worker/create_worker_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/get_all_worker/get_all_worker_repository.dart';
@@ -75,6 +83,8 @@ import 'package:apupu_eventos/layers/domain/repositories/worker/verify_worker_ev
 import 'package:apupu_eventos/layers/domain/repositories/worker/worker_login/worker_login_repository.dart';
 import 'package:apupu_eventos/layers/domain/usecases/credit/get_all_credit_for_event/get_all_credit_for_event_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/credit/get_all_credit_for_event/get_all_credit_for_event_usecase_imp.dart';
+import 'package:apupu_eventos/layers/domain/usecases/credit/make_credit/make_credit_usecase.dart';
+import 'package:apupu_eventos/layers/domain/usecases/credit/make_credit/make_credit_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/get_all_event_usecase/get_all_event_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/get_all_event_usecase/get_all_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/event/save_event_usecase/save_event_imp.dart';
@@ -97,6 +107,8 @@ import 'package:apupu_eventos/layers/domain/usecases/product/get_all_product/get
 import 'package:apupu_eventos/layers/domain/usecases/product/get_all_product/get_all_product_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/product/save_product/save_product_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/product/save_product/save_product_usecase_imp.dart';
+import 'package:apupu_eventos/layers/domain/usecases/sale/make_sale/make_sale_usecase.dart';
+import 'package:apupu_eventos/layers/domain/usecases/sale/make_sale/make_sale_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/add_worker_event/add_worker_event_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/add_worker_event/add_worker_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/create_worker/create_worker_usecase.dart';
@@ -116,6 +128,8 @@ import 'package:apupu_eventos/layers/presenter/ui/add_guest/add_guest_controller
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
+import 'package:apupu_eventos/layers/presenter/ui/make_credit/make_credit_controller.dart';
+import 'package:apupu_eventos/layers/presenter/ui/make_sale/make_sale_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_worker/manager_worker_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/register_in_or_out_guest/register_in_or_out_guest_controller.dart';
@@ -204,6 +218,18 @@ void initInject() {
   getIt.registerSingleton<IGetAllSaleForEventDataSource>(
       GetAllSaleForEventDataSourceBack4appImp());
 
+  //####### - Credit - DATASOURCE
+
+  getIt.registerSingleton<IMakeCreditDataSource>(
+    MakeCreditDataSourceBack4appImp(),
+  );
+
+  // - Sale - DATASOURCE
+
+  getIt.registerSingleton<IMakeSaleDataSource>(
+    MakeSaleDataSourceBack4appImp(),
+  );
+
   //REPOSITORY
   //######## - Guest - REPOSITORY
 
@@ -277,8 +303,17 @@ void initInject() {
   getIt.registerSingleton<IGetAllProductRepository>(
       GetAllProductRepositoryImp(getIt<IGetAllProductDataSource>()));
 
-  //###### - Report - REPOSITORY
+  // ##### - Credit - REPOSITORY
+  getIt.registerSingleton<IMakeCreditRepository>(MakeCreditRepositoryImp(
+    getIt<IMakeCreditDataSource>(),
+  ));
 
+  //####### - Sale - REPOSITORY
+  getIt.registerSingleton<IMakeSaleRepository>(MakeSaleRepositoryImp(
+    getIt<IMakeSaleDataSource>(),
+  ));
+
+  //###### - Report - REPOSITORY
   getIt.registerSingleton<IGetAllCreditForEventRepository>(
       GetAllCreditForEventRepositoryImp(
           getIt<IGetAllCreditForEventDataSource>()));
@@ -343,6 +378,14 @@ void initInject() {
     ),
   );
 
+  //###### - Credit - USECASE
+  getIt.registerSingleton<IMakeCreditUseCase>(MakeCreditUseCaseImp(
+    getIt<IMakeCreditRepository>(),
+  ));
+  //###### - Sale - USECASE
+  getIt.registerSingleton<IMakeSaleUseCase>(MakeSaleUseCaseImp(
+    getIt<IMakeSaleRepository>(),
+  ));
   //###### - Report - USECASE
 
   getIt.registerSingleton<IGetAllCreditForEventUseCase>(
@@ -387,4 +430,10 @@ void initInject() {
 
   getIt.registerSingleton<CreateProductController>(CreateProductController(
       getIt<IGetAllProductUseCase>(), getIt<ISaveProductUseCase>()));
+
+  getIt.registerSingleton<MakeCreditController>(MakeCreditController(
+      getIt<IGetGuestForObjectIdUseCase>(), getIt<IMakeCreditUseCase>()));
+
+  getIt.registerSingleton<MakeSaleController>(MakeSaleController(
+      getIt<IMakeSaleUseCase>(), getIt<IGetGuestForObjectIdUseCase>()));
 }

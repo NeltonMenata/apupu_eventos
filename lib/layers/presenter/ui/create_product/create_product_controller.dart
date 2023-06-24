@@ -10,8 +10,6 @@ class CreateProductController {
 
   final List<ProductEntity> products = [];
   Future<List<ProductEntity>> getAllProduct(String eventObjectId) async {
-    print("Get all products");
-
     return await _getAllProductUseCase(eventObjectId);
   }
 

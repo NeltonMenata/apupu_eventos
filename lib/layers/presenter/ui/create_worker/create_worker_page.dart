@@ -33,6 +33,10 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "Trabalhador",
+          style: TextStyle(color: Colors.black),
+        ),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,

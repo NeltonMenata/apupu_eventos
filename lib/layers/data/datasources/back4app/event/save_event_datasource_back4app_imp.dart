@@ -21,18 +21,20 @@ class SaveEventDataSourceBack4appImp implements ISaveEventDataSource {
         "organization": event.organization,
         "price": event.price,
         "priceVip": event.priceVip,
-        "managerObjectId": event.managerObjectId,
-        "imgCartaz": imgFile?.url
+        //"managerObjectId": event.managerObjectId,
+        "imgCartaz": imgFile?.url,
+        "bonusCredit": event.bonusCredit
       });
 
       if (result.success) {
-        if (result.result["error"] == true) {
+        if (result.result["error"] != null) {
           return EventEntity(
               objectId: "objectId",
               name: "name",
               dateOfRealization: DateTime.now(),
               organization: "organization",
               imgCartaz: "imgCatalog",
+              error: result.result["error"].toString(),
               price: 0);
         } else {
           return EventDto.fromMap(result.result);
@@ -45,6 +47,7 @@ class SaveEventDataSourceBack4appImp implements ISaveEventDataSource {
           dateOfRealization: DateTime.now(),
           organization: "organization",
           imgCartaz: "imgCatalog",
+          error: e.toString(),
           price: 0);
     }
 
@@ -64,6 +67,7 @@ class SaveEventDataSourceBack4appImp implements ISaveEventDataSource {
         dateOfRealization: DateTime.now(),
         organization: "organization",
         imgCartaz: "imgCatalog",
+        error: "",
         price: 0);
   }
 }

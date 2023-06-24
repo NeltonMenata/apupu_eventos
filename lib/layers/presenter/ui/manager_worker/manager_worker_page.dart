@@ -172,7 +172,7 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
           ),
           const Spacer(),
           Text(
-            "Vendas: ",
+            "Barman: ",
             style: TextStyle(
               color: Colors.brown[700],
               fontWeight: FontWeight.bold,

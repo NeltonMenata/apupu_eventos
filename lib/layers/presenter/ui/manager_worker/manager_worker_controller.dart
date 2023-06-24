@@ -46,3 +46,17 @@ class ManagerWorkerController {
     return _addWorkerEventUseCase(workerObjectId, eventObjectId);
   }
 }
+
+class ActionWorkerEvent extends ValueNotifier<bool> {
+  ActionWorkerEvent() : super(false);
+}
+
+abstract class WorkerEventState {}
+
+class SucessWorkerEvent implements WorkerEventState {
+  final bool successValue;
+
+  SucessWorkerEvent(this.successValue);
+}
+
+class LoadingWorkerEvent implements WorkerEventState {}

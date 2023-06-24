@@ -1,3 +1,6 @@
+import '../../../entities/report_guest/report_guest_entity.dart';
+
 abstract class ICountGuestForWorkerRepository {
-  Future<int> call(String workerObjectId, String eventObjectId);
+  Future<List<ReportGuestEntity>> call(
+      String workerObjectId, String eventObjectId);
 }

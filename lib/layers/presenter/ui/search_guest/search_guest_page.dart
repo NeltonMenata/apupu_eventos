@@ -196,13 +196,18 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                                                     scrollDirection:
                                                                         Axis.horizontal,
                                                                     child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceAround,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
                                                                       children: [
-                                                                        Padding(
-                                                                          padding: EdgeInsets.only(
-                                                                              top: 8.0,
-                                                                              bottom: 8.0,
-                                                                              left: 4.0,
-                                                                              right: width * .03),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              width * .155,
+                                                                          height:
+                                                                              width * .155,
                                                                           child:
                                                                               ClipRRect(
                                                                             borderRadius:
@@ -217,17 +222,19 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                                                                 : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
                                                                           ),
                                                                         ),
-                                                                        Visibility(
-                                                                          visible: controller
-                                                                              .listGuest[index]
-                                                                              .isVip,
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.all(4.0),
                                                                           child:
-                                                                              const Icon(
-                                                                            Icons.star,
-                                                                            color:
-                                                                                Colors.amber,
-                                                                            size:
-                                                                                35,
+                                                                              Visibility(
+                                                                            visible:
+                                                                                controller.listGuest[index].isVip,
+                                                                            child:
+                                                                                const Icon(
+                                                                              Icons.star,
+                                                                              color: Colors.black,
+                                                                              size: 35,
+                                                                            ),
                                                                           ),
                                                                         ),
                                                                         Column(

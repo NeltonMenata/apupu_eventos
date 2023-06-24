@@ -7,6 +7,8 @@ class EventEntity {
   String? imgCartaz;
   final int price;
   final int? priceVip;
+  final int? bonusCredit;
+  final String? error;
 
   EventEntity(
       {required this.objectId,
@@ -16,5 +18,7 @@ class EventEntity {
       required this.organization,
       this.imgCartaz,
       required this.price,
-      this.priceVip});
+      this.priceVip,
+      this.bonusCredit,
+      this.error});
 }

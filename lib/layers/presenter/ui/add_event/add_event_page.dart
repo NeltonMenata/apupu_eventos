@@ -19,7 +19,8 @@ class _AddEventPageState extends State<AddEventPage> {
   final nameController = TextEditingController();
   final organizationNameController = TextEditingController();
   final priceController = TextEditingController();
-  final priceVipController = TextEditingController();
+  final priceVipController = TextEditingController(text: "0");
+  final bonusCredit = TextEditingController(text: "0");
 
   DateTime date = DateTime.now();
   Image image = Image.asset(Utils.assetLogo);
@@ -42,6 +43,7 @@ class _AddEventPageState extends State<AddEventPage> {
 
     return Scaffold(
       appBar: AppBar(
+        title: const Text("Evento", style: TextStyle(color: Colors.black)),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -183,6 +185,23 @@ class _AddEventPageState extends State<AddEventPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(allPadding),
+                      child: Column(crossAxisAlignment: crossStart, children: [
+                        const Text(
+                          "Bonus de Crédito de Entrada",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w900),
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: bonusCredit,
+                          decoration: const InputDecoration(
+                              suffixIcon: Icon(Icons.attach_money_outlined),
+                              border: OutlineInputBorder()),
+                        )
+                      ]),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(allPadding),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -256,15 +275,19 @@ class _AddEventPageState extends State<AddEventPage> {
                                       priceVip:
                                           int.tryParse(priceVipController.text),
                                       price: int.parse(priceController.text),
-                                      imgCartaz: imageFile);
+                                      imgCartaz: imageFile,
+                                      bonusCredit:
+                                          int.tryParse(bonusCredit.text) ?? 0);
 
                                   setState(() {
                                     nameController.text = "";
                                     dateController.text = "";
                                     organizationNameController.text = "";
                                     priceController.text = "";
-                                    priceVipController.text = "";
+                                    priceVipController.text = "0";
+                                    bonusCredit.text = "0";
                                     isSave = !isSave;
+                                    Image.asset(Utils.assetLogo);
                                   });
                                 },
                                 child: const Text(

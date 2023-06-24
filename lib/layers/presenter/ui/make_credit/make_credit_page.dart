@@ -1,15 +1,11 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/credit/make_credit_datasource_back4app_imp.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/credit/make_credit/make_credit_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/credit/credit_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/sale/sale_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/credit/make_credit/make_credit_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../../../core/inject/inject.dart';
 import '../../../domain/entities/event/event_entity.dart';
-import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId.dart';
 import '../login/login_controller.dart';
 import 'make_credit_controller.dart';
 
@@ -23,14 +19,7 @@ class MakeCreditPage extends StatefulWidget {
 class _MakeCreditPageState extends State<MakeCreditPage> {
   bool isLoading = false;
 
-  final controller = MakeCreditController(
-    getIt<IGetGuestForObjectIdUseCase>(),
-    MakeCreditUseCaseImp(
-      MakeCreditRepositoryImp(
-        MakeCreditDataSourceBack4appImp(),
-      ),
-    ),
-  );
+  final controller = getIt<MakeCreditController>();
 
   @override
   void initState() {

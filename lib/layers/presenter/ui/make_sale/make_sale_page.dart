@@ -1,16 +1,11 @@
-import 'package:apupu_eventos/layers/data/datasources/back4app/sale/make_sale_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/dtos/product_dto.dart';
-import 'package:apupu_eventos/layers/data/repositories_imp/sale/make_sale/make_sale_repository_imp.dart';
 import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/sale/sale_entity.dart';
-import 'package:apupu_eventos/layers/domain/usecases/sale/make_sale/make_sale_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../../../core/inject/inject.dart';
 import '../../../domain/entities/event/event_entity.dart';
-import '../../../domain/entities/product/product_entity.dart';
-import '../../../domain/usecases/guest/get_guest_for_objectId_usecase/get_guest_entity_for_objectId.dart';
 import '../create_product/create_product_controller.dart';
 import '../login/login_controller.dart';
 import 'make_sale_controller.dart';
@@ -26,13 +21,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
   final controllerProduct = getIt<CreateProductController>();
   bool isLoading = false;
 
-  final controller = MakeSaleController(
-      MakeSaleUseCaseImp(
-        MakeSaleRepositoryImp(
-          MakeSaleDataSourceBack4appImp(),
-        ),
-      ),
-      getIt<IGetGuestForObjectIdUseCase>());
+  final controller = getIt<MakeSaleController>();
   final List<Map<String, dynamic>> products = [];
 
   @override
