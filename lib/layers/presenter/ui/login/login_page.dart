@@ -3,6 +3,8 @@ import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../routes/Routes.dart';
+
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
@@ -26,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     final paddingTop = height * 0.1;
     const paddingBottom = 15.0;
     final fontSizeTitle = width * .086;
-    final fontSizeTitleLabel = width * .040;
+    final fontSizeTitleLabel = width * .045;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -55,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
                     ),
-                    SizedBox(height: height * 0.13),
+                    SizedBox(height: height * 0.10),
                   ],
                 ),
               ),
@@ -65,31 +67,39 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Nome de Usuário",
+                      widget.controller.isAdmin
+                          ? "Telefone"
+                          : "Nome de Usuário",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
                     ),
                     TextField(
                       controller: username,
-                      decoration: const InputDecoration(
-                        disabledBorder: OutlineInputBorder(
+                      keyboardType: widget.controller.isAdmin
+                          ? TextInputType.phone
+                          : null,
+                      decoration: InputDecoration(
+                        disabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey)),
-                        border: OutlineInputBorder(),
-                        hintText: "Nome de Usuário",
-                        suffixIcon: Icon(Icons.person_outlined),
+                        border: const OutlineInputBorder(),
+                        hintText: widget.controller.isAdmin
+                            ? "Telefone"
+                            : "Nome de Usuário",
+                        suffixIcon: const Icon(Icons.person_outlined),
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding:
+                    const EdgeInsets.only(right: 12.0, left: 12.0, top: 12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Senha de Usuário",
+                      "Senha",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
@@ -99,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       obscureText: true,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: "Senha",
+                        hintText: "Palavra-passe",
                         suffixIcon: Icon(Icons.password_outlined),
                       ),
                       onSubmitted: (value) {},
@@ -107,38 +117,11 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
-                child: isLogin
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ElevatedButton(
-                        child: const Text("Entrar no Sistema"),
-                        onPressed: () async {
-                          if (username.text.isEmpty || password.text.isEmpty) {
-                            showResultCustom(
-                                context, "Preencha os campos correctamente!",
-                                isError: true);
-                            return;
-                          }
-                          setState(() {
-                            isLogin = true;
-                          });
-                          await widget.controller.login(context,
-                              username.text.trim(), password.text.trim());
-
-                          setState(() {
-                            isLogin = false;
-                          });
-                        },
-                      ),
-              ),
               TextButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text("Logar como Administrador?"),
+                    const Text("Acessar como Administrador?"),
                     Checkbox(
                       onChanged: (value) async {
                         setState(() {
@@ -155,6 +138,56 @@ class _LoginPageState extends State<LoginPage> {
                     widget.controller.isAdmin = !widget.controller.isAdmin;
                   });
                 },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 6, left: 10, right: 10, bottom: 6),
+                child: isLogin
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ElevatedButton(
+                        child: Text(
+                          "Entrar no Sistema",
+                          style: TextStyle(fontSize: fontSizeTitleLabel),
+                        ),
+                        onPressed: () async {
+                          if (username.text.isEmpty || password.text.isEmpty) {
+                            showResultCustom(
+                                context, "Preencha os campos correctamente!",
+                                isError: true);
+                            return;
+                          }
+                          setState(() {
+                            isLogin = true;
+                          });
+                          await widget.controller
+                              .login(context, username.text, password.text);
+
+                          setState(() {
+                            isLogin = false;
+                          });
+                        },
+                      ),
+              ),
+              const Center(
+                  child: Text("OU",
+                      style: TextStyle(fontWeight: FontWeight.bold))),
+              Padding(
+                padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey.shade300)),
+                  child: Text(
+                    "Criar conta",
+                    style: TextStyle(
+                        color: Colors.blue, fontSize: fontSizeTitleLabel),
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.CREATE_MANAGER);
+                  },
+                ),
               ),
             ]),
       ),

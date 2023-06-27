@@ -19,8 +19,9 @@ class CreateWorkerDataSourceBack4appImp implements ICreateWorkerDataSource {
       if (result.statusCode == 200) {
         if (result.result["error"] != null) {
           return WorkerEntity(
-              objectId: "error",
-              name: result.result["desc"],
+              objectId: "",
+              error: result.result["error"],
+              name: "",
               username: "username",
               password: "password",
               isDoorman: false);
@@ -35,21 +36,23 @@ class CreateWorkerDataSourceBack4appImp implements ICreateWorkerDataSource {
         }
 
         // EventDto.fromMap(saveEvent.results![0]);
+      } else {
+        return WorkerEntity(
+            objectId: "",
+            name: "name",
+            error: result.error?.message,
+            username: "username",
+            password: "password",
+            isDoorman: false);
       }
     } catch (e) {
       return WorkerEntity(
           objectId: "",
+          error: e.toString(),
           name: "name",
           username: "username",
           password: "password",
           isDoorman: false);
     }
-
-    return WorkerEntity(
-        objectId: "",
-        name: "name",
-        username: "username",
-        password: "password",
-        isDoorman: false);
   }
 }

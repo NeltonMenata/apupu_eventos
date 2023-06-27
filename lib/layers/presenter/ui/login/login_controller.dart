@@ -1,6 +1,6 @@
-import 'package:apupu_eventos/layers/core/inject/inject.dart';
-import 'package:apupu_eventos/layers/data/datasources/worker/worker_login/worker_login_datasource.dart';
+import 'package:apupu_eventos/layers/domain/entities/manager/manager_entity.dart';
 import 'package:apupu_eventos/layers/domain/entities/worker/worker_entity.dart';
+import 'package:apupu_eventos/layers/domain/usecases/manager/login_manager/login_manager_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/worker/login/login_worker_usecase.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +8,10 @@ import '../../routes/Routes.dart';
 
 class LoginController {
   bool isAdmin = false;
-  final IWorkerLoginDataSource _workerLoginAdminDataSource;
+  final ILoginManagerUseCase _loginManagerUseCase;
+  final ILoginWorkerUseCase _loginWorkerUseCase;
 
-  LoginController(this._workerLoginAdminDataSource);
+  LoginController(this._loginManagerUseCase, this._loginWorkerUseCase);
 
   static logout(BuildContext context) {
     Navigator.of(context)
@@ -22,8 +23,7 @@ class LoginController {
   Future<void> login(
       BuildContext context, String username, String password) async {
     if (isAdmin) {
-      final user =
-          await _workerLoginAdminDataSource(username.trim(), password.trim());
+      final user = await _loginManagerUseCase(username.trim(), password.trim());
       if (user.error != null) {
         showResultCustom(context, user.error!, isError: true);
       } else {
@@ -32,7 +32,7 @@ class LoginController {
             .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
       }
     } else {
-      final _loginWorker = getIt<ILoginWorkerUseCase>();
+      final _loginWorker = _loginWorkerUseCase;
       final login = await _loginWorker(username, password);
       if (login.username == "" && login.password == "") {
         currentWorker = login;
@@ -48,4 +48,4 @@ class LoginController {
 }
 
 WorkerEntity? currentWorker;
-WorkerEntity? currentAdmin;
+ManagerEntity? currentAdmin;

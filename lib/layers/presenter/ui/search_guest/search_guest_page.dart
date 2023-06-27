@@ -145,124 +145,144 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                                         .size
                                                         .width *
                                                     .7,
-                                                child:
-                                                    controller.listGuest[index]
-                                                                .contact ==
-                                                            "contact"
-                                                        ? Center(
-                                                            child: Text(
-                                                              "Clique em Adicionar para criar um Convidado neste Evento.",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize:
-                                                                      fontSizeSubtitle),
-                                                            ),
-                                                          )
-                                                        : Column(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .stretch,
+                                                  children: [
+                                                    Expanded(
+                                                      child: Center(
+                                                        child: QrImage(
+                                                            data: controller
+                                                                .listGuest[
+                                                                    index]
+                                                                .objectId),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.black45,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                      height: width * .2,
+                                                      child: Center(
+                                                        child:
+                                                            SingleChildScrollView(
+                                                          scrollDirection:
+                                                              Axis.horizontal,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
-                                                                    .stretch,
+                                                                    .center,
                                                             children: [
-                                                              Expanded(
-                                                                child: Center(
-                                                                  child: QrImage(
-                                                                      data: controller
-                                                                          .listGuest[
-                                                                              index]
-                                                                          .objectId),
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        5),
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .black45,
+                                                              SizedBox(
+                                                                width: width *
+                                                                    .155,
+                                                                height: width *
+                                                                    .155,
+                                                                child:
+                                                                    ClipRRect(
                                                                   borderRadius:
                                                                       BorderRadius
                                                                           .circular(
-                                                                              15),
-                                                                ),
-                                                                height:
-                                                                    width * .2,
-                                                                child: Center(
-                                                                  child:
-                                                                      SingleChildScrollView(
-                                                                    scrollDirection:
-                                                                        Axis.horizontal,
-                                                                    child: Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .spaceAround,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
-                                                                      children: [
-                                                                        SizedBox(
-                                                                          width:
-                                                                              width * .155,
-                                                                          height:
-                                                                              width * .155,
-                                                                          child:
-                                                                              ClipRRect(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10),
-                                                                            child: currentEvent.imgCartaz != null
-                                                                                ? currentEvent.imgCartaz!.isNotEmpty && currentEvent.imgCartaz! != Utils.assetLogo
-                                                                                    ? CachedNetworkImage(
-                                                                                        imageUrl: currentEvent.imgCartaz!,
-                                                                                        fit: BoxFit.cover,
-                                                                                      )
-                                                                                    : Image.asset(Utils.assetLogo, fit: BoxFit.cover)
-                                                                                : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
-                                                                          ),
-                                                                        ),
-                                                                        Padding(
-                                                                          padding:
-                                                                              const EdgeInsets.all(4.0),
-                                                                          child:
-                                                                              Visibility(
-                                                                            visible:
-                                                                                controller.listGuest[index].isVip,
-                                                                            child:
-                                                                                const Icon(
-                                                                              Icons.star,
-                                                                              color: Colors.black,
-                                                                              size: 35,
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                        Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceAround,
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            Padding(
-                                                                              padding: const EdgeInsets.only(right: 4.0),
-                                                                              child: Text(
-                                                                                controller.listGuest[index].name,
-                                                                                style: TextStyle(fontSize: fontSizeGuest, fontWeight: FontWeight.bold, color: Colors.black),
-                                                                              ),
-                                                                            ),
-                                                                            Text(
-                                                                              "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
-                                                                              style: TextStyle(fontSize: fontSizeSubtitle * .8, fontWeight: FontWeight.bold, color: Colors.black),
+                                                                              10),
+                                                                  child: currentEvent
+                                                                              .imgCartaz !=
+                                                                          null
+                                                                      ? currentEvent.imgCartaz!.isNotEmpty &&
+                                                                              currentEvent.imgCartaz! !=
+                                                                                  Utils
+                                                                                      .assetLogo
+                                                                          ? CachedNetworkImage(
+                                                                              imageUrl: currentEvent.imgCartaz!,
+                                                                              fit: BoxFit.cover,
                                                                             )
-                                                                          ],
-                                                                        ),
-                                                                      ],
-                                                                    ),
+                                                                          : Image.asset(Utils.assetLogo,
+                                                                              fit: BoxFit
+                                                                                  .cover)
+                                                                      : Image.asset(
+                                                                          Utils
+                                                                              .assetLogo,
+                                                                          fit: BoxFit
+                                                                              .cover),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        4.0),
+                                                                child:
+                                                                    Visibility(
+                                                                  visible: controller
+                                                                      .listGuest[
+                                                                          index]
+                                                                      .isVip,
+                                                                  child:
+                                                                      const Icon(
+                                                                    Icons.star,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    size: 35,
                                                                   ),
                                                                 ),
                                                               ),
+                                                              Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        right:
+                                                                            4.0),
+                                                                    child: Text(
+                                                                      controller
+                                                                          .listGuest[
+                                                                              index]
+                                                                          .name,
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              fontSizeGuest,
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.black),
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            fontSizeSubtitle *
+                                                                                .8,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ],
                                                           ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               );
                                             },
                                           ),
@@ -308,12 +328,8 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                             style: const TextStyle(color: Colors.white),
                           ),
                           trailing: controller.listGuest[index].isIn
-                              ? IconButton(
-                                  icon: const Icon(
-                                    Icons.input_rounded,
-                                    color: Colors.green,
-                                  ),
-                                  onPressed: () async {
+                              ? GestureDetector(
+                                  onTap: () async {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor: Colors.red.shade900,
@@ -327,13 +343,32 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                             !controller.listGuest[index].isIn);
                                     setState(() {});
                                   },
-                                )
-                              : IconButton(
-                                  icon: const Icon(
-                                    Icons.output_rounded,
-                                    color: Colors.red,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.grey.shade300),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.input_rounded,
+                                          color: Colors.green.shade800,
+                                        ),
+                                        Text(
+                                          "Dentro",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.green.shade800),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  onPressed: () async {
+                                )
+                              : GestureDetector(
+                                  onTap: () async {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor: Colors.green.shade900,
@@ -348,6 +383,29 @@ class _SearchGuestPageState extends State<SearchGuestPage>
 
                                     setState(() {});
                                   },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.grey.shade300),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.output_rounded,
+                                          color: Colors.red.shade800,
+                                        ),
+                                        Text(
+                                          "Fora",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.red.shade800),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                         ),
                         const Divider(

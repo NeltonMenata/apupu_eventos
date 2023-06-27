@@ -1,22 +1,20 @@
-class WorkerEntity {
+class ManagerEntity {
   final String username;
-  final String password;
+  final String? password;
   final String name;
   final String? objectId;
-  final String? managerObjectId;
   final bool? isBlocked;
-  final bool isDoorman;
+  final String? investor;
   final String? phone;
   final String? error;
 
-  WorkerEntity(
+  ManagerEntity(
       {required this.username,
-      required this.password,
+      this.password,
       required this.name,
       this.objectId,
       this.isBlocked,
       this.error,
-      this.managerObjectId,
       this.phone,
-      required this.isDoorman});
+      this.investor});
 }

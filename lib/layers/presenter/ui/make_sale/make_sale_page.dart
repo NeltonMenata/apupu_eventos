@@ -252,14 +252,6 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                     )
                                   ],
                                 ),
-                                // CircleAvatar(
-                                //   child: Text(
-                                //     products[index]["name"]!
-                                //         .toString()
-                                //         .substring(0, 1)
-                                //         .toUpperCase(),
-                                //   ),
-                                // ),
                               ]),
                             ),
                           ),
@@ -306,6 +298,8 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                 productsSelected[index]["name"]!
                                     .toString()
                                     .toUpperCase(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                                 maxLines: 1,
                                 softWrap: true,
                               ),
@@ -440,7 +434,7 @@ class _MakeSalePageState extends State<MakeSalePage> {
                         (sale?.getTotalValueForSale ?? 0).toString()) +
                     " kz",
                 style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: width * .045),
+                    fontWeight: FontWeight.bold, fontSize: width * .05),
               ),
               const Spacer(),
               currentGuest != null

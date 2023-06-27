@@ -27,7 +27,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
     final paddingTop = height * 0.05;
     const paddingBottom = 15.0;
     const crossStart = CrossAxisAlignment.start;
-    const fontSize = 17.0;
+    final fontSize = width * .045;
     final fontSizeTitle = width * .08;
     const allPadding = 8.0;
 
@@ -69,7 +69,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                     Padding(
                       padding: const EdgeInsets.all(allPadding),
                       child: Column(crossAxisAlignment: crossStart, children: [
-                        const Text(
+                        Text(
                           "Nome do Trabalhador",
                           style: TextStyle(
                               fontSize: fontSize, fontWeight: FontWeight.w900),
@@ -78,6 +78,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                           controller: nameController,
                           keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
+                              hintText: "Nome",
                               suffixIcon:
                                   Icon(Icons.insert_drive_file_outlined),
                               border: OutlineInputBorder()),
@@ -89,7 +90,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                       child: Column(
                         crossAxisAlignment: crossStart,
                         children: [
-                          const Text(
+                          Text(
                             "Username",
                             style: TextStyle(
                                 fontSize: fontSize,
@@ -98,6 +99,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                           TextFormField(
                             controller: usernameController,
                             decoration: const InputDecoration(
+                              hintText: "Username",
                               suffixIcon: Icon(Icons.event_outlined),
                               border: OutlineInputBorder(),
                             ),
@@ -108,7 +110,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                     Padding(
                       padding: const EdgeInsets.all(allPadding),
                       child: Column(crossAxisAlignment: crossStart, children: [
-                        const Text(
+                        Text(
                           "Palavra-passe",
                           style: TextStyle(
                               fontSize: fontSize, fontWeight: FontWeight.w900),
@@ -117,6 +119,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                           controller: passwordController,
                           keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
+                              hintText: "Senha",
                               suffixIcon: Icon(Icons.group_outlined),
                               border: OutlineInputBorder()),
                         )
@@ -137,7 +140,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                               border: Border.all(),
                               borderRadius: BorderRadius.circular(15)),
                           child: Row(children: [
-                            const Text(
+                            Text(
                               "É porteiro?",
                               style: TextStyle(
                                   fontSize: fontSize,
@@ -189,11 +192,16 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                                     isSave = !isSave;
                                   });
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Criar Trabalhador",
                                   style: TextStyle(fontSize: fontSize),
                                 ),
                               )),
+                    SizedBox(
+                      height: width * .07,
+                    ),
+                    const Text(
+                        "Deixe a caixa de seleção desmarcada se quiser criar o trabalhador como Barman!"),
                   ],
                 ),
               )

@@ -90,10 +90,15 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           ),
                         ),
                         ListTile(
-                          leading: const Icon(Icons.group_work_outlined),
-                          title: const Text(
+                          leading: Icon(
+                            Icons.group_work_outlined,
+                            size: width * .10,
+                          ),
+                          title: Text(
                             "Gerir Trabalhador do Evento",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04),
                           ),
                           onTap: () {
                             Navigator.pushNamed(context, Routes.MANAGER_WORKER,
@@ -101,10 +106,15 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
-                          leading: const Icon(Icons.dashboard),
-                          title: const Text(
+                          leading: Icon(
+                            Icons.dashboard,
+                            size: width * .10,
+                          ),
+                          title: Text(
                             "Exibir Relatório do Evento",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04),
                           ),
                           onTap: () {
                             Navigator.pushNamed(
@@ -113,10 +123,15 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
-                          leading: const Icon(Icons.add_box_rounded),
-                          title: const Text(
+                          leading: Icon(
+                            Icons.add_box_rounded,
+                            size: width * .10,
+                          ),
+                          title: Text(
                             "Criar Produtos do Evento",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04),
                           ),
                           onTap: () {
                             Navigator.of(context).pushNamed(
@@ -125,10 +140,15 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
-                          leading: const Icon(Icons.attach_money_sharp),
-                          title: const Text(
+                          leading: Icon(
+                            Icons.attach_money_sharp,
+                            size: width * .10,
+                          ),
+                          title: Text(
                             "Carregar Cartão de Consumo",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04),
                           ),
                           onTap: () {
                             Navigator.pushNamed(context, Routes.MAKE_CREDIT,
@@ -136,10 +156,15 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                           },
                         ),
                         ListTile(
-                          leading: const Icon(Icons.fastfood_rounded),
-                          title: const Text(
+                          leading: Icon(
+                            Icons.fastfood_rounded,
+                            size: width * .10,
+                          ),
+                          title: Text(
                             "Realizar uma Venda",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04),
                           ),
                           onTap: () {
                             Navigator.pushNamed(context, Routes.MAKE_SALE,

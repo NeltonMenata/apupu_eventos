@@ -9,6 +9,8 @@ import 'package:apupu_eventos/layers/data/datasources/back4app/guest/get_all_gue
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/get_guest_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/save_guest_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/guest/search_guest_for_contact_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/back4app/manager/create_manager/create_manager_datasource_back4app_imp.dart';
+import 'package:apupu_eventos/layers/data/datasources/back4app/manager/login_manager/login_manager_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/get_all_product_datasorce_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/product/save_product_datasource_back4app_imp.dart';
 import 'package:apupu_eventos/layers/data/datasources/back4app/sale/make_sale_datasource_back4app_imp.dart';
@@ -30,6 +32,8 @@ import 'package:apupu_eventos/layers/data/datasources/guest/get_all_guest_dataso
 import 'package:apupu_eventos/layers/data/datasources/guest/get_guest_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/guest/save_guest_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/guest/search_guest_for_contact_datasource.dart';
+import 'package:apupu_eventos/layers/data/datasources/manager/create_manager/create_manager_datasource.dart';
+import 'package:apupu_eventos/layers/data/datasources/manager/login_manager/login_manager_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/product/get_all_product_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/product/save_product_datasource.dart';
 import 'package:apupu_eventos/layers/data/datasources/sale/make_sale_datasource.dart';
@@ -51,6 +55,8 @@ import 'package:apupu_eventos/layers/data/repositories_imp/guest/get_all_guest/g
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/get_guest_for_objectId/get_guest_for_objectId_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/save_guest/save_guest_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/guest/search_guest_for_contact/search_guest_for_contact_repository_imp.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/manager/create_manager/create_manager_repository_imp.dart';
+import 'package:apupu_eventos/layers/data/repositories_imp/manager/login_manager/login_manager_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/product/get_all_product/get_all_product_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/product/save_product/save_product_repository_imp.dart';
 import 'package:apupu_eventos/layers/data/repositories_imp/sale/make_sale/make_sale_repository_imp.dart';
@@ -72,6 +78,8 @@ import 'package:apupu_eventos/layers/domain/repositories/guest/get_all_guest_rep
 import 'package:apupu_eventos/layers/domain/repositories/guest/get_guest_for_objectId/get_guest_for_objectId_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/guest/save_guest/save_guest_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/guest/search_guest_for_contact/get_guest_for_objectId_repository.dart';
+import 'package:apupu_eventos/layers/domain/repositories/manager/create_manager/create_manager_repository.dart';
+import 'package:apupu_eventos/layers/domain/repositories/manager/login_manager/login_manager_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/product/save_product/save_product_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/sale/make_sale/make_sale_repository.dart';
 import 'package:apupu_eventos/layers/domain/repositories/worker/add_worker_event/add_worker_event_repository.dart';
@@ -103,6 +111,9 @@ import 'package:apupu_eventos/layers/domain/usecases/guest/save_guest/save_guest
 import 'package:apupu_eventos/layers/domain/usecases/guest/save_guest/save_guest_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact.dart';
 import 'package:apupu_eventos/layers/domain/usecases/guest/search_guest_for_contact/search_guest_entity_for_contact_imp.dart';
+import 'package:apupu_eventos/layers/domain/usecases/manager/create_manager/create_manager_usecase.dart';
+import 'package:apupu_eventos/layers/domain/usecases/manager/create_manager/create_manager_usecase_imp.dart';
+import 'package:apupu_eventos/layers/domain/usecases/manager/login_manager/login_manager_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/product/get_all_product/get_all_product_usecase.dart';
 import 'package:apupu_eventos/layers/domain/usecases/product/get_all_product/get_all_product_usecase_imp.dart';
 import 'package:apupu_eventos/layers/domain/usecases/product/save_product/save_product_usecase.dart';
@@ -125,6 +136,7 @@ import 'package:apupu_eventos/layers/domain/usecases/worker/verify_worker_event/
 import 'package:apupu_eventos/layers/domain/usecases/worker/verify_worker_event/verify_worker_event_usecase_imp.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_event/add_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_guest/add_guest_controller.dart';
+import 'package:apupu_eventos/layers/presenter/ui/create_manager/create_manager_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
@@ -138,11 +150,11 @@ import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_cont
 import 'package:get_it/get_it.dart';
 
 import '../../data/datasources/back4app/sale/get_all_sale_for_event_datasource_back4app_imp.dart';
-import '../../data/datasources/back4app/worker/login_worker_admin/login_worker_admin_datasource_back4app_imp.dart';
 import '../../data/datasources/sale/get_all_sale_for_event_datasource.dart';
 import '../../data/repositories_imp/sale/get_all_sale_for_event/get_all_sale_for_event_repository_imp.dart';
 import '../../domain/repositories/product/get_all_product/get_all_product_repository.dart';
 import '../../domain/repositories/sale/get_all_sale_for_event/get_all_sale_for_event_repository.dart';
+import '../../domain/usecases/manager/login_manager/login_manager_usecase.dart';
 import '../../domain/usecases/sale/get_all_sale_for_event/get_all_sale_for_event_usecase.dart';
 import '../../domain/usecases/sale/get_all_sale_for_event/get_all_sale_for_event_usecase_imp.dart';
 
@@ -201,6 +213,13 @@ void initInject() {
 
   getIt.registerSingleton<IVerifyWorkerEventDataSource>(
       VerifyWorkerEventDataSourceBack4appImp());
+
+  //####### - Manager - DATASOURCE
+  getIt.registerSingleton<ILoginManagerDataSource>(
+      LoginManagerDataSourceBack4appImp());
+
+  getIt.registerSingleton<ICreateManagerDataSource>(
+      CreateManagerDataSourceBack4appImp());
 
   //####### - Product - DATASOURCE
 
@@ -292,6 +311,13 @@ void initInject() {
   getIt.registerSingleton<IVerifyWorkerEventRepository>(
       VerifyWorkerEventRepositoryImp(getIt<IVerifyWorkerEventDataSource>()));
 
+  //###### - Manager - REPOSITORY
+  getIt.registerSingleton<ILoginManagerRepository>(
+      LoginManagerRepositoryImp(getIt<ILoginManagerDataSource>()));
+
+  getIt.registerSingleton<ICreateManagerRepository>(
+      CreateManagerRepositoryImp(getIt<ICreateManagerDataSource>()));
+
   //######## - Product - REPOSITORY
 
   getIt.registerSingleton<ISaveProductRepository>(
@@ -369,6 +395,12 @@ void initInject() {
   getIt.registerSingleton<IVerifyWorkerEventUseCase>(
       VerifyWorkerEventUseCaseImp(getIt<IVerifyWorkerEventRepository>()));
 
+  //###### - Manager - USECASE
+  getIt.registerSingleton<ILoginManagerUseCase>(
+      LoginManagerUseCaseImp(getIt<ILoginManagerRepository>()));
+
+  getIt.registerSingleton<ICreateManagerUseCase>(
+      CreateManagerUseCaseImp(getIt<ICreateManagerRepository>()));
   //###### - Product - USECASE
   getIt.registerSingleton<ISaveProductUseCase>(
       SaveProductUseCaseImp(getIt<ISaveProductRepository>()));
@@ -397,8 +429,8 @@ void initInject() {
   //CONTROLLER
   getIt.registerSingleton<AddEventController>(AddEventController());
   getIt.registerSingleton<AddGuestController>(AddGuestController());
-  getIt.registerSingleton<LoginController>(
-      LoginController(LoginWorkerAdminDataSourceBack4appImp()));
+  getIt.registerSingleton<LoginController>(LoginController(
+      getIt<ILoginManagerUseCase>(), getIt<ILoginWorkerUseCase>()));
   getIt.registerSingleton<ManagerEventController>(
       ManagerEventController(getIt<IGetAllEventUseCase>()));
 
@@ -415,8 +447,10 @@ void initInject() {
       RegisterInOrOutGuestController(
           getIt<ISaveGuestUseCase>(), getIt<IGetGuestForObjectIdUseCase>()));
 
-  getIt.registerSingleton<CreateWorkerController>(CreateWorkerController());
-
+  getIt.registerSingleton<CreateWorkerController>(
+      CreateWorkerController(getIt<ICreateWorkerUseCase>()));
+  getIt.registerSingleton<CreateManagerController>(
+      CreateManagerController(getIt<ICreateManagerUseCase>()));
   getIt.registerSingleton<ReportEventController>(
     ReportEventController(
         getIt<IGetAllWorkerInEventUseCase>(),

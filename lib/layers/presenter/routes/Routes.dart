@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 
 import '../ui/add_event/add_event_page.dart';
 import '../ui/add_guest/add_guest_page.dart';
+import '../ui/create_manager/create_manager_page.dart';
 import '../ui/home/home_page.dart';
 import '../ui/manager_event/manager_event_page.dart';
 import '../ui/menu_report_event/menu_report_event_page.dart';
@@ -42,6 +43,7 @@ abstract class Routes {
   static const MENU_REPORT_EVENT = "/menu_report_event";
   static const REPORT_SALE = "/report_sale";
   static const REPORT_CREDIT = "/report_credit";
+  static const CREATE_MANAGER = "/create_manager";
 
   // Routers for Worker
 
@@ -67,7 +69,8 @@ abstract class Routes {
       // ignore: prefer_const_constructors
       MENU_REPORT_EVENT: (context) => MenuReportEventPage(),
       REPORT_SALE: (context) => ReportSalePage(),
-      REPORT_CREDIT: (context) => ReportCreditPage()
+      REPORT_CREDIT: (context) => ReportCreditPage(),
+      CREATE_MANAGER: (context) => const CreateManagerPage(),
     };
   }
 }

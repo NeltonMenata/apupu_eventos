@@ -50,22 +50,35 @@ class _HomePageState extends State<HomePage> {
                   currentAccountPicture: Image.asset(Utils.assetLogo),
                 ),
                 ListTile(
-                  title: const Text("Criar Porteiro/Barman"),
-                  trailing: const Icon(Icons.group_add_outlined),
+                  title: Text(
+                    "Criar Porteiro/Barman",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: width * .04,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.group_add_outlined,
+                    size: width * .10,
+                  ),
                   onTap: () {
                     Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
                   },
                 ),
                 const Spacer(),
                 ListTile(
-                  title: const Text(
+                  title: Text(
                     "Terminar Sessão",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.red),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: width * .04,
+                    ),
                   ),
-                  trailing: const Icon(
+                  trailing: Icon(
                     Icons.logout_outlined,
                     color: Colors.red,
+                    size: width * .10,
                   ),
                   onTap: () async {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
