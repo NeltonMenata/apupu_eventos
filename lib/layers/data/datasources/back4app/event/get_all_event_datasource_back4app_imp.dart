@@ -19,23 +19,24 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
       allEvent.result.forEach((e) {
         list.add(
           EventDto(
-            dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
-            imgCartaz: e["imgCartaz"],
-            name: e["name"].toString(),
-            objectId: e["objectId"].toString(),
-            organization: e["organization"].toString(),
-            price: int.parse(
-              e["price"].toString(),
-            ),
-            priceVip: int.tryParse(
-              e["priceVip"].toString(),
-            ),
-          ),
+              dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
+              imgCartaz: e["imgCartaz"],
+              name: e["name"].toString(),
+              objectId: e["objectId"].toString(),
+              organization: e["organization"].toString(),
+              price: int.parse(
+                e["price"].toString(),
+              ),
+              priceVip: int.tryParse(
+                e["priceVip"].toString(),
+              ),
+              payment: e["payment"]),
         );
       });
 
       return list;
     }
+
     return [
       EventDto(
           dateOfRealization: DateTime.now(),
@@ -43,6 +44,7 @@ class GetAllEventDataSourceBack4appImp implements IGetAllEventDataSource {
           name: "Sem Internet",
           objectId: "",
           organization: "",
+          payment: false,
           price: 0)
     ];
   }

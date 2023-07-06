@@ -9,6 +9,11 @@ class EventEntity {
   final int? priceVip;
   final int? bonusCredit;
   final String? error;
+  final bool? payment;
+  final int? productsQuantity;
+  final int? productsValue;
+  final int? vip;
+  final int? normal;
 
   EventEntity(
       {required this.objectId,
@@ -20,5 +25,10 @@ class EventEntity {
       required this.price,
       this.priceVip,
       this.bonusCredit,
+      this.payment,
+      this.productsQuantity,
+      this.productsValue,
+      this.vip,
+      this.normal,
       this.error});
 }

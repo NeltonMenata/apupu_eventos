@@ -223,7 +223,11 @@ class _MakeSalePageState extends State<MakeSalePage> {
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
-                                  color: Colors.grey.shade300),
+                                  color: !productsSelected.every((element) =>
+                                          element["objectId"] !=
+                                          products[index]["objectId"])
+                                      ? Colors.grey.shade600
+                                      : Colors.grey.shade400),
                               child: Wrap(children: [
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -237,17 +241,24 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                           ": " +
                                           products[index]["price"].toString() +
                                           " kz",
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: !productsSelected.every(
+                                                  (element) =>
+                                                      element["objectId"] !=
+                                                      products[index]
+                                                          ["objectId"])
+                                              ? Colors.white
+                                              : Colors.black),
                                     ),
                                     Visibility(
                                       visible: !productsSelected.every(
                                           (element) =>
                                               element["objectId"] !=
                                               products[index]["objectId"]),
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.check_box_outlined,
-                                        color: Colors.blue,
+                                        color: Colors.blue.shade300,
                                       ),
                                     )
                                   ],

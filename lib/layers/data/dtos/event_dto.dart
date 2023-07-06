@@ -13,6 +13,11 @@ class EventDto extends EventEntity {
   final int? priceVip;
   final String? imgCartaz;
   final int? bonusCredit;
+  final bool? payment;
+  final int? productsQuantity;
+  final int? productsValue;
+  final int? vip;
+  final int? normal;
   final String? error;
   EventDto(
       {required this.objectId,
@@ -24,6 +29,11 @@ class EventDto extends EventEntity {
       this.priceVip,
       required this.price,
       this.bonusCredit,
+      this.payment,
+      this.productsQuantity,
+      this.productsValue,
+      this.vip,
+      this.normal,
       this.error})
       : super(
             objectId: objectId,
@@ -35,6 +45,11 @@ class EventDto extends EventEntity {
             priceVip: priceVip,
             dateOfRealization: dateOfRealization,
             bonusCredit: bonusCredit,
+            payment: payment,
+            productsQuantity: productsQuantity,
+            productsValue: productsValue,
+            vip: vip,
+            normal: normal,
             error: error);
   String toMap() {
     var map = {
@@ -46,7 +61,12 @@ class EventDto extends EventEntity {
       "managerObjectId": managerObjectId,
       "price": price,
       "priceVip": priceVip,
-      "bonusredit": bonusCredit
+      "bonusredit": bonusCredit,
+      "payment": payment,
+      "productsQuantity": productsQuantity,
+      "productsValue": productsValue,
+      "vip": vip,
+      "normal": normal,
     };
     var json = jsonEncode(map);
     return json;
@@ -59,6 +79,7 @@ class EventDto extends EventEntity {
         dateOfRealization: DateTime.now(),
         organization: "organization",
         imgCartaz: "imgCatalog",
+        payment: false,
         price: 0);
     // dateOfRealization: DateTime.parse(e["dateOfRealization"]["iso"]),
     // imgCartaz: e["imgCartaz"],

@@ -125,113 +125,88 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
       ),
       body: Column(
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Text(
-                  "CRÉDITOS",
-                  style: TextStyle(
-                      fontSize: width * .05, fontWeight: FontWeight.w900),
-                ),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: Text(
+              "CRÉDITOS",
+              style:
+                  TextStyle(fontSize: width * .05, fontWeight: FontWeight.w900),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    currentCredit = 1000;
-                  });
-                },
-                child: Container(
-                  width: width * .3,
-                  height: width * .3,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.red,
-                            Colors.red,
-                            Colors.red,
-                            Colors.black54
-                          ])),
-                  child: const FittedBox(
-                    child: Text(
-                      "1.000 kz",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+              SizedBox(
+                width: width * .3,
+                height: width * .3,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey.shade400)),
+                  onPressed: () {
+                    if (currentCredit == 1000) {
+                      return;
+                    }
+                    setState(() {
+                      currentCredit = 1000;
+                    });
+                  },
+                  child: Text(
+                    "1.000 kz",
+                    style: TextStyle(
+                      fontSize: width * .055,
+                      color: Colors.grey.shade900,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    currentCredit = 2000;
-                  });
-                },
-                child: Container(
-                  width: width * .3,
-                  height: width * .3,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.green,
-                            Colors.green,
-                            Colors.green,
-                            Colors.black54
-                          ])),
-                  child: const FittedBox(
-                    child: Text(
-                      "2.000 kz",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+              SizedBox(
+                width: width * .3,
+                height: width * .3,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey.shade400)),
+                  onPressed: () {
+                    if (currentCredit == 2000) {
+                      return;
+                    }
+                    setState(() {
+                      currentCredit = 2000;
+                    });
+                  },
+                  child: Text(
+                    "2.000 kz",
+                    style: TextStyle(
+                      fontSize: width * .052,
+                      color: Colors.grey.shade900,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    currentCredit = 5000;
-                  });
-                },
-                child: Container(
-                  width: width * .3,
-                  height: width * .3,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.grey,
-                            Colors.grey,
-                            Colors.grey,
-                            Colors.black
-                          ])),
-                  child: const FittedBox(
-                    child: Text(
-                      "5.000 kz",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+              SizedBox(
+                width: width * .3,
+                height: width * .3,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.grey.shade400)),
+                  onPressed: () {
+                    if (currentCredit == 5000) {
+                      return;
+                    }
+                    setState(() {
+                      currentCredit = 5000;
+                    });
+                  },
+                  child: Text(
+                    "5.000 kz",
+                    style: TextStyle(
+                      fontSize: width * .051,
+                      color: Colors.grey.shade900,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -243,7 +218,7 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
               padding: EdgeInsets.all(width * .06),
               width: double.infinity,
               height: width * .2,
-              color: Colors.green.shade900,
+              color: Colors.blue.shade900,
               child: FittedBox(
                   child: Row(
                 children: [
@@ -268,7 +243,9 @@ class _MakeCreditPageState extends State<MakeCreditPage> {
               child: Text(
                 "Valor Personalizado",
                 style: TextStyle(
-                    fontWeight: FontWeight.w900, fontSize: width * .04),
+                    color: Colors.grey.shade600,
+                    fontWeight: FontWeight.w900,
+                    fontSize: width * .04),
               ),
             ),
           ),

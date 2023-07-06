@@ -119,9 +119,19 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                             onTap: () async {
                               await showModalBottomSheet(
                                   context: context,
+                                  backgroundColor: Colors.transparent,
                                   builder: (context) {
-                                    return Center(
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          topRight: Radius.circular(30),
+                                        ),
+                                      ),
                                       child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         mainAxisAlignment:
                                             MainAxisAlignment.end,
                                         children: [

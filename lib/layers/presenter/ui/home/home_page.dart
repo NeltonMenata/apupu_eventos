@@ -84,6 +84,7 @@ class _HomePageState extends State<HomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Terminando a sessão. Aguarde!"),
                     ));
+                    LoginController.logout(context);
                     final user = await ParseUser.currentUser() as ParseUser?;
                     await user?.logout();
                     Navigator.pushNamedAndRemoveUntil(
@@ -95,11 +96,31 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              currentAdmin?.name ?? "Not connected",
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            )),
+          centerTitle: true,
+          title: Text(
+            currentAdmin?.name ?? "Not connected",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            FutureBuilder(
+                future: ParseUser.currentUser(),
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    final admin = snapshot.data as ParseUser?;
+                    return Visibility(
+                        visible: admin?.get("admin") == true,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.ADMIN_PANEL);
+                          },
+                          icon: const Icon(Icons.admin_panel_settings_outlined),
+                        ));
+                  } else {
+                    return const SizedBox();
+                  }
+                }))
+          ],
+        ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -149,6 +170,7 @@ class _HomePageState extends State<HomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("Terminando a sessão. Aguarde!"),
                   ));
+                  LoginController.logout(context);
                   final user = await ParseUser.currentUser() as ParseUser?;
                   await user?.logout();
                   Navigator.pushNamedAndRemoveUntil(

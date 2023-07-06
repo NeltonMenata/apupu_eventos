@@ -58,7 +58,7 @@ class _ScaffoldGeneralState extends State<ScaffoldGeneral> {
                 top: 8.0, left: 8.0, right: 8.0, bottom: 50.0),
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.blueGrey,
+                  color: Colors.grey.shade900,
                   border: Border.all(
                     width: 1.5,
                   ),

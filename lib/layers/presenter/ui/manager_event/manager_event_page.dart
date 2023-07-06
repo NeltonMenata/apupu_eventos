@@ -136,6 +136,11 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Card(
+                                            color:
+                                                snapshot.data![index].payment ??
+                                                        false
+                                                    ? Colors.green.shade700
+                                                    : Colors.white,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(4.0),
@@ -143,9 +148,14 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                                 snapshot.data![index].name
                                                     .toUpperCase(),
                                                 style: TextStyle(
-                                                    fontSize: fontSizeTitle,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
+                                                  fontSize: fontSizeTitle,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: snapshot.data![index]
+                                                              .payment ??
+                                                          false
+                                                      ? Colors.white
+                                                      : Colors.black,
+                                                ),
                                               ),
                                             ),
                                           ),

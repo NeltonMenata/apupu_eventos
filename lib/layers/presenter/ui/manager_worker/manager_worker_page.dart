@@ -15,6 +15,7 @@ class ManagerWorkerPage extends StatefulWidget {
 class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     final currentEvent =
         ModalRoute.of(context)!.settings.arguments as EventEntity;
 
@@ -39,9 +40,27 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                             leading: snapshotWorker.data![index].isDoorman
                                 ? CircleAvatar(
                                     backgroundColor: Colors.amber[700],
+                                    child: Text(
+                                      snapshotWorker.data![index].name[0]
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: width * .06,
+                                      ),
+                                    ),
                                   )
                                 : CircleAvatar(
                                     backgroundColor: Colors.brown[700],
+                                    child: Text(
+                                      snapshotWorker.data![index].name[0]
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: width * .06,
+                                      ),
+                                    ),
                                   ),
                             title: Text(
                               snapshotWorker.data![index].name,

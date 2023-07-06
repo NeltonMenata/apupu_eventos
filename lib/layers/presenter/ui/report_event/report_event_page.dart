@@ -22,7 +22,7 @@ class _ReportEventPageState extends State<ReportEventPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("Relatório de Convidados")),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
