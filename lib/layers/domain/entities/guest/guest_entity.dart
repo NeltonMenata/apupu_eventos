@@ -7,6 +7,7 @@ class GuestEntity {
   final bool isVip;
   final String eventObjectId;
   final String? workerObjectId;
+  final String? error;
 
   GuestEntity({
     required this.objectId,
@@ -17,5 +18,6 @@ class GuestEntity {
     this.isVip = false,
     required this.workerObjectId,
     required this.eventObjectId,
+    this.error,
   });
 }

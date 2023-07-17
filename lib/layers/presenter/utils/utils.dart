@@ -93,7 +93,7 @@ String separatorMoney(String value) {
 }
 
 Future<void> showResultCustom(BuildContext context, String valueResult,
-    {bool isError = false, Color? color}) async {
+    {bool isError = false, Color? color, Function? action}) async {
   await showDialog(
     context: context,
     builder: (context) {
@@ -125,6 +125,9 @@ Future<void> showResultCustom(BuildContext context, String valueResult,
             ),
             onPressed: () {
               Navigator.of(context).pop();
+              if (action != null) {
+                action();
+              }
             },
           )
         ],

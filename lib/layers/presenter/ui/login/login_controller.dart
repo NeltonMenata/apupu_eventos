@@ -33,7 +33,7 @@ class LoginController {
       }
     } else {
       final _loginWorker = _loginWorkerUseCase;
-      final login = await _loginWorker(username, password);
+      final login = await _loginWorker(username.trim(), password.trim());
       if (login.username == "" && login.password == "") {
         currentWorker = login;
         Navigator.pushNamedAndRemoveUntil(

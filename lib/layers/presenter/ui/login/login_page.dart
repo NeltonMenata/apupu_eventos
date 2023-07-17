@@ -1,4 +1,5 @@
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
+import 'package:apupu_eventos/layers/domain/entities/manager/manager_entity.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final username = TextEditingController();
   final password = TextEditingController();
+  bool hiddenPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +108,17 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextField(
                       controller: password,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                      obscureText: hiddenPassword,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
                         hintText: "Palavra-passe",
-                        suffixIcon: Icon(Icons.password_outlined),
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                hiddenPassword = !hiddenPassword;
+                              });
+                            },
+                            icon: const Icon(Icons.remove_red_eye_outlined)),
                       ),
                       onSubmitted: (value) {},
                     ),
@@ -121,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text("Acessar como Administrador?"),
+                    const Text("Acessar como Gerenciador?"),
                     Checkbox(
                       onChanged: (value) async {
                         setState(() {
@@ -184,8 +192,32 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         color: Colors.blue, fontSize: fontSizeTitleLabel),
                   ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.CREATE_MANAGER);
+                  onPressed: () async {
+                    final user = await Navigator.pushNamed(
+                        context, Routes.CREATE_MANAGER) as ManagerEntity?;
+                    if (user != null) {
+                      setState(() {
+                        widget.controller.isAdmin = true;
+                        username.text = user.username;
+                        password.text = user.password!;
+                      });
+
+                      if (username.text.isEmpty || password.text.isEmpty) {
+                        showResultCustom(
+                            context, "Preencha os campos correctamente!",
+                            isError: true);
+                        return;
+                      }
+                      setState(() {
+                        isLogin = true;
+                      });
+                      await widget.controller
+                          .login(context, username.text, password.text);
+
+                      setState(() {
+                        isLogin = false;
+                      });
+                    }
                   },
                 ),
               ),

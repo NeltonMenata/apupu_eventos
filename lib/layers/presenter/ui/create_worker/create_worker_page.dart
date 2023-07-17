@@ -125,40 +125,40 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                         )
                       ]),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(allPadding),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isDoorman = !isDoorman;
-                          });
-                        },
-                        child: Container(
-                          width: width * .4,
-                          padding: const EdgeInsets.only(left: 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Row(children: [
-                            Text(
-                              "É porteiro?",
-                              style: TextStyle(
-                                  fontSize: fontSize,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            const Spacer(),
-                            Checkbox(
-                              value: isDoorman,
-                              onChanged: (value) {
-                                setState(() {
-                                  isDoorman = !isDoorman;
-                                });
-                              },
-                            )
-                          ]),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(allPadding),
+                    //   child: GestureDetector(
+                    //     onTap: () {
+                    //       setState(() {
+                    //         isDoorman = !isDoorman;
+                    //       });
+                    //     },
+                    //     child: Container(
+                    //       width: width * .4,
+                    //       padding: const EdgeInsets.only(left: 8),
+                    //       decoration: BoxDecoration(
+                    //           border: Border.all(),
+                    //           borderRadius: BorderRadius.circular(15)),
+                    //       child: Row(children: [
+                    //         Text(
+                    //           "É porteiro?",
+                    //           style: TextStyle(
+                    //               fontSize: fontSize,
+                    //               fontWeight: FontWeight.w900),
+                    //         ),
+                    //         const Spacer(),
+                    //         Checkbox(
+                    //           value: isDoorman,
+                    //           onChanged: (value) {
+                    //             setState(() {
+                    //               isDoorman = !isDoorman;
+                    //             });
+                    //           },
+                    //         )
+                    //       ]),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                         padding: const EdgeInsets.all(allPadding),
                         child: isSave
@@ -201,7 +201,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                       height: width * .07,
                     ),
                     const Text(
-                        "Deixe a caixa de seleção desmarcada se quiser criar o trabalhador como Barman!"),
+                        "Os trabalhadores poderão criar convidados, carregar cartão de consumo e realizar vendas!"),
                   ],
                 ),
               )

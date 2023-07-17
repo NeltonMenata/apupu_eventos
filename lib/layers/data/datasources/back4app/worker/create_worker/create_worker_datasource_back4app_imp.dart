@@ -5,10 +5,10 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 class CreateWorkerDataSourceBack4appImp implements ICreateWorkerDataSource {
   @override
   Future<WorkerEntity> call(WorkerEntity worker) async {
-    final saveGuest = ParseCloudFunction("createWorker");
+    final saveWorker = ParseCloudFunction("createWorker");
 
     try {
-      final result = await saveGuest.execute(parameters: {
+      final result = await saveWorker.execute(parameters: {
         "name": worker.name,
         "username": worker.username,
         "password": worker.password,
@@ -16,7 +16,7 @@ class CreateWorkerDataSourceBack4appImp implements ICreateWorkerDataSource {
         "managerObjectId": worker.managerObjectId
       });
 
-      if (result.statusCode == 200) {
+      if (result.statusCode == 200 && result.success) {
         if (result.result["error"] != null) {
           return WorkerEntity(
               objectId: "",

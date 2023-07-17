@@ -47,7 +47,9 @@ class _HomePageState extends State<HomePage> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   accountEmail: const Text("Gerenciador"),
-                  currentAccountPicture: Image.asset(Utils.assetLogo),
+                  currentAccountPicture: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(Utils.assetLogo)),
                 ),
                 ListTile(
                   title: Text(
@@ -84,11 +86,10 @@ class _HomePageState extends State<HomePage> {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("Terminando a sessão. Aguarde!"),
                     ));
-                    LoginController.logout(context);
+
                     final user = await ParseUser.currentUser() as ParseUser?;
                     await user?.logout();
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, Routes.LOGIN, (route) => false);
+                    LoginController.logout(context);
                   },
                 ),
               ],
@@ -170,11 +171,10 @@ class _HomePageState extends State<HomePage> {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("Terminando a sessão. Aguarde!"),
                   ));
-                  LoginController.logout(context);
+
                   final user = await ParseUser.currentUser() as ParseUser?;
                   await user?.logout();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, Routes.LOGIN, (route) => false);
+                  LoginController.logout(context);
                 },
               ),
             ],

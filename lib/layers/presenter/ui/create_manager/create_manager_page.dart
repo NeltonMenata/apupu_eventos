@@ -232,9 +232,23 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                             });
                             return;
                           }
+
+                          final name = nameController.text;
+                          final username = phoneController.text;
+                          final password = passwordController.text;
                           showResultCustom(
                             context,
-                            "Conta criada com sucesso, volte na tela de Login para entrar no Sistema!",
+                            "Conta criada com sucesso, clique em OK para Entrar no Sistema!",
+                            action: () {
+                              Navigator.pop(
+                                context,
+                                ManagerEntity(
+                                  username: username,
+                                  name: name,
+                                  password: password,
+                                ),
+                              );
+                            },
                             color: Colors.green.shade700,
                           );
                           setState(() {
@@ -255,7 +269,9 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(
+                    context,
+                  );
                 },
               ),
             ]),

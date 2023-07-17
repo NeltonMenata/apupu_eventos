@@ -32,13 +32,12 @@ class AddEventController {
           bonusCredit: bonusCredit);
       final result = await _saveEventUseCase(event);
       if (result.error != null) {
-        showResultCustom(context, "Erro ao Salvar evento.\n\n${result.error}",
-            isError: true);
+        showResultCustom(context, "${result.error}", isError: true);
       } else {
         showResultCustom(context, "Evento Salvo com sucesso");
       }
     } catch (e) {
-      showResultCustom(context, "Erro ao salvar evento: " + e.toString());
+      showResultCustom(context, e.toString(), isError: true);
     }
   }
 }

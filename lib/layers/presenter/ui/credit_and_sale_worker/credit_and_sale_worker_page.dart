@@ -39,6 +39,13 @@ class CreditAndSaleWorker extends StatelessWidget {
           ),
         ),
         BigButtonNavigation(
+            title: "Adicionar Convidados",
+            icon: Icons.credit_card,
+            action: () {
+              Navigator.of(context)
+                  .pushNamed(Routes.REGISTER_GUEST, arguments: currentEvent);
+            }),
+        BigButtonNavigation(
             title: "Carregar Cartão de Consumo",
             icon: Icons.credit_card,
             action: () {

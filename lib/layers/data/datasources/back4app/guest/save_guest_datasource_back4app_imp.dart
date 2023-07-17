@@ -18,6 +18,15 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
       });
 
       if (result.statusCode == 200) {
+        if (result.result["error"] != null) {
+          return GuestEntity(
+              objectId: "objectId",
+              name: "name",
+              contact: "contact",
+              workerObjectId: "workerObjectId",
+              eventObjectId: "eventObjectId",
+              error: result.result["error"]);
+        }
         return GuestEntity(
             objectId: result.result["objectId"],
             name: result.result["name"],
@@ -29,6 +38,14 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
             isVip: result.result["isVip"]);
 
         // EventDto.fromMap(saveEvent.results![0]);
+      } else {
+        return GuestEntity(
+            objectId: "objectId",
+            name: "name",
+            contact: "contact",
+            workerObjectId: "workerObjectId",
+            eventObjectId: "eventObjectId",
+            error: result.error?.message);
       }
     } catch (e) {
       return GuestEntity(
@@ -40,12 +57,5 @@ class SaveGuestDataSourceBack4appImp implements ISaveGuestDataSource {
         isIn: false,
       );
     }
-
-    return GuestEntity(
-        objectId: "objectId",
-        name: "name",
-        contact: "contact",
-        workerObjectId: "worker",
-        eventObjectId: "eventObjectId");
   }
 }

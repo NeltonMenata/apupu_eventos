@@ -33,35 +33,32 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                   );
                 } else if (snapshotWorker.hasData) {
                   return Column(children: [
+                    snapshotWorker.data!.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Lista de Trabalhadores vazia. Verifique se atingiu o limite de eventos ou perdeu conexão com a internet!",
+                              style: TextStyle(
+                                  fontSize: width * .055, color: Colors.white),
+                            ),
+                          )
+                        : const SizedBox(),
                     ...List.generate(snapshotWorker.data!.length, (index) {
                       return Column(
                         children: [
                           ListTile(
-                            leading: snapshotWorker.data![index].isDoorman
-                                ? CircleAvatar(
-                                    backgroundColor: Colors.amber[700],
-                                    child: Text(
-                                      snapshotWorker.data![index].name[0]
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: width * .06,
-                                      ),
-                                    ),
-                                  )
-                                : CircleAvatar(
-                                    backgroundColor: Colors.brown[700],
-                                    child: Text(
-                                      snapshotWorker.data![index].name[0]
-                                          .toUpperCase(),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: width * .06,
-                                      ),
-                                    ),
-                                  ),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.blue[700],
+                              child: Text(
+                                snapshotWorker.data![index].name[0]
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: width * .06,
+                                ),
+                              ),
+                            ),
                             title: Text(
                               snapshotWorker.data![index].name,
                               style: const TextStyle(color: Colors.white),
@@ -180,25 +177,14 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
         padding: const EdgeInsets.all(8.0),
         child: Row(children: [
           Text(
-            "Porteiro: ",
+            "Porteiro / Barman: ",
             style: TextStyle(
-              color: Colors.amber[700],
+              color: Colors.blue[700],
               fontWeight: FontWeight.bold,
             ),
           ),
           CircleAvatar(
-            backgroundColor: Colors.amber[700],
-          ),
-          const Spacer(),
-          Text(
-            "Barman: ",
-            style: TextStyle(
-              color: Colors.brown[700],
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          CircleAvatar(
-            backgroundColor: Colors.brown[700],
+            backgroundColor: Colors.blue[700],
           ),
         ]),
       ),

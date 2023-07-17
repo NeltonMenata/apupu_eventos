@@ -15,20 +15,14 @@ class CreateWorkerController {
     required String password,
     required bool isDoorman,
   }) async {
-    name.trim();
-    username.trim();
-    password.trim();
-
-    //await Future.delayed(Duration(seconds: 3));
-
     final result = await _createWorkertUseCase(WorkerEntity(
         objectId: "",
-        name: name,
-        username: username,
-        password: password,
+        name: name.trim(),
+        username: username.trim(),
+        password: password.trim(),
         isDoorman: isDoorman));
-    if (result.objectId == "error") {
-      showResultCustom(context, result.name, isError: true);
+    if (result.error != null) {
+      showResultCustom(context, result.error!, isError: true);
     } else {
       showResultCustom(context, "Trabalhador Salvo com sucesso");
     }

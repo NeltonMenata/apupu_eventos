@@ -161,46 +161,18 @@ class _AddGuestPageState extends State<AddGuestPage> {
 
                                   isSave = !isSave;
                                 });
+                                if (guestSaved.error != null) {
+                                  showResultCustom(context, guestSaved.error!,
+                                      isError: true);
+                                  return;
+                                }
                                 Navigator.of(context).pop(guestSaved);
                               },
                               child: Text(
                                 "Salvar Convidado",
                                 style: TextStyle(fontSize: fontSize),
                               ),
-                            )
-
-                      /*
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (contactController.text.isEmpty ||
-                            nameController.text.isEmpty) {
-                          showResultCustom(
-                              context, "Preencha os campos correctamente!");
-                          return;
-                        }
-
-                        setState(() {
-                          nameController.text;
-                          contactController.text;
-                        });
-
-                        final guestSaved = await controller.saveGuest(GuestEntity(
-                            contact: contactController.text,
-                            name: nameController.text,
-                            objectId: "objectId",
-                            isIn: false,
-                            eventObjectId: "",
-                            workerObjectId: "workerObjectId"));
-                        
-                        Navigator.of(context).pop(guestSaved);
-                        contactController.text = "";
-                        nameController.text = "";
-                      },
-                      child: const Text("Salvar convidado"),
-                    ),
-                    */
-
-                      ),
+                            )),
                 ],
               ),
             ),

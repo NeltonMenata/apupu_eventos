@@ -11,21 +11,12 @@ class LoginManagerDataSourceBack4appImp implements ILoginManagerDataSource {
 
       final result = await user.login();
       if (result.statusCode == 200 && result.success) {
-        if (result.results![0].get("blocked")) {
-          return ManagerEntity(
-            username: "username",
-            password: "password",
-            name: "name",
-            error: "Usuário blockeado, contacte o administrador!",
-          );
-        } else {
-          return ManagerEntity(
-            username: result.results![0].get("username"),
-            password: "password",
-            name: result.results![0].get("name"),
-            objectId: result.results![0].get("objectId"),
-          );
-        }
+        return ManagerEntity(
+          username: result.results![0].get("username"),
+          password: "password",
+          name: result.results![0].get("name"),
+          objectId: result.results![0].get("objectId"),
+        );
       } else if (result.statusCode == -1) {
         return ManagerEntity(
           username: "username",

@@ -237,9 +237,9 @@ class _AdminPanelPageState extends State<AdminPanelPage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
-                                    "V. Produtos Vendidos: " +
+                                    "T. Produtos Vendidos: " +
                                         separatorMoney(
-                                            "${currentEvent?.priceVip}") +
+                                            "${currentEvent?.productsValue}") +
                                         " kz",
                                     style: TextStyle(
                                         fontSize: width * .047,
