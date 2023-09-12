@@ -14,6 +14,7 @@ import 'package:apupu_eventos/layers/presenter/ui/report_event/report_event_page
 import 'package:apupu_eventos/layers/presenter/ui/report_sale/report_sale_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/search_guest/search_guest_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/splash/splash_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/view_manager/view_manager_page.dart';
 import 'package:flutter/material.dart';
 
 import '../ui/add_event/add_event_page.dart';
@@ -46,6 +47,7 @@ abstract class Routes {
   static const REPORT_CREDIT = "/report_credit";
   static const CREATE_MANAGER = "/create_manager";
   static const ADMIN_PANEL = "/admin_panel";
+  static const VIEW_MANAGER = "/view_manager";
 
   // Routers for Worker
 
@@ -73,7 +75,8 @@ abstract class Routes {
       REPORT_SALE: (context) => ReportSalePage(),
       REPORT_CREDIT: (context) => ReportCreditPage(),
       CREATE_MANAGER: (context) => const CreateManagerPage(),
-      ADMIN_PANEL: (context) => const AdminPanelPage()
+      ADMIN_PANEL: (context) => const AdminPanelPage(),
+      VIEW_MANAGER: (context) => ViewManagerPage()
     };
   }
 }

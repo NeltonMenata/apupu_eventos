@@ -24,9 +24,11 @@ class _ReportEventPageState extends State<ReportEventPage> {
       appBar: AppBar(title: const Text("Relatório de Convidados")),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(8),
               child: FutureBuilder<List<ReportGuestEntity>>(
                   future:
                       controller.countGuestWorker("", currentEvent.objectId),

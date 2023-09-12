@@ -47,18 +47,31 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                       return Column(
                         children: [
                           ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.blue[700],
-                              child: Text(
-                                snapshotWorker.data![index].name[0]
-                                    .toUpperCase(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: width * .06,
-                                ),
-                              ),
-                            ),
+                            leading: snapshotWorker.data![index].isDoorman
+                                ? CircleAvatar(
+                                    backgroundColor: Colors.amber[700],
+                                    child: Text(
+                                      snapshotWorker.data![index].name[0]
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: width * .06,
+                                      ),
+                                    ),
+                                  )
+                                : CircleAvatar(
+                                    backgroundColor: Colors.brown[500],
+                                    child: Text(
+                                      snapshotWorker.data![index].name[0]
+                                          .toUpperCase(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: width * .06,
+                                      ),
+                                    ),
+                                  ),
                             title: Text(
                               snapshotWorker.data![index].name,
                               style: const TextStyle(color: Colors.white),
@@ -177,14 +190,25 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
         padding: const EdgeInsets.all(8.0),
         child: Row(children: [
           Text(
-            "Porteiro / Barman: ",
+            "Porteiro: ",
             style: TextStyle(
-              color: Colors.blue[700],
+              color: Colors.amber[700],
               fontWeight: FontWeight.bold,
             ),
           ),
           CircleAvatar(
-            backgroundColor: Colors.blue[700],
+            backgroundColor: Colors.amber[700],
+          ),
+          const Spacer(),
+          Text(
+            "Barman: ",
+            style: TextStyle(
+              color: Colors.brown[500],
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.brown[500],
           ),
         ]),
       ),

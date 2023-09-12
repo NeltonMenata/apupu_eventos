@@ -310,7 +310,12 @@ class _SearchGuestPageState extends State<SearchGuestPage>
                                                   ),
                                                   onPressed: () {
                                                     Utils.capture(
-                                                        key1qrcode, context);
+                                                        key1qrcode,
+                                                        context,
+                                                        controller
+                                                            .listGuest[index]
+                                                            .contact,
+                                                        true);
                                                   },
                                                   child: const Text(
                                                     "Compartilhar",

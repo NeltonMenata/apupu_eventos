@@ -15,6 +15,9 @@ class LoginManagerDataSourceBack4appImp implements ILoginManagerDataSource {
           username: result.results![0].get("username"),
           password: "password",
           name: result.results![0].get("name"),
+          isBlocked: result.results![0].get("blocked"),
+          isAdmin: result.results![0].get("admin"),
+          investor: result.results![0].get("investor"),
           objectId: result.results![0].get("objectId"),
         );
       } else if (result.statusCode == -1) {

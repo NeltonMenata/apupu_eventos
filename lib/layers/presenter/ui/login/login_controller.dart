@@ -41,7 +41,8 @@ class LoginController {
             arguments: login.objectId);
       } else {
         showResultCustom(context,
-            "Erro ao logar. Verifique a sua conexão com a internet e se os dados do usuário estão correctos!");
+            "Erro ao logar. Verifique a sua conexão com a internet e se os dados do usuário estão correctos!",
+            isError: true);
       }
     }
   }

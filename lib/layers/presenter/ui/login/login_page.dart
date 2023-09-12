@@ -2,6 +2,7 @@ import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/manager/manager_entity.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes/Routes.dart';
@@ -54,10 +55,42 @@ class _LoginPageState extends State<LoginPage> {
                         fit: BoxFit.cover,
                       )),
                     ),
-                    Text(
-                      "Inicie sua Sessão no Apupu Eventos",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
+                    GestureDetector(
+                      onTap: () async {
+                        await FirebaseAuth.instance.verifyPhoneNumber(
+                            phoneNumber: "+244955095726",
+                            verificationCompleted: (credential) {
+                              print(
+                                  "############################################");
+                              print("success");
+                              print(credential.smsCode);
+                              print(
+                                  "############################################");
+                            },
+                            verificationFailed: (exception) {
+                              print("error");
+                              print(exception.message);
+                            },
+                            codeSent: (verificationId, resendToken) {
+                              print("Code Sent");
+                              print(verificationId);
+                              print(resendToken);
+                            },
+                            codeAutoRetrievalTimeout: (verificationId) {
+                              print("Code Auto Retrieval Timeout");
+                              print(verificationId);
+                            });
+
+                        //print(FirebaseAuth.instance.currentUser?.uid);
+
+                        //confirm.confirm("");
+                      },
+                      child: Text(
+                        "Inicie sua Sessão no Apupu Eventos",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: fontSizeTitle),
+                      ),
                     ),
                     SizedBox(height: height * 0.10),
                   ],
@@ -69,9 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.controller.isAdmin
-                          ? "Telefone"
-                          : "Nome de Usuário",
+                      widget.controller.isAdmin ? "Gerenciador" : "Trabalhador",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),

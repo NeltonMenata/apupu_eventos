@@ -4,6 +4,7 @@ class ManagerEntity {
   final String name;
   final String? objectId;
   final bool? isBlocked;
+  final bool? isAdmin;
   final String? investor;
   final String? phone;
   final String? error;
@@ -14,6 +15,7 @@ class ManagerEntity {
       required this.name,
       this.objectId,
       this.isBlocked,
+      this.isAdmin,
       this.error,
       this.phone,
       this.investor});

@@ -7,7 +7,6 @@ import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:parse_server_sdk/parse_server_sdk.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../utils/utils.dart';
 import '../../utils/widget_to_image.dart';
@@ -58,332 +57,335 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
     final fontSizeMenu = width * .033;
 
     return Scaffold(
-      drawer: FutureBuilder(
-          future: ParseUser.currentUser(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Visibility(
-                visible: snapshot.data != null,
-                child: Drawer(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Column(
-                      children: [
-                        UserAccountsDrawerHeader(
-                          accountName: Text(
-                            currentEvent.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          accountEmail: Text(currentEvent.organization),
-                          currentAccountPicture: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: currentEvent.imgCartaz != null
-                                ? currentEvent.imgCartaz!.isNotEmpty &&
-                                        currentEvent.imgCartaz! !=
-                                            Utils.assetLogo
-                                    ? CachedNetworkImage(
-                                        imageUrl: currentEvent.imgCartaz!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.asset(Utils.assetLogo,
-                                        fit: BoxFit.cover)
-                                : Image.asset(Utils.assetLogo,
-                                    fit: BoxFit.cover),
-                          ),
-                        ),
-                        ListTile(
-                          leading: Icon(
-                            Icons.group_work_outlined,
-                            size: width * .10,
-                          ),
-                          title: Text(
-                            "Gerir Trabalhador do Evento",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.MANAGER_WORKER,
-                                arguments: currentEvent);
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.dashboard,
-                            size: width * .10,
-                          ),
-                          title: Text(
-                            "Exibir Relatório do Evento",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, Routes.MENU_REPORT_EVENT,
-                                arguments: currentEvent);
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.add_box_rounded,
-                            size: width * .10,
-                          ),
-                          title: Text(
-                            "Criar Produtos do Evento",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                Routes.CREATE_PRODUCT,
-                                arguments: currentEvent);
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.attach_money_sharp,
-                            size: width * .10,
-                          ),
-                          title: Text(
-                            "Carregar Cartão de Consumo",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.MAKE_CREDIT,
-                                arguments: currentEvent);
-                          },
-                        ),
-                        const Divider(),
-                        ListTile(
-                          leading: Icon(
-                            Icons.fastfood_rounded,
-                            size: width * .10,
-                          ),
-                          title: Text(
-                            "Realizar uma Venda",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.MAKE_SALE,
-                                arguments: currentEvent);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  currentEvent.name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-              );
-            }
-            return const SizedBox();
-          }),
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(currentEvent.organization),
-        actions: [
-          currentAdmin == null
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30),
-                              ),
-                            ),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: Text(
-                                      "Partilhe este código com o Gestor da Plataforma.",
-                                      style: TextStyle(
-                                          fontSize: width * .05,
-                                          fontWeight: FontWeight.bold),
+                accountEmail: Text(currentEvent.organization),
+                currentAccountPicture: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: currentEvent.imgCartaz != null
+                      ? currentEvent.imgCartaz!.isNotEmpty &&
+                              currentEvent.imgCartaz! != Utils.assetLogo
+                          ? CachedNetworkImage(
+                              imageUrl: currentEvent.imgCartaz!,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.asset(Utils.assetLogo, fit: BoxFit.cover)
+                      : Image.asset(Utils.assetLogo, fit: BoxFit.cover),
+                ),
+              ),
+              Visibility(
+                visible: currentAdmin != null,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.group_work_outlined,
+                    size: width * .10,
+                  ),
+                  title: Text(
+                    "Gerir Trabalhador do Evento",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: width * .04),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.MANAGER_WORKER,
+                        arguments: currentEvent);
+                  },
+                ),
+              ),
+              Visibility(visible: currentAdmin != null, child: const Divider()),
+              Visibility(
+                visible: currentAdmin != null,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.dashboard,
+                    size: width * .10,
+                  ),
+                  title: Text(
+                    "Exibir Relatório do Evento",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: width * .04),
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.MENU_REPORT_EVENT,
+                        arguments: currentEvent);
+                  },
+                ),
+              ),
+              Visibility(visible: currentAdmin != null, child: const Divider()),
+              Visibility(
+                visible: currentAdmin != null,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.add_box_rounded,
+                    size: width * .10,
+                  ),
+                  title: Text(
+                    "Criar Produtos do Evento",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: width * .04),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.CREATE_PRODUCT,
+                        arguments: currentEvent);
+                  },
+                ),
+              ),
+              Visibility(visible: currentAdmin != null, child: const Divider()),
+              ListTile(
+                leading: Icon(
+                  Icons.attach_money_sharp,
+                  size: width * .10,
+                ),
+                title: Text(
+                  "Carregar Cartão de Consumo",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: width * .04),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.MAKE_CREDIT,
+                      arguments: currentEvent);
+                },
+              ),
+              const Divider(),
+              ListTile(
+                leading: Icon(
+                  Icons.fastfood_rounded,
+                  size: width * .10,
+                ),
+                title: Text(
+                  "Realizar uma Venda",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: width * .04),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.MAKE_SALE,
+                      arguments: currentEvent);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      appBar: currentWorker != null
+          ? null
+          : AppBar(
+              centerTitle: true,
+              title: Text(currentEvent.organization),
+              actions: [
+                currentAdmin == null
+                    ? const SizedBox()
+                    : IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade200,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
                                     ),
                                   ),
-                                  WidgetToImage(
-                                    builder: (key) {
-                                      key2qrcode = key;
-                                      return Container(
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                            border: Border.all(),
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            color: Colors.white),
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                .75,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .7,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          children: [
-                                            Expanded(
-                                              child: Center(
-                                                child: QrImage(
-                                                    data:
-                                                        currentEvent.objectId),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 5),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Text(
+                                            "Partilhe este código com o Gestor da Plataforma.",
+                                            style: TextStyle(
+                                                fontSize: width * .05,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        WidgetToImage(
+                                          builder: (key) {
+                                            key2qrcode = key;
+                                            return Container(
+                                              padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
-                                                color: Colors.black45,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                              ),
-                                              height: width * .2,
-                                              child: Center(
-                                                child: SingleChildScrollView(
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: width * .155,
-                                                        height: width * .155,
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          child: currentEvent
-                                                                      .imgCartaz !=
-                                                                  null
-                                                              ? currentEvent
-                                                                          .imgCartaz!
-                                                                          .isNotEmpty &&
-                                                                      currentEvent
-                                                                              .imgCartaz! !=
-                                                                          Utils
-                                                                              .assetLogo
-                                                                  ? CachedNetworkImage(
-                                                                      imageUrl:
-                                                                          currentEvent
-                                                                              .imgCartaz!,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                    )
-                                                                  : Image.asset(
-                                                                      Utils
-                                                                          .assetLogo,
-                                                                      fit: BoxFit
-                                                                          .cover)
-                                                              : Image.asset(
-                                                                  Utils
-                                                                      .assetLogo,
-                                                                  fit: BoxFit
-                                                                      .cover),
+                                                  border: Border.all(),
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  color: Colors.white),
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .75,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  .7,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.stretch,
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: QrImage(
+                                                          data: currentEvent
+                                                              .objectId),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 5),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black45,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                    height: width * .2,
+                                                    child: Center(
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        scrollDirection:
+                                                            Axis.horizontal,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            SizedBox(
+                                                              width:
+                                                                  width * .155,
+                                                              height:
+                                                                  width * .155,
+                                                              child: ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                child: currentEvent
+                                                                            .imgCartaz !=
+                                                                        null
+                                                                    ? currentEvent.imgCartaz!.isNotEmpty &&
+                                                                            currentEvent.imgCartaz! !=
+                                                                                Utils
+                                                                                    .assetLogo
+                                                                        ? CachedNetworkImage(
+                                                                            imageUrl:
+                                                                                currentEvent.imgCartaz!,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          )
+                                                                        : Image.asset(
+                                                                            Utils
+                                                                                .assetLogo,
+                                                                            fit: BoxFit
+                                                                                .cover)
+                                                                    : Image.asset(
+                                                                        Utils
+                                                                            .assetLogo,
+                                                                        fit: BoxFit
+                                                                            .cover),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 8,
+                                                            ),
+                                                            Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      right:
+                                                                          4.0),
+                                                                  child: Text(
+                                                                    currentEvent
+                                                                        .name,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            fontSizeGuest,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeSubtitle *
+                                                                              .8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .black),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
-                                                      const SizedBox(
-                                                        width: 8,
-                                                      ),
-                                                      Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    right: 4.0),
-                                                            child: Text(
-                                                              currentEvent.name,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      fontSizeGuest,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color: Colors
-                                                                      .black),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "Data: ${currentEvent.dateOfRealization.day}/${currentEvent.dateOfRealization.month}/${currentEvent.dateOfRealization.year}",
-                                                            style: TextStyle(
-                                                                fontSize:
-                                                                    fontSizeSubtitle *
-                                                                        .8,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .black),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: fontSizeSubtitle),
-                                      child: ElevatedButton(
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all(
-                                                RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15))),
-                                          ),
-                                          onPressed: () {
-                                            Utils.capture(key2qrcode, context);
+                                            );
                                           },
-                                          child: const Text(
-                                            "Compartilhar",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          )))
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                  },
-                  icon: const Icon(Icons.qr_code_sharp))
-        ],
-      ),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: fontSizeSubtitle),
+                                            child: ElevatedButton(
+                                                style: ButtonStyle(
+                                                  shape:
+                                                      MaterialStateProperty.all(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15))),
+                                                ),
+                                                onPressed: () {
+                                                  Utils.capture(
+                                                      key2qrcode,
+                                                      context,
+                                                      guestCurrent.contact,
+                                                      true);
+                                                },
+                                                child: const Text(
+                                                  "Compartilhar",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )))
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
+                        icon: const Icon(Icons.qr_code_sharp))
+              ],
+            ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

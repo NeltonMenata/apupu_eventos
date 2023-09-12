@@ -3,6 +3,9 @@ import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+import '../../../domain/entities/manager/manager_entity.dart';
+import '../login/login_controller.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
@@ -60,16 +63,22 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    _login();
+    _login().then((value) => null);
     super.initState();
   }
 
   Future<void> _login() async {
+    print("INIT");
     final currentUser = await ParseUser.currentUser() as ParseUser?;
+    print(currentUser?.objectId);
     Future.delayed(const Duration(seconds: 2), () {
       if (currentUser == null) {
         Navigator.pushReplacementNamed(context, Routes.LOGIN);
       } else {
+        currentAdmin = ManagerEntity(
+            name: currentUser.get("name"),
+            objectId: currentUser.objectId,
+            username: currentUser.get("username"));
         Navigator.pushNamedAndRemoveUntil(
             context, Routes.HOME, (route) => false);
       }

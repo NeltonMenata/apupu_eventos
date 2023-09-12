@@ -67,6 +67,25 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pushNamed(Routes.CREATE_WORKER);
                   },
                 ),
+                Visibility(
+                  visible: currentAdmin?.isAdmin == true,
+                  child: ListTile(
+                    title: Text(
+                      "Ver Gerenciadores da Plataforma",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: width * .04,
+                      ),
+                    ),
+                    trailing: Icon(
+                      Icons.group,
+                      size: width * .10,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.VIEW_MANAGER);
+                    },
+                  ),
+                ),
                 const Spacer(),
                 ListTile(
                   title: Text(
@@ -103,23 +122,15 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           actions: [
-            FutureBuilder(
-                future: ParseUser.currentUser(),
-                builder: ((context, snapshot) {
-                  if (snapshot.hasData) {
-                    final admin = snapshot.data as ParseUser?;
-                    return Visibility(
-                        visible: admin?.get("admin") == true,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Routes.ADMIN_PANEL);
-                          },
-                          icon: const Icon(Icons.admin_panel_settings_outlined),
-                        ));
-                  } else {
-                    return const SizedBox();
-                  }
-                }))
+            Visibility(
+              visible: currentAdmin?.isAdmin == true,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, Routes.ADMIN_PANEL);
+                },
+                icon: const Icon(Icons.admin_panel_settings_outlined),
+              ),
+            ),
           ],
         ),
         body: SingleChildScrollView(
