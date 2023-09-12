@@ -366,10 +366,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                                                 ),
                                                 onPressed: () {
                                                   Utils.capture(
-                                                      key2qrcode,
-                                                      context,
-                                                      guestCurrent.contact,
-                                                      true);
+                                                    key2qrcode,
+                                                    context,
+                                                  );
                                                 },
                                                 child: const Text(
                                                   "Compartilhar",
@@ -664,7 +663,8 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 ),
                 TextButton(
                   onPressed: () {
-                    Utils.capture(key1qrcode, context);
+                    Utils.capture(
+                        key1qrcode, context, guestCurrent.contact, true);
                   },
                   child: Column(
                     children: [
