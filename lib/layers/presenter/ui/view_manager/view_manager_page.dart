@@ -10,10 +10,9 @@ class ViewManagerPage extends StatefulWidget {
 }
 
 class _ViewManagerPageState extends State<ViewManagerPage> {
-  int _totalManager = 0;
+  int totalManager = 0;
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(title: const Text("Gerenciadores")),
@@ -53,7 +52,7 @@ class _ViewManagerPageState extends State<ViewManagerPage> {
         bottomSheet: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "Total de Gerenciadores: $_totalManager",
+            "Total de Gerenciadores: $totalManager",
             style:
                 TextStyle(fontSize: width * .06, fontWeight: FontWeight.bold),
           ),
@@ -61,7 +60,7 @@ class _ViewManagerPageState extends State<ViewManagerPage> {
   }
 
   // totalManagers(int value) async {
-  //   _totalManager = value;
+  //   totalManager = value;
   //   await Future.delayed(const Duration(milliseconds: 50), () {
   //     if (mounted) {
   //       setState(() {});

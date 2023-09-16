@@ -68,10 +68,9 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _login() async {
-    print("INIT");
     final currentUser = await ParseUser.currentUser() as ParseUser?;
-    print(currentUser?.objectId);
-    Future.delayed(const Duration(seconds: 2), () {
+
+    await Future.delayed(const Duration(seconds: 2), () {
       if (currentUser == null) {
         Navigator.pushReplacementNamed(context, Routes.LOGIN);
       } else {

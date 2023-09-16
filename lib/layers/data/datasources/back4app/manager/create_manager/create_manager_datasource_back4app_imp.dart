@@ -27,6 +27,7 @@ class CreateManagerDataSourceBack4appImp implements ICreateManagerDataSource {
         "username": manager.phone,
         "phone": manager.phone,
         "password": manager.password,
+        "uid": manager.uid
       };
       final result = await user.execute(parameters: params);
 

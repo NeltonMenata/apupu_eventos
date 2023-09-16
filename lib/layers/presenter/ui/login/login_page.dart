@@ -1,22 +1,19 @@
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
-import 'package:apupu_eventos/layers/domain/entities/manager/manager_entity.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../routes/Routes.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
-
-  final controller = getIt<LoginController>();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final controller = getIt<LoginController>();
   bool isLogin = false;
 
   final username = TextEditingController();
@@ -55,42 +52,10 @@ class _LoginPageState extends State<LoginPage> {
                         fit: BoxFit.cover,
                       )),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        await FirebaseAuth.instance.verifyPhoneNumber(
-                            phoneNumber: "+244955095726",
-                            verificationCompleted: (credential) {
-                              print(
-                                  "############################################");
-                              print("success");
-                              print(credential.smsCode);
-                              print(
-                                  "############################################");
-                            },
-                            verificationFailed: (exception) {
-                              print("error");
-                              print(exception.message);
-                            },
-                            codeSent: (verificationId, resendToken) {
-                              print("Code Sent");
-                              print(verificationId);
-                              print(resendToken);
-                            },
-                            codeAutoRetrievalTimeout: (verificationId) {
-                              print("Code Auto Retrieval Timeout");
-                              print(verificationId);
-                            });
-
-                        //print(FirebaseAuth.instance.currentUser?.uid);
-
-                        //confirm.confirm("");
-                      },
-                      child: Text(
-                        "Inicie sua Sessão no Apupu Eventos",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontSizeTitle),
-                      ),
+                    Text(
+                      "Inicie sua Sessão no Apupu Eventos",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
                     ),
                     SizedBox(height: height * 0.10),
                   ],
@@ -102,23 +67,21 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.controller.isAdmin ? "Gerenciador" : "Trabalhador",
+                      controller.isAdmin ? "Gerenciador" : "Trabalhador",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
                     ),
                     TextField(
                       controller: username,
-                      keyboardType: widget.controller.isAdmin
-                          ? TextInputType.phone
-                          : null,
+                      keyboardType:
+                          controller.isAdmin ? TextInputType.phone : null,
                       decoration: InputDecoration(
                         disabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey)),
                         border: const OutlineInputBorder(),
-                        hintText: widget.controller.isAdmin
-                            ? "Telefone"
-                            : "Nome de Usuário",
+                        hintText:
+                            controller.isAdmin ? "Telefone" : "Nome de Usuário",
                         suffixIcon: const Icon(Icons.person_outlined),
                       ),
                     ),
@@ -164,17 +127,16 @@ class _LoginPageState extends State<LoginPage> {
                     Checkbox(
                       onChanged: (value) async {
                         setState(() {
-                          widget.controller.isAdmin =
-                              !widget.controller.isAdmin;
+                          controller.isAdmin = !controller.isAdmin;
                         });
                       },
-                      value: widget.controller.isAdmin,
+                      value: controller.isAdmin,
                     )
                   ],
                 ),
                 onPressed: () {
                   setState(() {
-                    widget.controller.isAdmin = !widget.controller.isAdmin;
+                    controller.isAdmin = !controller.isAdmin;
                   });
                 },
               ),
@@ -200,8 +162,8 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             isLogin = true;
                           });
-                          await widget.controller
-                              .login(context, username.text, password.text);
+                          await controller.login(
+                              context, username.text, password.text);
 
                           setState(() {
                             isLogin = false;
@@ -223,32 +185,8 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                         color: Colors.blue, fontSize: fontSizeTitleLabel),
                   ),
-                  onPressed: () async {
-                    final user = await Navigator.pushNamed(
-                        context, Routes.CREATE_MANAGER) as ManagerEntity?;
-                    if (user != null) {
-                      setState(() {
-                        widget.controller.isAdmin = true;
-                        username.text = user.username;
-                        password.text = user.password!;
-                      });
-
-                      if (username.text.isEmpty || password.text.isEmpty) {
-                        showResultCustom(
-                            context, "Preencha os campos correctamente!",
-                            isError: true);
-                        return;
-                      }
-                      setState(() {
-                        isLogin = true;
-                      });
-                      await widget.controller
-                          .login(context, username.text, password.text);
-
-                      setState(() {
-                        isLogin = false;
-                      });
-                    }
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.PHONE_NUMBER);
                   },
                 ),
               ),

@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names, file_names
 
 import 'package:apupu_eventos/layers/presenter/ui/admin_panel/admin_panel_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/auth/phone_number_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/credit_and_sale_worker/credit_and_sale_worker_page.dart';
@@ -19,6 +20,7 @@ import 'package:flutter/material.dart';
 
 import '../ui/add_event/add_event_page.dart';
 import '../ui/add_guest/add_guest_page.dart';
+import '../ui/auth/otp_page.dart';
 import '../ui/create_manager/create_manager_page.dart';
 import '../ui/home/home_page.dart';
 import '../ui/manager_event/manager_event_page.dart';
@@ -48,6 +50,8 @@ abstract class Routes {
   static const CREATE_MANAGER = "/create_manager";
   static const ADMIN_PANEL = "/admin_panel";
   static const VIEW_MANAGER = "/view_manager";
+  static const OTP = "/otp";
+  static const PHONE_NUMBER = "/phone_number";
 
   // Routers for Worker
 
@@ -63,7 +67,7 @@ abstract class Routes {
       REGISTER_GUEST: (context) => RegisterInOrOutGuestPage(),
       SEARCH_GUEST: (context) => const SearchGuestPage(),
       RESULT_SEARCH_GUEST: (context) => const ResultSearchGuestPage(),
-      LOGIN: (context) => LoginPage(),
+      LOGIN: (context) => const LoginPage(),
       MANAGER_WORKER: (context) => ManagerWorkerPage(),
       REPORT_EVENT: (context) => const ReportEventPage(),
       MAKE_SALE: (context) => const MakeSalePage(),
@@ -76,7 +80,9 @@ abstract class Routes {
       REPORT_CREDIT: (context) => ReportCreditPage(),
       CREATE_MANAGER: (context) => const CreateManagerPage(),
       ADMIN_PANEL: (context) => const AdminPanelPage(),
-      VIEW_MANAGER: (context) => ViewManagerPage()
+      VIEW_MANAGER: (context) => ViewManagerPage(),
+      OTP: (context) => const OtpPage(),
+      PHONE_NUMBER: (context) => const PhoneNumberPage()
     };
   }
 }

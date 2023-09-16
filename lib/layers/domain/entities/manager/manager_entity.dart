@@ -7,6 +7,7 @@ class ManagerEntity {
   final bool? isAdmin;
   final String? investor;
   final String? phone;
+  final String? uid;
   final String? error;
 
   ManagerEntity(
@@ -18,5 +19,6 @@ class ManagerEntity {
       this.isAdmin,
       this.error,
       this.phone,
+      this.uid,
       this.investor});
 }

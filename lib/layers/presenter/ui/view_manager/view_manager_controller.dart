@@ -6,7 +6,7 @@ class ViewManagerController {
     final manager = ParseCloudFunction("getAllManager");
     final result = await manager.execute();
     final List<ManagerEntity> listManager = [];
-    print(result.result);
+
     result.result?.forEach((manager) {
       listManager.add(
           ManagerEntity(username: manager["phone"], name: manager["name"]));

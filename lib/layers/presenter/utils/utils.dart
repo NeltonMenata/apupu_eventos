@@ -50,10 +50,17 @@ class Utils {
                               await launchUrl(uri,
                                   mode: LaunchMode.externalApplication);
                             } else {
-                              print(result.error);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text("Erro: ${result.error}"),
+                                backgroundColor: Colors.red,
+                              ));
                             }
                           } catch (e) {
-                            print(e);
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("Erro: $e"),
+                              backgroundColor: Colors.red,
+                            ));
                           }
                         },
                         child: const Text("Whatsapp")),

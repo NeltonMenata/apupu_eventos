@@ -1,5 +1,9 @@
+import 'package:apupu_eventos/layers/core/auth_service/auth_service.dart';
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/manager/manager_entity.dart';
+import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../utils/utils.dart';
 import 'create_manager_controller.dart';
@@ -13,6 +17,7 @@ class CreateManagerPage extends StatefulWidget {
 
 class _CreateManagerPageState extends State<CreateManagerPage> {
   final controller = getIt<CreateManagerController>();
+  final loginController = getIt<LoginController>();
 
   bool isCreate = false;
 
@@ -24,6 +29,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
 
   @override
   Widget build(BuildContext context) {
+    phoneController.text = AuthService.phone;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final paddingHorizontal = width * .04;
@@ -106,7 +112,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                     TextField(
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
-                      maxLength: 9,
+                      enabled: false,
                       style: TextStyle(
                         letterSpacing: 4,
                         fontSize: fontSizeTitleLabel - 2,
@@ -194,15 +200,10 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                 isError: true);
                             return;
                           }
-                          if (phoneController.text.length < 9) {
-                            showResultCustom(context,
-                                "Número telefónico deve ter 9 dígitos!",
-                                isError: true);
-                            return;
-                          }
+
                           if (passwordController.text.length < 5) {
                             showResultCustom(context,
-                                "Palavra-passe deve ter mais de 5 caracteres!",
+                                "Palavra-passe deve ter mais de 4 caracteres!",
                                 isError: true);
                             return;
                           }
@@ -222,6 +223,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                                 name: nameController.text.trim(),
                                 phone: phoneController.text.trim(),
                                 investor: "original",
+                                uid: FirebaseAuth.instance.currentUser!.uid,
                                 password: passwordController.text.trim()),
                           );
                           if (user.error != null) {
@@ -236,21 +238,19 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                           final name = nameController.text;
                           final username = phoneController.text;
                           final password = passwordController.text;
-                          showResultCustom(
-                            context,
-                            "Conta criada com sucesso, clique em OK para Entrar no Sistema!",
-                            action: () {
-                              Navigator.pop(
-                                context,
-                                ManagerEntity(
-                                  username: username,
-                                  name: name,
-                                  password: password,
-                                ),
-                              );
-                            },
-                            color: Colors.green.shade700,
+
+                          loginController.isAdmin = true;
+                          await loginController.login(
+                              context, username, password);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Conta criada com sucesso, Seja Bem-Vindo $name!"),
+                              backgroundColor: Colors.green,
+                            ),
                           );
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, Routes.HOME, (route) => false);
                           setState(() {
                             nameController.clear();
                             phoneController.clear();
@@ -269,8 +269,10 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                   ],
                 ),
                 onPressed: () {
-                  Navigator.pop(
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
+                    Routes.LOGIN,
+                    (route) => false,
                   );
                 },
               ),
