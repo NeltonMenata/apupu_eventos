@@ -5,7 +5,6 @@ import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_co
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../geral_components/scaffold_general/scaffold_general.dart';
 import '../login/login_controller.dart';
 
 class ManagerEventPage extends StatefulWidget {
@@ -32,7 +31,6 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
     double fontSizeTitle = width * .045;
     double fontSizeSubtitle = width * .035;
     double fontSizeTextButton = width * .06;
-    final imgCartazSize = width * .15;
 
     return WillPopScope(
         onWillPop: () async {
@@ -566,7 +564,7 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                 child: workerObjectId == null
                     ? TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                             "Volte sempre nesta tela para gerenciar os eventos criados!"),
                       )
                     : TextButton(
