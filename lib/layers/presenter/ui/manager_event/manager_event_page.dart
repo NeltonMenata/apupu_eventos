@@ -51,71 +51,102 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
         child: SafeArea(
           child: Scaffold(
             body: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    Visibility(
-                        visible: currentWorker != null,
-                        child: Container(
-                          color: Colors.blue.shade600,
-                          padding: const EdgeInsets.all(10),
-                          child: Row(children: [
-                            Icon(
-                              Icons.person_pin,
-                              size: width * .09,
-                            ),
-                            Text(currentWorker?.name ?? "",
-                                style: TextStyle(fontSize: width * .07))
-                          ]),
-                        )),
-                    ScaffoldGeneral(
-                      title:
-                          "Gerencie seus Eventos, clique  no evento para adicionar convidados!",
-                      subtitle: "",
-                      body: FutureBuilder<List<EventEntity>>(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 16, left: 8.0, right: 8.0, bottom: 40),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Visibility(
+                          visible: currentWorker != null,
+                          child: Container(
+                            color: Colors.blue.shade600,
+                            padding: const EdgeInsets.all(10),
+                            child: Row(children: [
+                              Icon(
+                                Icons.person_pin,
+                                size: width * .09,
+                              ),
+                              Text(currentWorker?.name ?? "",
+                                  style: TextStyle(fontSize: width * .07))
+                            ]),
+                          )),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Gerencie seus Eventos",
+                          style: TextStyle(
+                              fontSize: fontSizeTitle * 1.55,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 16),
+                        child: Text(
+                          "Clique  no evento para adicionar convidados!",
+                          style: TextStyle(
+                              fontSize: fontSizeTitle,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      FutureBuilder<List<EventEntity>>(
                         future: controller.getAllEvent(context, workerObjectId),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return snapshot.data!.isEmpty
                                 ? workerObjectId == null
-                                    ? TextButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                                  context, Routes.ADD_EVENT)
-                                              .then((value) => setState(() {}));
-                                        },
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Text(
-                                                    "Nenhum Evento foi adicionado, clique aqui criar um novo!",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            fontSizeTextButton,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors.white),
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.shade800,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                    context, Routes.ADD_EVENT)
+                                                .then(
+                                                    (value) => setState(() {}));
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 8,
+                                                    child: Text(
+                                                      "Nenhum Evento foi adicionado, clique aqui para criar um novo!",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              fontSizeTextButton,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
-                                                ),
-                                                IconButton(
-                                                    onPressed: () {
-                                                      Navigator.pushNamed(
-                                                              context,
-                                                              Routes.ADD_EVENT)
-                                                          .then((value) =>
-                                                              setState(() {}));
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .arrow_forward_rounded,
-                                                      size: width * .09,
-                                                      color: Colors.white,
-                                                    ))
-                                              ],
-                                            ),
-                                          ],
+                                                  Expanded(
+                                                    child: IconButton(
+                                                        onPressed: () {
+                                                          Navigator.pushNamed(
+                                                                  context,
+                                                                  Routes
+                                                                      .ADD_EVENT)
+                                                              .then((value) =>
+                                                                  setState(
+                                                                      () {}));
+                                                        },
+                                                        icon: Icon(
+                                                          Icons
+                                                              .arrow_forward_rounded,
+                                                          size: width * .09,
+                                                          color: Colors.white,
+                                                        )),
+                                                  )
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       )
                                     : Padding(
@@ -138,6 +169,200 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
 
                                           return Column(
                                             children: [
+                                              Row(
+                                                children: [
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                      snapshot.data![index].name
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "Arial Black",
+                                                        fontSize:
+                                                            fontSizeTitle * .9,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  snapshot.data![index]
+                                                              .payment ??
+                                                          false
+                                                      ? const Icon(
+                                                          Icons.check_circle)
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.black,
+                                                          Colors.blue.shade900
+                                                        ])),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    if (isDoorman != null &&
+                                                        isDoorman == false) {
+                                                      Navigator.of(context)
+                                                          .pushNamed(
+                                                              Routes
+                                                                  .CREDIT_AND_SALE_WORKER,
+                                                              arguments:
+                                                                  snapshot.data![
+                                                                      index]);
+                                                      return;
+                                                    }
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            Routes
+                                                                .REGISTER_GUEST,
+                                                            arguments: snapshot
+                                                                .data![index]);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: SizedBox(
+                                                          height: width * .45,
+                                                          child: ClipRRect(
+                                                            child: snapshot.data![index].imgCartaz !=
+                                                                    null
+                                                                ? snapshot
+                                                                            .data![
+                                                                                index]
+                                                                            .imgCartaz!
+                                                                            .isNotEmpty &&
+                                                                        snapshot.data![index].imgCartaz! !=
+                                                                            Utils
+                                                                                .assetLogo
+                                                                    ? CachedNetworkImage(
+                                                                        imageUrl: snapshot
+                                                                            .data![index]
+                                                                            .imgCartaz!,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      )
+                                                                    : Image.asset(
+                                                                        Utils
+                                                                            .assetLogo,
+                                                                        fit: BoxFit
+                                                                            .cover)
+                                                                : Image.asset(
+                                                                    Utils
+                                                                        .assetLogo,
+                                                                    fit: BoxFit
+                                                                        .cover),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            //  radius: circleAvatarSize,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 3,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Data: \n${date.day}/${date.month}/${date.year}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeSubtitle,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .grey),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Organização:\n${snapshot.data![index].organization}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeTitle *
+                                                                              .7,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Normal:\n${separatorMoney("${snapshot.data![index].price}")} kz",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeSubtitle,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .grey),
+                                                                ),
+                                                              ),
+                                                              snapshot.data![index]
+                                                                          .priceVip !=
+                                                                      null
+                                                                  ? Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          bottom:
+                                                                              6.0),
+                                                                      child:
+                                                                          Text(
+                                                                        "Vip:\n${separatorMoney("${snapshot.data![index].priceVip}")} kz",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                fontSizeSubtitle,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.white),
+                                                                      ),
+                                                                    )
+                                                                  : const SizedBox()
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              /*
                                               ListTile(
                                                 minLeadingWidth: imgCartazSize,
                                                 leading: SizedBox(
@@ -309,8 +534,13 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                                                               .data![index]);
                                                 },
                                               ),
-                                              const Divider(
-                                                color: Colors.grey,
+                                              */
+
+                                              // const Divider(
+                                              //   color: Colors.grey,
+                                              // ),
+                                              const SizedBox(
+                                                height: 24,
                                               )
                                             ],
                                           );
@@ -324,8 +554,8 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
                           return const CircularProgressIndicator();
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -334,8 +564,11 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
               child: SizedBox(
                 width: double.infinity,
                 child: workerObjectId == null
-                    ? const Text(
-                        "Volte sempre nesta tela para gerenciar os eventos criados!")
+                    ? TextButton(
+                        onPressed: () {},
+                        child: Text(
+                            "Volte sempre nesta tela para gerenciar os eventos criados!"),
+                      )
                     : TextButton(
                         onPressed: () {
                           LoginController.logout(context);

@@ -287,7 +287,7 @@ class _AddEventPageState extends State<AddEventPage> {
                                     priceVipController.text = "0";
                                     bonusCredit.text = "0";
                                     isSave = !isSave;
-                                    Image.asset(Utils.assetLogo);
+                                    image = Image.asset(Utils.assetLogo);
                                   });
                                 },
                                 child: const Text(
@@ -309,9 +309,9 @@ class _AddEventPageState extends State<AddEventPage> {
     // ignore: invalid_use_of_visible_for_testing_member
     final imgCartaz = await ImagePicker.platform.pickImage(
         source: ImageSource.gallery,
-        maxHeight: 500,
-        maxWidth: 500,
-        imageQuality: 50);
+        maxHeight: 600,
+        maxWidth: 600,
+        imageQuality: 70);
 
     setState(() {
       if (imgCartaz != null) {

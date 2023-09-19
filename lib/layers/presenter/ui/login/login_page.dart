@@ -25,9 +25,9 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
-    final paddingTop = height * 0.1;
+    final paddingTop = height * 0.07;
     const paddingBottom = 15.0;
-    final fontSizeTitle = width * .086;
+    final fontSizeTitle = width * .08;
     final fontSizeTitleLabel = width * .045;
 
     return Scaffold(
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
                     ),
-                    SizedBox(height: height * 0.10),
+                    SizedBox(height: height * 0.03),
                   ],
                 ),
               ),
@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.isAdmin ? "Gerenciador" : "Trabalhador",
+                      controller.isAdmin ? "Gerenciador" : "Porteiro/Barman",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
@@ -80,8 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                         disabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey)),
                         border: const OutlineInputBorder(),
-                        hintText:
-                            controller.isAdmin ? "Telefone" : "Nome de Usuário",
+                        hintText: controller.isAdmin ? "Telefone" : "Username",
                         suffixIcon: const Icon(Icons.person_outlined),
                       ),
                     ),
@@ -116,14 +115,28 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       onSubmitted: (value) {},
                     ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                          child: const Text(
+                            "Esqueceu a palavra-passe?",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          onPressed: () {}),
+                    )
                   ],
                 ),
               ),
               TextButton(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Acessar como Gerenciador?"),
+                    Text(
+                      "Acessar como Gerenciador?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSizeTitleLabel * .9),
+                    ),
                     Checkbox(
                       onChanged: (value) async {
                         setState(() {
@@ -171,9 +184,13 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
               ),
+
+              /*
               const Center(
                   child: Text("OU",
                       style: TextStyle(fontWeight: FontWeight.bold))),
+              */
+
               Padding(
                 padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
                 child: ElevatedButton(
