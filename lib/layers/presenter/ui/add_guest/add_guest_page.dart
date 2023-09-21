@@ -32,149 +32,168 @@ class _AddGuestPageState extends State<AddGuestPage> {
     //double fontSizeSubtitle = width * .035;
     const allPadding = 8.0;
     final fontSize = width * .04;
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: ScaffoldGeneral(
-          title: "Adicione pessoas ao Evento",
-          subtitle: "",
-          body: SingleChildScrollView(
-            child: Form(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 24.0, right: 8, left: 8),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 32.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
                     child: Text(
-                      "Nome",
+                      "Adicione Pessoas ao Evento",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontSize: fontSizeTitle,
-                          fontWeight: FontWeight.w900),
+                          fontFamily: "Arial Black",
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSizeTitle * 1.35),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                        controller: nameController,
-                        keyboardType: TextInputType.name,
-                        style: const TextStyle(color: Colors.white),
-                        cursorColor: Colors.white,
-                        decoration: _styleTextField(false)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Contacto",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: fontSizeTitle,
-                        fontWeight: FontWeight.w900,
+                ),
+                Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          "Nome",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: fontSizeTitle,
+                              fontWeight: FontWeight.w900),
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: contactController,
-                      keyboardType: TextInputType.phone,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: fontSizeTitle,
-                          //letterSpacing: 10,
-                          letterSpacing: 5,
-                          wordSpacing: 3),
-                      onChanged: (value) {},
-                      maxLength: 9,
-                      decoration: _styleTextField(true),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(allPadding),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isVip = !isVip;
-                        });
-                      },
-                      child: Container(
-                        width: width * .4,
-                        padding: const EdgeInsets.only(left: 8),
-                        decoration: BoxDecoration(
-                            border: Border.all(),
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Row(children: [
-                          Text(
-                            "É VIP?",
-                            style: TextStyle(
-                                fontSize: fontSize,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w900),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: TextFormField(
+                            controller: nameController,
+                            keyboardType: TextInputType.name,
+                            style: const TextStyle(color: Colors.black),
+                            cursorColor: Colors.black,
+                            decoration: _styleTextField(false)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          "Contacto",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: fontSizeTitle,
+                            fontWeight: FontWeight.w900,
                           ),
-                          const Spacer(),
-                          Checkbox(
-                            value: isVip,
-                            onChanged: (value) {
-                              setState(() {
-                                isVip = !isVip;
-                              });
-                            },
-                          )
-                        ]),
+                        ),
                       ),
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: isSave
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : ElevatedButton(
-                              onPressed: () async {
-                                if (nameController.text.isEmpty ||
-                                    contactController.text.isEmpty ||
-                                    contactController.text.length < 9) {
-                                  showResultCustom(context,
-                                      "Preencha os campos corretamente!");
-                                  return;
-                                }
-
-                                setState(() {
-                                  isSave = !isSave;
-                                });
-
-                                final guestSaved = await controller.saveGuest(
-                                  GuestEntity(
-                                      contact: contactController.text,
-                                      name: nameController.text,
-                                      objectId: "objectId",
-                                      isIn: false,
-                                      isVip: isVip,
-                                      eventObjectId: currentEvent.objectId,
-                                      workerObjectId: workerObjectId),
-                                );
-
-                                setState(() {
-                                  nameController.text = "";
-                                  contactController.text = "";
-
-                                  isSave = !isSave;
-                                });
-                                if (guestSaved.error != null) {
-                                  showResultCustom(context, guestSaved.error!,
-                                      isError: true);
-                                  return;
-                                }
-                                Navigator.of(context).pop(guestSaved);
-                              },
-                              child: Text(
-                                "Salvar Convidado",
-                                style: TextStyle(fontSize: fontSize),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: TextFormField(
+                          controller: contactController,
+                          keyboardType: TextInputType.phone,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: fontSizeTitle,
+                              //letterSpacing: 10,
+                              letterSpacing: 5,
+                              wordSpacing: 3),
+                          onChanged: (value) {},
+                          maxLength: 9,
+                          decoration: _styleTextField(true),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: allPadding, top: allPadding),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isVip = !isVip;
+                            });
+                          },
+                          child: Container(
+                            width: width * .4,
+                            padding: const EdgeInsets.only(left: 8),
+                            decoration: BoxDecoration(
+                                border: Border.all(),
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Row(children: [
+                              Text(
+                                "Este Convidado é VIP ?",
+                                style: TextStyle(
+                                    fontSize: fontSize,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900),
                               ),
-                            )),
-                ],
-              ),
+                              const Spacer(),
+                              Checkbox(
+                                value: isVip,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isVip = !isVip;
+                                  });
+                                },
+                              )
+                            ]),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 24.0),
+                          child: isSave
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ElevatedButton(
+                                  onPressed: () async {
+                                    if (nameController.text.isEmpty ||
+                                        contactController.text.isEmpty ||
+                                        contactController.text.length < 9) {
+                                      showResultCustom(context,
+                                          "Preencha os campos corretamente!");
+                                      return;
+                                    }
+
+                                    setState(() {
+                                      isSave = !isSave;
+                                    });
+
+                                    final guestSaved =
+                                        await controller.saveGuest(
+                                      GuestEntity(
+                                          contact: contactController.text,
+                                          name: nameController.text,
+                                          objectId: "objectId",
+                                          isIn: false,
+                                          isVip: isVip,
+                                          eventObjectId: currentEvent.objectId,
+                                          workerObjectId: workerObjectId),
+                                    );
+
+                                    setState(() {
+                                      nameController.text = "";
+                                      contactController.text = "";
+
+                                      isSave = !isSave;
+                                    });
+                                    if (guestSaved.error != null) {
+                                      showResultCustom(
+                                          context, guestSaved.error!,
+                                          isError: true);
+                                      return;
+                                    }
+                                    Navigator.of(context).pop(guestSaved);
+                                  },
+                                  child: Text(
+                                    "Salvar Convidado",
+                                    style: TextStyle(fontSize: fontSize),
+                                  ),
+                                )),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -184,11 +203,10 @@ class _AddGuestPageState extends State<AddGuestPage> {
 
   InputDecoration _styleTextField(bool isPhone) => InputDecoration(
         hintText: "Digite aqui",
-        hintStyle: const TextStyle(color: Colors.white, letterSpacing: 0),
+        hintStyle: const TextStyle(color: Colors.black, letterSpacing: 0),
         border: const OutlineInputBorder(),
         suffixIcon: Icon(
           isPhone ? Icons.phone_outlined : Icons.person_outline_rounded,
-          color: Colors.white,
         ),
       );
 }

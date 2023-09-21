@@ -21,14 +21,14 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
-    final paddingTop = height * 0.05;
+    const paddingTop = 16.0;
     const paddingBottom = 15.0;
     const crossStart = CrossAxisAlignment.start;
     final fontSize = width * .045;
-    final fontSizeTitle = width * .08;
+    final fontSizeTitle = width * .05;
     const allPadding = 8.0;
 
     return Scaffold(
@@ -53,18 +53,19 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: paddingLeft, top: paddingTop, bottom: paddingBottom),
             child: Column(children: [
               Text(
                 "Adicione usuários que hão de trabalhar nos eventos!",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: fontSizeTitle,
+                  fontFamily: "Arial Black",
+                  fontSize: fontSizeTitle * 1.35,
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -127,6 +128,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                         )
                       ]),
                     ),
+                    const SizedBox(height: 24),
                     Padding(
                         padding: const EdgeInsets.all(allPadding),
                         child: isSave
@@ -165,9 +167,9 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                                   style: TextStyle(fontSize: fontSize),
                                 ),
                               )),
-                    SizedBox(
-                      height: width * .07,
-                    ),
+                    // SizedBox(
+                    //   height: width * .07,
+                    // ),
                   ],
                 ),
               )

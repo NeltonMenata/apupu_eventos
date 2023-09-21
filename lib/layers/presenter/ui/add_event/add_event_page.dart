@@ -30,14 +30,14 @@ class _AddEventPageState extends State<AddEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    //final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
-    final paddingTop = height * 0.05;
+    const paddingTop = 16.0;
     const paddingBottom = 15.0;
     const crossStart = CrossAxisAlignment.start;
     const fontSize = 17.0;
-    final fontSizeTitle = width * .08;
+    final fontSizeTitle = width * .05 * 1.35;
     const allPadding = 8.0;
     final circleAvatarSize = width * .2;
 
@@ -60,13 +60,14 @@ class _AddEventPageState extends State<AddEventPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
                 left: paddingLeft, top: paddingTop, bottom: paddingBottom),
             child: Column(children: [
               Text(
                 "Adicione um Evento novo, com nome e data de realização!",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontFamily: "Arial Black",
                   fontSize: fontSizeTitle,
                 ),
               ),

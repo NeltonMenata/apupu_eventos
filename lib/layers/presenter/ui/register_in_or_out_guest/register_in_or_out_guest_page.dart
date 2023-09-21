@@ -52,7 +52,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
     final width = MediaQuery.of(context).size.width;
     //const paddingLeft = 15.0;
     //const paddingBottom = 8.0;
-    final fontSizeTitle = width * .086;
+    final fontSizeTitle = width * .05 * 1.35;
     final fontSizeGuest = width * .042;
     final fontSizeSubtitle = width * .049;
 
@@ -402,7 +402,9 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                   Text(
                     currentEvent.name,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSizeTitle,
+                        fontFamily: "Arial Black"),
                   ),
                   Text(
                     title,
@@ -428,7 +430,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                   child: guestCurrent.contact == "contact"
                       ? Center(
                           child: Text(
-                            "Clique em Adicionar ( + ) para criar um Convidado neste Evento.",
+                            "Clique no botão ( + ) para criar um Convidado neste Evento.",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontSizeSubtitle),

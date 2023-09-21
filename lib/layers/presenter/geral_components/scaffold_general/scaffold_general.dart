@@ -26,8 +26,8 @@ class _ScaffoldGeneralState extends State<ScaffoldGeneral> {
     final width = MediaQuery.of(context).size.width;
     const paddingLeft = 15.0;
     final paddingTop = widget.paddingTop ?? height * 0.1;
-    const paddingBottom = 8.0;
-    final fontSizeTitle = width * .086;
+    const paddingBottom = 16.0;
+    final fontSizeTitle = width * .065;
     final fontSizeSubtitle = width * .049;
 
     return Center(
@@ -43,9 +43,11 @@ class _ScaffoldGeneralState extends State<ScaffoldGeneral> {
                 Text(
                   widget.title,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Arial Black",
+                      fontSize: fontSizeTitle),
                 ),
-                //SizedBox(height: paddingBottom),
+                const SizedBox(height: paddingBottom),
                 Text(
                   widget.subtitle,
                   style: TextStyle(fontSize: fontSizeSubtitle),

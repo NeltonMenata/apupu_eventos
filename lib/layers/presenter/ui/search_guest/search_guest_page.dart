@@ -99,7 +99,7 @@ class _SearchGuestPageState extends State<SearchGuestPage>
       ),
       body: SingleChildScrollView(
         child: ScaffoldGeneral(
-          paddingTop: 15,
+          paddingTop: 16,
           title: "Procurar convidados",
           subtitle:
               "Encontre os convidados e registe a sua entrada ou saída no evento!",

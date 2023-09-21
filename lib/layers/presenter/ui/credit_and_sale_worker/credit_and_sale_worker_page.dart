@@ -26,13 +26,13 @@ class CreditAndSaleWorker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Crédito & Venda",
+                "Adicionar Convidado - Crédito & Venda",
                 style: TextStyle(
                     fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
               ),
               const SizedBox(height: paddingBottom),
               Text(
-                "Recarregue o cartão de consumo e faça venda de consumíveis respectivamente",
+                "Após adicionar convidados, recarregue o cartão de consumo e faça venda de consumíveis respectivamente",
                 style: TextStyle(fontSize: fontSizeSubtitle),
               )
             ],

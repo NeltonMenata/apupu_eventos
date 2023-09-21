@@ -57,7 +57,7 @@ class _ManagerEventPageState extends State<ManagerEventPage>
     //final paddingTop = height * 0.1;
     //const paddingBottom = 15.0;
     //const crossStart = CrossAxisAlignment.start;
-    double fontSizeTitle = width * .045;
+    double fontSizeTitle = width * .05;
     double fontSizeSubtitle = width * .035;
     double fontSizeTextButton = width * .06;
 
@@ -209,188 +209,170 @@ class _ManagerEventPageState extends State<ManagerEventPage>
                 child: Padding(
                   padding: const EdgeInsets.only(
                       top: 16, left: 8.0, right: 8.0, bottom: 40),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        Visibility(
-                            visible: currentWorker != null,
-                            child: Container(
-                              color: Colors.blue.shade600,
-                              padding: const EdgeInsets.all(10),
-                              child: Row(children: [
-                                Icon(
-                                  Icons.person_pin,
-                                  size: width * .09,
-                                ),
-                                Text(currentWorker?.name ?? "",
-                                    style: TextStyle(fontSize: width * .07))
-                              ]),
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Gerencie seus Eventos",
-                            style: TextStyle(
-                                fontSize: fontSizeTitle * 1.55,
-                                fontWeight: FontWeight.bold),
-                          ),
+                  child: Column(
+                    children: [
+                      Visibility(
+                          visible: currentWorker != null,
+                          child: Container(
+                            color: Colors.blue.shade600,
+                            padding: const EdgeInsets.all(10),
+                            child: Row(children: [
+                              Icon(
+                                Icons.person_pin,
+                                size: width * .09,
+                              ),
+                              Text(currentWorker?.name ?? "",
+                                  style: TextStyle(fontSize: width * .07))
+                            ]),
+                          )),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Gerencie seus Eventos",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: fontSizeTitle * 1.35,
+                              fontFamily: "Arial Black",
+                              fontWeight: FontWeight.bold),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 16),
-                          child: Text(
-                            "Clique  no evento para adicionar convidados!",
-                            style: TextStyle(
-                                fontSize: fontSizeTitle,
-                                fontWeight: FontWeight.bold),
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: Text(
+                          "Clique  no evento para adicionar convidados!",
+                          style: TextStyle(
+                              fontSize: fontSizeTitle,
+                              fontWeight: FontWeight.bold),
                         ),
-                        FutureBuilder<List<EventEntity>>(
-                          future:
-                              controller.getAllEvent(context, workerObjectId),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return snapshot.data!.isEmpty
-                                  ? workerObjectId == null
-                                      ? Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.blue.shade800,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: TextButton(
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                      context, Routes.ADD_EVENT)
-                                                  .then((value) =>
-                                                      setState(() {}));
-                                            },
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 8,
-                                                      child: Text(
-                                                        "Nenhum Evento foi adicionado, clique aqui para criar um novo!",
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                fontSizeTextButton,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: IconButton(
-                                                          onPressed: () {
-                                                            Navigator.pushNamed(
-                                                                    context,
-                                                                    Routes
-                                                                        .ADD_EVENT)
-                                                                .then((value) =>
-                                                                    setState(
-                                                                        () {}));
-                                                          },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .arrow_forward_rounded,
-                                                            size: width * .09,
-                                                            color: Colors.white,
-                                                          )),
-                                                    )
-                                                  ],
+                      ),
+                      FutureBuilder<List<EventEntity>>(
+                        future: controller.getAllEvent(context, workerObjectId),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return snapshot.data!.isEmpty
+                                ? workerObjectId == null
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue.shade800,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            nextPage(1);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 8,
+                                                child: Text(
+                                                  "Nenhum Evento foi adicionado, clique aqui para criar um novo!",
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          fontSizeTextButton,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Colors.white),
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                              Expanded(
+                                                  child: Icon(
+                                                Icons.arrow_forward_rounded,
+                                                size: width * .09,
+                                                color: Colors.white,
+                                              ))
+                                            ],
                                           ),
-                                        )
-                                      : Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "Nenhum Evento foi a adicionado você!",
-                                            style: TextStyle(
-                                                fontSize: fontSizeTextButton,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                        )
-                                  : Column(
-                                      children: [
-                                        ...List.generate(
-                                          snapshot.data!.length,
-                                          ((index) {
-                                            final date = snapshot
-                                                .data![index].dateOfRealization;
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "Nenhum Evento foi a adicionado você!",
+                                          style: TextStyle(
+                                              fontSize: fontSizeTextButton,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                : Column(
+                                    children: [
+                                      ...List.generate(
+                                        snapshot.data!.length,
+                                        ((index) {
+                                          final date = snapshot
+                                              .data![index].dateOfRealization;
 
-                                            return Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.bottomLeft,
-                                                      child: Text(
-                                                        snapshot
-                                                            .data![index].name
-                                                            .toUpperCase(),
-                                                        style: TextStyle(
-                                                          fontFamily:
-                                                              "Arial Black",
-                                                          fontSize:
-                                                              fontSizeTitle *
-                                                                  .9,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black,
-                                                        ),
+                                          return Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.bottomLeft,
+                                                    child: Text(
+                                                      snapshot.data![index].name
+                                                          .toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "Arial Black",
+                                                        fontSize:
+                                                            fontSizeTitle * .9,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
-                                                    snapshot.data![index]
-                                                                .payment ??
-                                                            false
-                                                        ? const Icon(
-                                                            Icons.check_circle)
-                                                        : const SizedBox()
-                                                  ],
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.black,
-                                                            Colors.blue.shade900
-                                                          ])),
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      if (isDoorman != null) {
-                                                        Navigator.of(context)
-                                                            .pushNamed(
-                                                                Routes
-                                                                    .CREDIT_AND_SALE_WORKER,
-                                                                arguments:
-                                                                    snapshot.data![
-                                                                        index]);
-                                                        return;
-                                                      }
+                                                  ),
+                                                  snapshot.data![index]
+                                                              .payment ??
+                                                          false
+                                                      ? const Icon(
+                                                          Icons.check_circle)
+                                                      : const SizedBox()
+                                                ],
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    gradient: LinearGradient(
+                                                        colors: [
+                                                          Colors.black,
+                                                          Colors.blue.shade900
+                                                        ])),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    if (isDoorman != null) {
                                                       Navigator.of(context)
                                                           .pushNamed(
                                                               Routes
-                                                                  .REGISTER_GUEST,
+                                                                  .CREDIT_AND_SALE_WORKER,
                                                               arguments:
                                                                   snapshot.data![
                                                                       index]);
-                                                    },
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 6,
+                                                      return;
+                                                    }
+                                                    Navigator.of(context)
+                                                        .pushNamed(
+                                                            Routes
+                                                                .REGISTER_GUEST,
+                                                            arguments: snapshot
+                                                                .data![index]);
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 6,
+                                                        child: ConstrainedBox(
+                                                          constraints:
+                                                              BoxConstraints(
+                                                            maxHeight:
+                                                                width * .5,
+                                                          ),
                                                           child: SizedBox(
-                                                            height: width * .45,
+                                                            //height: width * .45,
                                                             child: ClipRRect(
                                                               child: snapshot
                                                                           .data![
@@ -426,110 +408,117 @@ class _ManagerEventPageState extends State<ManagerEventPage>
                                                             ),
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          flex: 3,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(4.0),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          6.0),
-                                                                  child: Text(
-                                                                    "Data: \n${date.day}/${date.month}/${date.year}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            fontSizeSubtitle,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey),
-                                                                  ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 3,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Data: \n${date.day}/${date.month}/${date.year}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeSubtitle,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .grey),
                                                                 ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          6.0),
-                                                                  child: Text(
-                                                                    "Organização:\n${snapshot.data![index].organization}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            fontSizeTitle *
-                                                                                .7,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .white),
-                                                                  ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Organização:\n${snapshot.data![index].organization}",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeTitle *
+                                                                              .7,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .white),
                                                                 ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          6.0),
-                                                                  child: Text(
-                                                                    "Normal:\n${separatorMoney("${snapshot.data![index].price}")} kz",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            fontSizeSubtitle,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        color: Colors
-                                                                            .grey),
-                                                                  ),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            6.0),
+                                                                child: Text(
+                                                                  "Area Normal:\n${separatorMoney("${snapshot.data![index].price}")} kz",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          fontSizeSubtitle,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .grey),
                                                                 ),
-                                                                snapshot.data![index]
-                                                                            .priceVip !=
-                                                                        null
-                                                                    ? Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(bottom: 6.0),
-                                                                        child:
-                                                                            Text(
-                                                                          "Vip:\n${separatorMoney("${snapshot.data![index].priceVip}")} kz",
-                                                                          style: TextStyle(
-                                                                              fontSize: fontSizeSubtitle,
-                                                                              fontWeight: FontWeight.bold,
-                                                                              color: Colors.white),
-                                                                        ),
-                                                                      )
-                                                                    : const SizedBox()
-                                                              ],
-                                                            ),
+                                                              ),
+                                                              snapshot.data![index]
+                                                                          .priceVip !=
+                                                                      null
+                                                                  ? Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          bottom:
+                                                                              6.0),
+                                                                      child:
+                                                                          Text(
+                                                                        "Area Vip:\n${separatorMoney("${snapshot.data![index].priceVip}")} kz",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                fontSizeSubtitle,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.white),
+                                                                      ),
+                                                                    )
+                                                                  : const SizedBox()
+                                                            ],
                                                           ),
-                                                        )
-                                                      ],
-                                                    ),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 24,
-                                                )
-                                              ],
-                                            );
-                                          }),
-                                        )
-                                      ],
-                                    );
-                            } else if (snapshot.hasError) {
-                              return const Text("Erro ao carregar dados!");
-                            }
-                            return const CircularProgressIndicator();
-                          },
-                        ),
-                      ],
-                    ),
+                                              ),
+                                              const SizedBox(
+                                                height: 24,
+                                              )
+                                            ],
+                                          );
+                                        }),
+                                      )
+                                    ],
+                                  );
+                          } else if (snapshot.hasError) {
+                            return const Text("Erro ao carregar dados!");
+                          }
+                          return const CircularProgressIndicator();
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),
