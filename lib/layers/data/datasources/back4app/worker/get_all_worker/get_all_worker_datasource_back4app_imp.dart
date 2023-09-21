@@ -7,24 +7,55 @@ class GetAllWorkerDataSourceBack4appImp implements IGetAllWorkerDataSource {
   Future<List<WorkerEntity>> call([String? managerObjectId]) async {
     final getAllWorker = ParseCloudFunction("getAllWorker");
 
-    final result = await getAllWorker
-        .execute(parameters: {"managerObjectId": managerObjectId});
-    if (result.statusCode == 200) {
-      final List<WorkerEntity> list = [];
-      result.result.forEach((e) {
-        list.add(
-          WorkerEntity(
-            objectId: e["objectId"],
-            name: e["name"],
-            username: e["username"],
-            password: e["password"],
-            isDoorman: e["isDoorman"],
-          ),
-        );
-      });
+    try {
+      final result = await getAllWorker
+          .execute(parameters: {"managerObjectId": managerObjectId});
+      if (result.statusCode == 200) {
+        if (result.result["error"] != null) {
+          return [
+            WorkerEntity(
+                username: "username",
+                password: "password",
+                name: "name",
+                isDoorman: false,
+                error: result.result["error"])
+          ];
+        }
 
-      return list;
+        final List<WorkerEntity> list = [];
+        result.result.forEach((e) {
+          list.add(
+            WorkerEntity(
+              objectId: e["objectId"],
+              name: e["name"],
+              username: e["username"],
+              password: e["password"],
+              isDoorman: e["isDoorman"],
+            ),
+          );
+        });
+
+        return list;
+      } else {
+        return [
+          WorkerEntity(
+              isDoorman: false,
+              name: "",
+              username: "",
+              password: "",
+              error:
+                  "Erro ao carregar os dados, verifique a sua conexão com a internet!")
+        ];
+      }
+    } catch (e) {
+      return [
+        WorkerEntity(
+            username: "username",
+            password: "password",
+            name: "name",
+            isDoorman: false,
+            error: e.toString())
+      ];
     }
-    return [];
   }
 }

@@ -4,6 +4,7 @@ import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
+import 'package:apupu_eventos/layers/presenter/utils/widgets/floating_button_menu.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -54,7 +55,6 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
     final fontSizeTitle = width * .086;
     final fontSizeGuest = width * .042;
     final fontSizeSubtitle = width * .049;
-    final fontSizeMenu = width * .033;
 
     return SafeArea(
       child: Scaffold(
@@ -428,7 +428,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                   child: guestCurrent.contact == "contact"
                       ? Center(
                           child: Text(
-                            "Clique em Adicionar para criar um Convidado neste Evento.",
+                            "Clique em Adicionar ( + ) para criar um Convidado neste Evento.",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: fontSizeSubtitle),
@@ -529,68 +529,77 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
               },
             ),
             const Spacer(),
-            GestureDetector(
-              onTapUp: (value) async {
-                setState(() {
-                  isLoading = true;
-                });
-                isIn = await doneInOrOutGuest(guestCurrent.objectId, !isIn);
-                //isIn = await widget.controller
-                //  .doneInOrOutGuest(guestCurrent.objectId, !isIn);
-                setState(() {
-                  isLoading = false;
-                  if (isIn) {
-                    statusGuest = "Convidado está dentro!";
-                  } else {
-                    statusGuest = "Convidado está fora!";
-                  }
-                });
-              },
-              child: isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : isIn
-                      ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.input_outlined,
-                              color: Colors.green,
-                              size: width * .15,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Text(
-                                statusGuest,
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: width * .04),
-                              ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: GestureDetector(
+                  onTapUp: (value) async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    isIn = await doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                    //isIn = await widget.controller
+                    //  .doneInOrOutGuest(guestCurrent.objectId, !isIn);
+                    setState(() {
+                      isLoading = false;
+                      if (isIn) {
+                        statusGuest = "Convidado está dentro!";
+                      } else {
+                        statusGuest = "Convidado está fora!";
+                      }
+                    });
+                  },
+                  child: isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : isIn
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.input_outlined,
+                                  color: Colors.green,
+                                  size: width * .15,
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  statusGuest,
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width * .04),
+                                )
+                              ],
                             )
-                          ],
-                        )
-                      : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.output_outlined,
-                              color: Colors.red,
-                              size: width * .15,
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.output_outlined,
+                                  color: Colors.red,
+                                  size: width * .15,
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                Text(
+                                  statusGuest,
+                                  style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: width * .04),
+                                )
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Text(
-                                statusGuest,
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: width * .04),
-                              ),
-                            )
-                          ],
-                        ),
+                ),
+              ),
             ),
             const Spacer(),
+            /*
             Container(
               color: Colors.grey.shade300,
               width: double.infinity,
@@ -748,7 +757,80 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
                 ],
               ),
             ),
+            */
           ],
+        ),
+        floatingActionButton: FloatingButtonMenu(
+          onPressed1: () {
+            Navigator.of(context)
+                .pushNamed(Routes.SEARCH_GUEST, arguments: currentEvent)
+                .then((value) {
+              setState(() {});
+            });
+          },
+          onPressed2: () async {
+            final value = await Navigator.of(context)
+                .pushNamed(Routes.ADD_GUEST, arguments: currentEvent);
+
+            if (value != null) {
+              setState(() {
+                guestCurrent = value as GuestEntity;
+                isIn = false;
+                statusGuest = "O Convidado está fora do Evento";
+              });
+            }
+          },
+          onPressed3: () {
+            Utils.capture(key1qrcode, context, guestCurrent.contact, true);
+          },
+          onPressed4: () async {
+            setState(() {
+              isLoading = true;
+            });
+
+            var qrResult = await FlutterBarcodeScanner.scanBarcode(
+                "red", "Cancelar", true, ScanMode.QR);
+
+            if (qrResult == "-1") {
+              setState(() {
+                isLoading = false;
+              });
+
+              return;
+            }
+            guestCurrent = await widget.controller
+                .getGuest(qrResult, currentEvent.objectId);
+
+            if (guestCurrent.contact == "contact") {
+              setState(() {
+                isLoading = false;
+                isIn = false;
+                statusGuest = "Usuário não está cadastrado neste Evento";
+              });
+              showResultCustom(context, "O usuário não existe", isError: true);
+              return;
+            }
+            setState(() {
+              isLoading = false;
+            });
+            isIn = guestCurrent.isIn;
+            if (isIn) {
+              statusGuest = "Acesso Negado, o convidado já está no Evento";
+              showResultCustom(context, "O usuário já está dentro do evento",
+                  isError: true);
+            } else {
+              setState(() {
+                isLoading = true;
+              });
+
+              await doneInOrOutGuest(guestCurrent.objectId, !isIn);
+              setState(() {
+                isLoading = false;
+              });
+              statusGuest = "O Convidado pode entrar no Evento";
+              isIn = !isIn;
+            }
+          },
         ),
       ),
     );

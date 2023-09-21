@@ -1,10 +1,13 @@
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/event/event_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
+import 'package:apupu_eventos/layers/presenter/ui/add_event/add_event_page.dart';
+import 'package:apupu_eventos/layers/presenter/ui/create_worker/create_worker_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/manager_event/manager_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../login/login_controller.dart';
 
 class ManagerEventPage extends StatefulWidget {
@@ -14,8 +17,34 @@ class ManagerEventPage extends StatefulWidget {
   State<ManagerEventPage> createState() => _ManagerEventPageState();
 }
 
-class _ManagerEventPageState extends State<ManagerEventPage> {
+class _ManagerEventPageState extends State<ManagerEventPage>
+    with TickerProviderStateMixin {
   final controller = getIt<ManagerEventController>();
+
+  int currentIndex = 0;
+  late TabController tabController;
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this);
+
+    super.initState();
+  }
+
+  void nextPage(int index) {
+    setState(() {
+      currentIndex = index;
+
+      tabController.animateTo(index,
+          duration: const Duration(milliseconds: 500), curve: Curves.bounceIn);
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final workerObjectId =
@@ -36,7 +65,12 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
         onWillPop: () async {
           bool isWorker = workerObjectId == null;
           if (isWorker) {
-            return true;
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Deslize a barra lateral para Terminar Sessão!"),
+              ),
+            );
+            return false;
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -48,525 +82,485 @@ class _ManagerEventPageState extends State<ManagerEventPage> {
         },
         child: SafeArea(
           child: Scaffold(
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 16, left: 8.0, right: 8.0, bottom: 40),
-                child: Center(
-                  child: Column(
-                    children: [
+            appBar: currentWorker == null
+                ? AppBar(
+                    centerTitle: true,
+                    title: Text(
+                      currentAdmin?.name ?? "Not connected",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    actions: [
                       Visibility(
-                          visible: currentWorker != null,
-                          child: Container(
-                            color: Colors.blue.shade600,
-                            padding: const EdgeInsets.all(10),
-                            child: Row(children: [
-                              Icon(
-                                Icons.person_pin,
-                                size: width * .09,
+                        visible: currentAdmin?.isAdmin == true,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.ADMIN_PANEL);
+                          },
+                          icon: const Icon(Icons.admin_panel_settings_outlined),
+                        ),
+                      ),
+                    ],
+                  )
+                : null,
+            drawer: currentWorker == null
+                ? Drawer(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Column(
+                        children: [
+                          UserAccountsDrawerHeader(
+                            accountName: Text(
+                              currentAdmin?.name ?? "Not connected",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            accountEmail: const Text("Gerenciador"),
+                            currentAccountPicture: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(Utils.assetLogo)),
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Criar Evento",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04,
                               ),
-                              Text(currentWorker?.name ?? "",
-                                  style: TextStyle(fontSize: width * .07))
-                            ]),
-                          )),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "Gerencie seus Eventos",
-                          style: TextStyle(
-                              fontSize: fontSizeTitle * 1.55,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 16),
-                        child: Text(
-                          "Clique  no evento para adicionar convidados!",
-                          style: TextStyle(
-                              fontSize: fontSizeTitle,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      FutureBuilder<List<EventEntity>>(
-                        future: controller.getAllEvent(context, workerObjectId),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return snapshot.data!.isEmpty
-                                ? workerObjectId == null
-                                    ? Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue.shade800,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                    context, Routes.ADD_EVENT)
-                                                .then(
-                                                    (value) => setState(() {}));
-                                          },
-                                          child: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 8,
-                                                    child: Text(
-                                                      "Nenhum Evento foi adicionado, clique aqui para criar um novo!",
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              fontSizeTextButton,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: IconButton(
-                                                        onPressed: () {
-                                                          Navigator.pushNamed(
-                                                                  context,
-                                                                  Routes
-                                                                      .ADD_EVENT)
-                                                              .then((value) =>
-                                                                  setState(
-                                                                      () {}));
-                                                        },
-                                                        icon: Icon(
-                                                          Icons
-                                                              .arrow_forward_rounded,
-                                                          size: width * .09,
-                                                          color: Colors.white,
-                                                        )),
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "Nenhum Evento foi a adicionado você!",
-                                          style: TextStyle(
-                                              fontSize: fontSizeTextButton,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white),
-                                        ),
-                                      )
-                                : Column(
-                                    children: [
-                                      ...List.generate(
-                                        snapshot.data!.length,
-                                        ((index) {
-                                          final date = snapshot
-                                              .data![index].dateOfRealization;
+                            ),
+                            trailing: Icon(
+                              Icons.event,
+                              size: width * .10,
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(Routes.ADD_EVENT);
+                            },
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Criar Porteiro/Barman",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: width * .04,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.group_add_outlined,
+                              size: width * .10,
+                            ),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(Routes.CREATE_WORKER);
+                            },
+                          ),
+                          Visibility(
+                            visible: currentAdmin?.isAdmin == true,
+                            child: ListTile(
+                              title: Text(
+                                "Ver Gerenciadores da Plataforma",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: width * .04,
+                                ),
+                              ),
+                              trailing: Icon(
+                                Icons.group,
+                                size: width * .10,
+                              ),
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(Routes.VIEW_MANAGER);
+                              },
+                            ),
+                          ),
+                          const Spacer(),
+                          ListTile(
+                            title: Text(
+                              "Terminar Sessão",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: width * .04,
+                              ),
+                            ),
+                            trailing: Icon(
+                              Icons.logout_outlined,
+                              color: Colors.red,
+                              size: width * .10,
+                            ),
+                            onTap: () async {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Terminando a sessão. Aguarde!"),
+                              ));
 
-                                          return Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.bottomLeft,
-                                                    child: Text(
-                                                      snapshot.data![index].name
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "Arial Black",
-                                                        fontSize:
-                                                            fontSizeTitle * .9,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  snapshot.data![index]
-                                                              .payment ??
-                                                          false
-                                                      ? const Icon(
-                                                          Icons.check_circle)
-                                                      : const SizedBox()
-                                                ],
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Colors.black,
-                                                          Colors.blue.shade900
-                                                        ])),
-                                                child: GestureDetector(
-                                                  onTap: () {
-                                                    if (isDoorman != null &&
-                                                        isDoorman == false) {
-                                                      Navigator.of(context)
-                                                          .pushNamed(
-                                                              Routes
-                                                                  .CREDIT_AND_SALE_WORKER,
-                                                              arguments:
-                                                                  snapshot.data![
-                                                                      index]);
-                                                      return;
-                                                    }
-                                                    Navigator.of(context)
-                                                        .pushNamed(
-                                                            Routes
-                                                                .REGISTER_GUEST,
-                                                            arguments: snapshot
-                                                                .data![index]);
-                                                  },
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 6,
-                                                        child: SizedBox(
-                                                          height: width * .45,
-                                                          child: ClipRRect(
-                                                            child: snapshot.data![index].imgCartaz !=
-                                                                    null
-                                                                ? snapshot
-                                                                            .data![
-                                                                                index]
-                                                                            .imgCartaz!
-                                                                            .isNotEmpty &&
-                                                                        snapshot.data![index].imgCartaz! !=
-                                                                            Utils
-                                                                                .assetLogo
-                                                                    ? CachedNetworkImage(
-                                                                        imageUrl: snapshot
-                                                                            .data![index]
-                                                                            .imgCartaz!,
-                                                                        fit: BoxFit
-                                                                            .cover,
-                                                                      )
-                                                                    : Image.asset(
-                                                                        Utils
-                                                                            .assetLogo,
-                                                                        fit: BoxFit
-                                                                            .cover)
-                                                                : Image.asset(
-                                                                    Utils
-                                                                        .assetLogo,
-                                                                    fit: BoxFit
-                                                                        .cover),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                            //  radius: circleAvatarSize,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 3,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            6.0),
-                                                                child: Text(
-                                                                  "Data: \n${date.day}/${date.month}/${date.year}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          fontSizeSubtitle,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .grey),
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            6.0),
-                                                                child: Text(
-                                                                  "Organização:\n${snapshot.data![index].organization}",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          fontSizeTitle *
-                                                                              .7,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        bottom:
-                                                                            6.0),
-                                                                child: Text(
-                                                                  "Normal:\n${separatorMoney("${snapshot.data![index].price}")} kz",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          fontSizeSubtitle,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .grey),
-                                                                ),
-                                                              ),
-                                                              snapshot.data![index]
-                                                                          .priceVip !=
-                                                                      null
-                                                                  ? Padding(
-                                                                      padding: const EdgeInsets
-                                                                              .only(
-                                                                          bottom:
-                                                                              6.0),
-                                                                      child:
-                                                                          Text(
-                                                                        "Vip:\n${separatorMoney("${snapshot.data![index].priceVip}")} kz",
-                                                                        style: TextStyle(
-                                                                            fontSize:
-                                                                                fontSizeSubtitle,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            color: Colors.white),
-                                                                      ),
-                                                                    )
-                                                                  : const SizedBox()
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              /*
-                                              ListTile(
-                                                minLeadingWidth: imgCartazSize,
-                                                leading: SizedBox(
-                                                  //height: imgCartazSize,
-                                                  width: imgCartazSize,
-                                                  child: ClipRRect(
-                                                    child: snapshot.data![index]
-                                                                .imgCartaz !=
-                                                            null
-                                                        ? snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .imgCartaz!
-                                                                    .isNotEmpty &&
-                                                                snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .imgCartaz! !=
-                                                                    Utils
-                                                                        .assetLogo
-                                                            ? CachedNetworkImage(
-                                                                imageUrl: snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .imgCartaz!,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                              )
-                                                            : Image.asset(
-                                                                Utils.assetLogo,
-                                                                fit: BoxFit
-                                                                    .cover)
-                                                        : Image.asset(
-                                                            Utils.assetLogo,
-                                                            fit: BoxFit.cover),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                    //  radius: circleAvatarSize,
-                                                  ),
-                                                ),
-                                                title: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                              final user =
+                                  await ParseUser.currentUser() as ParseUser?;
+                              user?.logout();
+                              LoginController.logout(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : null,
+            body: TabBarView(controller: tabController, children: [
+              SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 16, left: 8.0, right: 8.0, bottom: 40),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Visibility(
+                            visible: currentWorker != null,
+                            child: Container(
+                              color: Colors.blue.shade600,
+                              padding: const EdgeInsets.all(10),
+                              child: Row(children: [
+                                Icon(
+                                  Icons.person_pin,
+                                  size: width * .09,
+                                ),
+                                Text(currentWorker?.name ?? "",
+                                    style: TextStyle(fontSize: width * .07))
+                              ]),
+                            )),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Gerencie seus Eventos",
+                            style: TextStyle(
+                                fontSize: fontSizeTitle * 1.55,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 16),
+                          child: Text(
+                            "Clique  no evento para adicionar convidados!",
+                            style: TextStyle(
+                                fontSize: fontSizeTitle,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        FutureBuilder<List<EventEntity>>(
+                          future:
+                              controller.getAllEvent(context, workerObjectId),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return snapshot.data!.isEmpty
+                                  ? workerObjectId == null
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.blue.shade800,
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.pushNamed(
+                                                      context, Routes.ADD_EVENT)
+                                                  .then((value) =>
+                                                      setState(() {}));
+                                            },
+                                            child: Column(
+                                              children: [
+                                                Row(
                                                   children: [
-                                                    Card(
-                                                      color: snapshot
-                                                                  .data![index]
-                                                                  .payment ??
-                                                              false
-                                                          ? Colors
-                                                              .green.shade700
-                                                          : Colors.white,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(4.0),
-                                                        child: Text(
-                                                          snapshot
-                                                              .data![index].name
-                                                              .toUpperCase(),
-                                                          style: TextStyle(
-                                                            fontSize:
-                                                                fontSizeTitle,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: snapshot
-                                                                        .data![
-                                                                            index]
-                                                                        .payment ??
-                                                                    false
-                                                                ? Colors.white
-                                                                : Colors.black,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 4.0),
+                                                    Expanded(
+                                                      flex: 8,
                                                       child: Text(
-                                                        snapshot.data![index]
-                                                            .organization,
+                                                        "Nenhum Evento foi adicionado, clique aqui para criar um novo!",
                                                         style: TextStyle(
                                                             fontSize:
-                                                                fontSizeTitle,
+                                                                fontSizeTextButton,
                                                             fontWeight:
-                                                                FontWeight.bold,
+                                                                FontWeight.w700,
                                                             color:
                                                                 Colors.white),
                                                       ),
                                                     ),
+                                                    Expanded(
+                                                      child: IconButton(
+                                                          onPressed: () {
+                                                            Navigator.pushNamed(
+                                                                    context,
+                                                                    Routes
+                                                                        .ADD_EVENT)
+                                                                .then((value) =>
+                                                                    setState(
+                                                                        () {}));
+                                                          },
+                                                          icon: Icon(
+                                                            Icons
+                                                                .arrow_forward_rounded,
+                                                            size: width * .09,
+                                                            color: Colors.white,
+                                                          )),
+                                                    )
                                                   ],
                                                 ),
-                                                subtitle: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(4.0),
-                                                  child: Text(
-                                                    "${date.day}/${date.month}/${date.year}",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            fontSizeSubtitle,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.grey),
-                                                  ),
-                                                ),
-                                                trailing: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Nenhum Evento foi a adicionado você!",
+                                            style: TextStyle(
+                                                fontSize: fontSizeTextButton,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                  : Column(
+                                      children: [
+                                        ...List.generate(
+                                          snapshot.data!.length,
+                                          ((index) {
+                                            final date = snapshot
+                                                .data![index].dateOfRealization;
+
+                                            return Column(
+                                              children: [
+                                                Row(
                                                   children: [
-                                                    Text(
-                                                      "${separatorMoney("${snapshot.data![index].price}")} kz",
-                                                      style: TextStyle(
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      child: Text(
+                                                        snapshot
+                                                            .data![index].name
+                                                            .toUpperCase(),
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "Arial Black",
                                                           fontSize:
-                                                              fontSizeSubtitle,
+                                                              fontSizeTitle *
+                                                                  .9,
                                                           fontWeight:
                                                               FontWeight.bold,
-                                                          color: Colors.white),
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
                                                     ),
                                                     snapshot.data![index]
-                                                                .priceVip !=
-                                                            null
-                                                        ? Row(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              const Flexible(
-                                                                child: Icon(
-                                                                  Icons.star,
-                                                                  color: Colors
-                                                                      .amber,
-                                                                ),
-                                                              ),
-                                                              Flexible(
-                                                                child: Text(
-                                                                  "${separatorMoney("${snapshot.data![index].priceVip}")} kz",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          fontSizeSubtitle,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
+                                                                .payment ??
+                                                            false
+                                                        ? const Icon(
+                                                            Icons.check_circle)
                                                         : const SizedBox()
                                                   ],
                                                 ),
-                                                onTap: () {
-                                                  if (isDoorman != null &&
-                                                      isDoorman == false) {
-                                                    Navigator.of(context).pushNamed(
-                                                        Routes
-                                                            .CREDIT_AND_SALE_WORKER,
-                                                        arguments: snapshot
-                                                            .data![index]);
-                                                    return;
-                                                  }
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                          Routes.REGISTER_GUEST,
-                                                          arguments: snapshot
-                                                              .data![index]);
-                                                },
-                                              ),
-                                              */
-
-                                              // const Divider(
-                                              //   color: Colors.grey,
-                                              // ),
-                                              const SizedBox(
-                                                height: 24,
-                                              )
-                                            ],
-                                          );
-                                        }),
-                                      )
-                                    ],
-                                  );
-                          } else if (snapshot.hasError) {
-                            return const Text("Erro ao carregar dados!");
-                          }
-                          return const CircularProgressIndicator();
-                        },
-                      ),
-                    ],
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.black,
+                                                            Colors.blue.shade900
+                                                          ])),
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      if (isDoorman != null) {
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                                Routes
+                                                                    .CREDIT_AND_SALE_WORKER,
+                                                                arguments:
+                                                                    snapshot.data![
+                                                                        index]);
+                                                        return;
+                                                      }
+                                                      Navigator.of(context)
+                                                          .pushNamed(
+                                                              Routes
+                                                                  .REGISTER_GUEST,
+                                                              arguments:
+                                                                  snapshot.data![
+                                                                      index]);
+                                                    },
+                                                    child: Row(
+                                                      children: [
+                                                        Expanded(
+                                                          flex: 6,
+                                                          child: SizedBox(
+                                                            height: width * .45,
+                                                            child: ClipRRect(
+                                                              child: snapshot
+                                                                          .data![
+                                                                              index]
+                                                                          .imgCartaz !=
+                                                                      null
+                                                                  ? snapshot.data![index].imgCartaz!.isNotEmpty &&
+                                                                          snapshot.data![index].imgCartaz! !=
+                                                                              Utils
+                                                                                  .assetLogo
+                                                                      ? CachedNetworkImage(
+                                                                          imageUrl: snapshot
+                                                                              .data![index]
+                                                                              .imgCartaz!,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                        )
+                                                                      : Image.asset(
+                                                                          Utils
+                                                                              .assetLogo,
+                                                                          fit: BoxFit
+                                                                              .cover)
+                                                                  : Image.asset(
+                                                                      Utils
+                                                                          .assetLogo,
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              //  radius: circleAvatarSize,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        Expanded(
+                                                          flex: 3,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(4.0),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          6.0),
+                                                                  child: Text(
+                                                                    "Data: \n${date.day}/${date.month}/${date.year}",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            fontSizeSubtitle,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          6.0),
+                                                                  child: Text(
+                                                                    "Organização:\n${snapshot.data![index].organization}",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            fontSizeTitle *
+                                                                                .7,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          6.0),
+                                                                  child: Text(
+                                                                    "Normal:\n${separatorMoney("${snapshot.data![index].price}")} kz",
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            fontSizeSubtitle,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        color: Colors
+                                                                            .grey),
+                                                                  ),
+                                                                ),
+                                                                snapshot.data![index]
+                                                                            .priceVip !=
+                                                                        null
+                                                                    ? Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.only(bottom: 6.0),
+                                                                        child:
+                                                                            Text(
+                                                                          "Vip:\n${separatorMoney("${snapshot.data![index].priceVip}")} kz",
+                                                                          style: TextStyle(
+                                                                              fontSize: fontSizeSubtitle,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.white),
+                                                                        ),
+                                                                      )
+                                                                    : const SizedBox()
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 24,
+                                                )
+                                              ],
+                                            );
+                                          }),
+                                        )
+                                      ],
+                                    );
+                            } else if (snapshot.hasError) {
+                              return const Text("Erro ao carregar dados!");
+                            }
+                            return const CircularProgressIndicator();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+              const AddEventPage(),
+              const CreateWorkerPage()
+            ]),
             bottomSheet: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 width: double.infinity,
                 child: workerObjectId == null
-                    ? TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                            "Volte sempre nesta tela para gerenciar os eventos criados!"),
-                      )
+                    ? TabBar(
+                        indicatorWeight: 3.5,
+                        controller: tabController,
+                        tabs: const [
+                            Icon(
+                              Icons.home_sharp,
+                              color: Colors.grey,
+                              size: 35,
+                            ),
+                            Icon(
+                              Icons.event,
+                              color: Colors.grey,
+                              size: 35,
+                            ),
+                            Icon(
+                              Icons.group_add_outlined,
+                              color: Colors.grey,
+                              size: 35,
+                            ),
+                          ])
                     : TextButton(
                         onPressed: () {
                           LoginController.logout(context);

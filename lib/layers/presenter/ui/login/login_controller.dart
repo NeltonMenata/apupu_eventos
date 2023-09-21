@@ -29,7 +29,7 @@ class LoginController {
       } else {
         currentAdmin = user;
         Navigator.of(context)
-            .pushNamedAndRemoveUntil(Routes.HOME, (route) => false);
+            .pushNamedAndRemoveUntil(Routes.MANAGER_EVENT, (route) => false);
       }
     } else {
       final _loginWorker = _loginWorkerUseCase;

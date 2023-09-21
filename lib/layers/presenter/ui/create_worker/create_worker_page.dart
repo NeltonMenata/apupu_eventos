@@ -32,6 +32,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
     const allPadding = 8.0;
 
     return Scaffold(
+      /*
       appBar: AppBar(
         title: const Text(
           "Trabalhador",
@@ -48,6 +49,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
         ),
         backgroundColor: Colors.white,
       ),
+      */
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -100,7 +102,7 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                             controller: usernameController,
                             decoration: const InputDecoration(
                               hintText: "Username",
-                              suffixIcon: Icon(Icons.event_outlined),
+                              suffixIcon: Icon(Icons.person),
                               border: OutlineInputBorder(),
                             ),
                           )
@@ -120,44 +122,10 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                           keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
                               hintText: "Senha",
-                              suffixIcon: Icon(Icons.group_outlined),
+                              suffixIcon: Icon(Icons.password_outlined),
                               border: OutlineInputBorder()),
                         )
                       ]),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(allPadding),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isDoorman = !isDoorman;
-                          });
-                        },
-                        child: Container(
-                          width: width * .4,
-                          padding: const EdgeInsets.only(left: 8),
-                          decoration: BoxDecoration(
-                              border: Border.all(),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Row(children: [
-                            Text(
-                              "É porteiro?",
-                              style: TextStyle(
-                                  fontSize: fontSize,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            const Spacer(),
-                            Checkbox(
-                              value: isDoorman,
-                              onChanged: (value) {
-                                setState(() {
-                                  isDoorman = !isDoorman;
-                                });
-                              },
-                            )
-                          ]),
-                        ),
-                      ),
                     ),
                     Padding(
                         padding: const EdgeInsets.all(allPadding),
@@ -200,8 +168,6 @@ class _CreateWorkerPageState extends State<CreateWorkerPage> {
                     SizedBox(
                       height: width * .07,
                     ),
-                    const Text(
-                        "Deixe a caixa de seleção desmarcada se quiser criar o trabalhador como Barman!"),
                   ],
                 ),
               )

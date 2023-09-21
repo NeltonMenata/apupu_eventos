@@ -25,8 +25,7 @@ class ManagerWorkerController {
     try {
       return await _getAllWorkerUseCase();
     } catch (e) {
-      showResultCustom(context,
-          "Erro ao carregar os dados dos trabalhadores: " + e.toString());
+      showResultCustom(context, e.toString());
       return [];
     }
   }

@@ -42,6 +42,7 @@ class _AddEventPageState extends State<AddEventPage> {
     final circleAvatarSize = width * .2;
 
     return Scaffold(
+      /*
       appBar: AppBar(
         title: const Text("Evento", style: TextStyle(color: Colors.black)),
         leading: IconButton(
@@ -55,6 +56,7 @@ class _AddEventPageState extends State<AddEventPage> {
         ),
         backgroundColor: Colors.white,
       ),
+      */
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -295,6 +297,9 @@ class _AddEventPageState extends State<AddEventPage> {
                                   style: TextStyle(fontSize: fontSize),
                                 ),
                               )),
+                    const SizedBox(
+                      height: 50,
+                    )
                   ],
                 ),
               )
