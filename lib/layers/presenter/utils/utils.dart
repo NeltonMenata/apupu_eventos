@@ -13,6 +13,7 @@ class Utils {
 
   static capture(GlobalKey? key, BuildContext context,
       [String? contact, bool w = false]) async {
+    //variavel W serve para habilitar o botão whatsapp no compartilhamento!
     try {
       if (key == null) return;
       final renderObject =
@@ -28,7 +29,7 @@ class Utils {
       final name = "imagem$math"; //DateTime.now().toIso8601String();
 
       if (dir == null) return;
-      final file = File("${dir.first.path}/$name.png");
+      final file = File("${dir.first.path}/$name.jpg");
       file.writeAsBytesSync(buffer8);
 
       await showDialog(
@@ -69,7 +70,7 @@ class Utils {
                       //Share.shareFiles(['/image.jpg'], text: 'Great picture');
                       // ignore: deprecated_member_use
                       await Share.shareFiles([file.path],
-                          mimeTypes: ["image/png"], text: "Meu Código");
+                          mimeTypes: ["image/jpg"], text: "Meu Código");
                     },
                     child: const Text("Compartilhar")),
                 TextButton(

@@ -234,22 +234,28 @@ class _MakeSalePageState extends State<MakeSalePage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      products[index]["name"]!
-                                              .toString()
-                                              .toUpperCase() +
-                                          ": " +
-                                          products[index]["price"].toString() +
-                                          " kz",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: !productsSelected.every(
-                                                  (element) =>
-                                                      element["objectId"] !=
-                                                      products[index]
-                                                          ["objectId"])
-                                              ? Colors.white
-                                              : Colors.black),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(
+                                          products[index]["name"]!
+                                                  .toString()
+                                                  .toUpperCase() +
+                                              ": " +
+                                              products[index]["price"]
+                                                  .toString() +
+                                              " kz",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: !productsSelected.every(
+                                                      (element) =>
+                                                          element["objectId"] !=
+                                                          products[index]
+                                                              ["objectId"])
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      ),
                                     ),
                                     Visibility(
                                       visible: !productsSelected.every(

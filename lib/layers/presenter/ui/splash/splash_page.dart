@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
             const Padding(
               padding: EdgeInsets.all(10),
               child: Text(
-                "O Melhor Gerenciador de Eventos na Palma da Mão!",
+                "O Melhor Gerente de Eventos na Palma da Mão!",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,

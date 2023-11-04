@@ -11,6 +11,7 @@ class SaveProductDataSourceBack4appImp implements ISaveProductDataSource {
           await ParseCloudFunction("saveProduct").execute(parameters: {
         "name": product.name,
         "price": product.price,
+        "favorite": product.favorite,
         "eventObjectId": product.eventObjectId
       });
 

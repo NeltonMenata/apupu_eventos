@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/presenter/ui/add_event/add_event_controller.dart';
 import 'package:apupu_eventos/layers/presenter/utils/utils.dart';

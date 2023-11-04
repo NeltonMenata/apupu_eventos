@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names, file_names
 
+import 'package:apupu_eventos/layers/presenter/ui/about/about_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/admin_panel/admin_panel_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/auth/phone_number_page.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_page.dart';
@@ -52,6 +53,7 @@ abstract class Routes {
   static const VIEW_MANAGER = "/view_manager";
   static const OTP = "/otp";
   static const PHONE_NUMBER = "/phone_number";
+  static const ABOUT = "/about";
 
   // Routers for Worker
 
@@ -82,7 +84,8 @@ abstract class Routes {
       ADMIN_PANEL: (context) => const AdminPanelPage(),
       VIEW_MANAGER: (context) => ViewManagerPage(),
       OTP: (context) => const OtpPage(),
-      PHONE_NUMBER: (context) => const PhoneNumberPage()
+      PHONE_NUMBER: (context) => const PhoneNumberPage(),
+      ABOUT: (context) => const AboutPage()
     };
   }
 }

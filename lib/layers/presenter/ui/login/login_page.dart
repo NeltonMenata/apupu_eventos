@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      controller.isAdmin ? "Gerenciador" : "Porteiro/Barman",
+                      controller.isAdmin ? "Gerente" : "Porteiro/Barman",
                       style: TextStyle(
                           fontSize: fontSizeTitleLabel,
                           fontWeight: FontWeight.w900),
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Acessar como Gerenciador?",
+                      "Acessar como Gerente?",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: fontSizeTitleLabel * .9),
@@ -204,6 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     Navigator.pushNamed(context, Routes.PHONE_NUMBER);
+                    //Navigator.pushNamed(context, Routes.CREATE_MANAGER);
                   },
                 ),
               ),

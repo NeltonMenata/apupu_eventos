@@ -96,7 +96,7 @@ class _ManagerWorkerPageState extends State<ManagerWorkerPage> {
                               width: width,
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                  color: Colors.blue,
+                                  color: Colors.red,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Text(
                                 "${snapshotWorker.data?[0].error}",

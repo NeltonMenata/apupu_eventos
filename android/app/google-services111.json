@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "129559426931",
+    "project_id": "apupu-eventos",
+    "storage_bucket": "apupu-eventos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129559426931:android:73b5f2fe147240feaa7706",
+        "android_client_info": {
+          "package_name": "com.example.apupu_eventos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129559426931-ini9crsp49f8f1itarmaar77foq7i1jv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apupu_eventos",
+            "certificate_hash": "cc15241c758405c4c165cdce7c587f549ff6853a"
+          }
+        },
+        {
+          "client_id": "129559426931-p1mkhnjmcjktl1ilnsa1sgr4ohpvcso7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCj8K5RqMG3lpCgS12CWZx-XRwtQ53kQNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129559426931-p1mkhnjmcjktl1ilnsa1sgr4ohpvcso7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

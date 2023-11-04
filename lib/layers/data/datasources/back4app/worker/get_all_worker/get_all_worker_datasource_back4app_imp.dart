@@ -11,17 +11,6 @@ class GetAllWorkerDataSourceBack4appImp implements IGetAllWorkerDataSource {
       final result = await getAllWorker
           .execute(parameters: {"managerObjectId": managerObjectId});
       if (result.statusCode == 200) {
-        if (result.result["error"] != null) {
-          return [
-            WorkerEntity(
-                username: "username",
-                password: "password",
-                name: "name",
-                isDoorman: false,
-                error: result.result["error"])
-          ];
-        }
-
         final List<WorkerEntity> list = [];
         result.result.forEach((e) {
           list.add(
@@ -39,12 +28,11 @@ class GetAllWorkerDataSourceBack4appImp implements IGetAllWorkerDataSource {
       } else {
         return [
           WorkerEntity(
+              username: "username",
+              password: "password",
+              name: "name",
               isDoorman: false,
-              name: "",
-              username: "",
-              password: "",
-              error:
-                  "Erro ao carregar os dados, verifique a sua conexão com a internet!")
+              error: result.error?.message)
         ];
       }
     } catch (e) {

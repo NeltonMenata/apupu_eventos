@@ -8,6 +8,7 @@ import 'package:apupu_eventos/layers/presenter/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../login/login_controller.dart';
 
 class ManagerEventPage extends StatefulWidget {
@@ -85,6 +86,7 @@ class _ManagerEventPageState extends State<ManagerEventPage>
             appBar: currentWorker == null
                 ? AppBar(
                     centerTitle: true,
+                    elevation: 0.0,
                     title: Text(
                       currentAdmin?.name ?? "Not connected",
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -97,6 +99,16 @@ class _ManagerEventPageState extends State<ManagerEventPage>
                             Navigator.pushNamed(context, Routes.ADMIN_PANEL);
                           },
                           icon: const Icon(Icons.admin_panel_settings_outlined),
+                        ),
+                      ),
+                      Visibility(
+                        visible: loadingEvents,
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(6.0),
+                            child:
+                                CircularProgressIndicator(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
@@ -114,65 +126,155 @@ class _ManagerEventPageState extends State<ManagerEventPage>
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            accountEmail: const Text("Gerenciador"),
+                            accountEmail: const Text("Gerente"),
                             currentAccountPicture: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.asset(Utils.assetLogo)),
                           ),
-                          ListTile(
-                            title: Text(
-                              "Criar Evento",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04,
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: Text(
+                                      "Criar Evento",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.event,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamed(Routes.ADD_EVENT);
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Criar Porteiro/Barman",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.group_add_outlined,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context)
+                                          .pushNamed(Routes.CREATE_WORKER);
+                                    },
+                                  ),
+                                  Visibility(
+                                    visible: currentAdmin?.isAdmin == true,
+                                    child: ListTile(
+                                      title: Text(
+                                        "Ver Gerenciadores da Plataforma",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: width * .04,
+                                        ),
+                                      ),
+                                      trailing: Icon(
+                                        Icons.group,
+                                        size: width * .10,
+                                      ),
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pushNamed(Routes.VIEW_MANAGER);
+                                      },
+                                    ),
+                                  ),
+                                  //const Spacer(),
+                                  Text(
+                                    "Suporte e Ajuda",
+                                    style: TextStyle(
+                                        fontSize: fontSizeTextButton * .85,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Arial Black"),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Facebook",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.facebook_outlined,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () async {
+                                      final uri = Uri.parse(
+                                          "https://www.facebook.com/profile.php?id=100077996632399");
+                                      await launchUrl(uri,
+                                          mode: LaunchMode.externalApplication);
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Youtube",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.video_library_rounded,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () async {
+                                      final uri = Uri.parse(
+                                          "https://youtube.com/playlist?list=PLtv_rjcck_Gzrm4fM-w2rrr1KMvVXgX9Z&si=QwOxci_5oarMbU8e");
+                                      await launchUrl(uri,
+                                          mode: LaunchMode.externalApplication);
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Actualizar",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.system_update_alt_outlined,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () async {
+                                      final uri = Uri.parse(
+                                          "https://drive.google.com/file/d/1A0iyCXB06k6VjLeeQaW3l_tKgkN8Ntx2/view?usp=drive_link");
+                                      await launchUrl(uri,
+                                          mode: LaunchMode.externalApplication);
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      "Sobre",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: width * .04,
+                                      ),
+                                    ),
+                                    trailing: Icon(
+                                      Icons.priority_high_rounded,
+                                      size: width * .10,
+                                    ),
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.ABOUT);
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                            trailing: Icon(
-                              Icons.event,
-                              size: width * .10,
-                            ),
-                            onTap: () {
-                              Navigator.of(context).pushNamed(Routes.ADD_EVENT);
-                            },
                           ),
-                          ListTile(
-                            title: Text(
-                              "Criar Porteiro/Barman",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: width * .04,
-                              ),
-                            ),
-                            trailing: Icon(
-                              Icons.group_add_outlined,
-                              size: width * .10,
-                            ),
-                            onTap: () {
-                              Navigator.of(context)
-                                  .pushNamed(Routes.CREATE_WORKER);
-                            },
-                          ),
-                          Visibility(
-                            visible: currentAdmin?.isAdmin == true,
-                            child: ListTile(
-                              title: Text(
-                                "Ver Gerenciadores da Plataforma",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: width * .04,
-                                ),
-                              ),
-                              trailing: Icon(
-                                Icons.group,
-                                size: width * .10,
-                              ),
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(Routes.VIEW_MANAGER);
-                              },
-                            ),
-                          ),
-                          const Spacer(),
                           ListTile(
                             title: Text(
                               "Terminar Sessão",
@@ -522,25 +624,50 @@ class _ManagerEventPageState extends State<ManagerEventPage>
                   ),
                 ),
               ),
+
+              //################## ADD EVENT PAGE - PAGINA DE ADICIONAR EVENTOS
+
               const AddEventPage(),
+
+              //################## CREATE WORKER PAGE - PAGINA DE CRIAR TRABALHADOR
               const CreateWorkerPage()
             ]),
             bottomSheet: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
+              padding: const EdgeInsets.all(0.0),
+              child: Container(
+                //height: 40,
+                padding: const EdgeInsets.only(top: 4.0),
                 width: double.infinity,
+                decoration: BoxDecoration(
+                  border: const Border.fromBorderSide(
+                      BorderSide(color: Colors.black)),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10)),
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black,
+                      Colors.blue.shade900,
+                    ],
+                  ),
+                ),
                 child: workerObjectId == null
                     ? TabBar(
+                        onTap: (index) {
+                          if (index == 0) {
+                            refreshEvents();
+                          }
+                        },
                         indicatorWeight: 3.5,
                         controller: tabController,
                         tabs: const [
                             Icon(
-                              Icons.home_sharp,
+                              Icons.home_filled,
                               color: Colors.grey,
                               size: 35,
                             ),
                             Icon(
-                              Icons.event,
+                              Icons.event_note_rounded,
                               color: Colors.grey,
                               size: 35,
                             ),
@@ -566,6 +693,18 @@ class _ManagerEventPageState extends State<ManagerEventPage>
             ),
           ),
         ));
+  }
+
+  bool loadingEvents = false;
+  refreshEvents() async {
+    setState(() {
+      loadingEvents = true;
+    });
+
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      loadingEvents = false;
+    });
   }
 }
 /*

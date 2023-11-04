@@ -3,6 +3,7 @@ import 'package:apupu_eventos/layers/core/inject/inject.dart';
 import 'package:apupu_eventos/layers/domain/entities/product/product_entity.dart';
 import 'package:apupu_eventos/layers/presenter/ui/create_product/create_product_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../../domain/entities/event/event_entity.dart';
 import '../../utils/utils.dart';
@@ -18,6 +19,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   final controller = getIt<CreateProductController>();
   final priceController = TextEditingController();
   final nameController = TextEditingController();
+  bool isFavorite = false;
   //final List<ProductEntity> allProducts = [];
   bool isLoading = false;
   bool complete = true;
@@ -27,8 +29,8 @@ class _CreateProductPageState extends State<CreateProductPage> {
     final currentEvent =
         ModalRoute.of(context)?.settings.arguments as EventEntity;
     final width = MediaQuery.of(context).size.width;
-    const allPadding = 8.0;
-    final fontSize = width * .05;
+    const allPadding = 4.0;
+    final fontSize = width * .038;
     if (complete) {
       controller.getAllProduct(currentEvent.objectId).then(
         (value) {
@@ -78,25 +80,73 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                             Random().nextInt(255),
                                             Random().nextInt(255),
                                             .8),
-                                        radius: width * .07,
+                                        radius: width * .05,
                                         child: Text(
                                           e.name![0].toUpperCase(),
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
-                                              fontSize: width * .08),
+                                              fontSize: width * .05),
                                         ),
                                       ),
                                       title: Text(
                                         e.name!.toUpperCase(),
                                         style: TextStyle(
-                                            fontSize: width * .05,
+                                            fontSize: width * .04,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      trailing: Text(e.price.toString() + " kz",
-                                          style: TextStyle(
-                                              fontSize: width * .05,
-                                              fontWeight: FontWeight.bold)),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(e.price.toString() + " kz",
+                                              style: TextStyle(
+                                                  fontSize: width * .04,
+                                                  fontWeight: FontWeight.bold)),
+                                          FutureBuilder<bool>(
+                                              future: verifyFavoriteProduct(
+                                                  "${e.objectId}"),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasError) {
+                                                  return Container();
+                                                } else if (snapshot.hasData) {
+                                                  return snapshot.data == true
+                                                      ? IconButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              addFavoriteProduct(
+                                                                  "${e.objectId}",
+                                                                  !snapshot
+                                                                      .data!);
+                                                            });
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.favorite,
+                                                              color:
+                                                                  Colors.red))
+                                                      : IconButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              addFavoriteProduct(
+                                                                  "${e.objectId}",
+                                                                  !snapshot
+                                                                      .data!);
+                                                            });
+                                                          },
+                                                          icon: const Icon(Icons
+                                                              .favorite_outline));
+                                                } else {
+                                                  return const Center(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                  );
+                                                }
+                                              }),
+                                        ],
+                                      ),
                                     ),
                                     // const Divider(
                                     //   color: Colors.black54,
@@ -110,6 +160,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                       )),
             const Divider(
               height: 2,
+              thickness: 1.5,
               color: Colors.black,
             ),
             Padding(
@@ -127,7 +178,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                       controller: nameController,
                       decoration: const InputDecoration(
                           suffixIcon: Icon(Icons.fastfood_rounded),
-                          border: OutlineInputBorder()),
+                          border: UnderlineInputBorder()),
                     )
                   ]),
             ),
@@ -146,10 +197,44 @@ class _CreateProductPageState extends State<CreateProductPage> {
                     controller: priceController,
                     decoration: const InputDecoration(
                       suffixIcon: Icon(Icons.attach_money_outlined),
-                      border: OutlineInputBorder(),
+                      border: UnderlineInputBorder(),
                     ),
                   )
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(allPadding),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isFavorite = !isFavorite;
+                  });
+                },
+                child: Container(
+                  width: width * .9,
+                  padding: const EdgeInsets.only(left: 8),
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Row(children: [
+                    Text(
+                      "É Favorito?",
+                      style: TextStyle(
+                          fontSize: fontSize, fontWeight: FontWeight.w900),
+                    ),
+                    const Spacer(),
+                    Checkbox(
+                      value: isFavorite,
+                      onChanged: (value) {
+                        setState(() {
+                          isFavorite = !isFavorite;
+                        });
+                      },
+                    )
+                  ]),
+                ),
               ),
             ),
             Padding(
@@ -175,6 +260,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
                                 price: int.parse(
                                   priceController.text,
                                 ),
+                                favorite: isFavorite,
                                 eventObjectId: currentEvent.objectId,
                                 name:
                                     nameController.text.toLowerCase().trim()));
@@ -210,6 +296,19 @@ class _CreateProductPageState extends State<CreateProductPage> {
         ),
       ),
     );
+  }
+
+  Future<bool> addFavoriteProduct(String objectId, bool isFavorite) async {
+    final parseProduct = await ParseCloudFunction("addFavoriteProduct").execute(
+        parameters: {"productObjectId": objectId, "isFavorite": isFavorite});
+
+    return parseProduct.result["favorite"] ?? false;
+  }
+
+  Future<bool> verifyFavoriteProduct(String objectId) async {
+    final parseProduct = await ParseCloudFunction("verifyFavoriteProduct")
+        .execute(parameters: {"productObjectId": objectId});
+    return parseProduct.result["favorite"] ?? false;
   }
 
   @override

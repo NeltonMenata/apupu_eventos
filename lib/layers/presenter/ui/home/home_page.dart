@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                     currentAdmin?.name ?? "Not connected",
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  accountEmail: const Text("Gerenciador"),
+                  accountEmail: const Text("Gerente"),
                   currentAccountPicture: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(Utils.assetLogo)),

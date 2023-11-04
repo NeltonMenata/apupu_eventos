@@ -26,10 +26,19 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
   final passwordController = TextEditingController();
   final passwordAgainController = TextEditingController();
   final phoneController = TextEditingController();
+  bool enablePhone = false;
+
+  @override
+  void initState() {
+    phoneController.text = AuthService.phone;
+    if (phoneController.text.isEmpty) {
+      enablePhone = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    phoneController.text = AuthService.phone;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final paddingHorizontal = width * .04;
@@ -112,7 +121,7 @@ class _CreateManagerPageState extends State<CreateManagerPage> {
                     TextField(
                       controller: phoneController,
                       keyboardType: TextInputType.phone,
-                      enabled: false,
+                      enabled: enablePhone,
                       style: TextStyle(
                         letterSpacing: 4,
                         fontSize: fontSizeTitleLabel - 2,

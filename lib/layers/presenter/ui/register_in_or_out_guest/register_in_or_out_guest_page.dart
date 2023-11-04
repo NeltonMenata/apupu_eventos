@@ -4,7 +4,6 @@ import 'package:apupu_eventos/layers/domain/entities/guest/guest_entity.dart';
 import 'package:apupu_eventos/layers/presenter/routes/Routes.dart';
 import 'package:apupu_eventos/layers/presenter/ui/login/login_controller.dart';
 import 'package:apupu_eventos/layers/presenter/ui/mixins_controllers/done_in_or_out_guest_mixin.dart';
-import 'package:apupu_eventos/layers/presenter/utils/widgets/floating_button_menu.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -181,6 +180,7 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
             ? null
             : AppBar(
                 centerTitle: true,
+                elevation: 0.0,
                 title: Text(currentEvent.organization),
                 actions: [
                   currentAdmin == null
@@ -762,78 +762,164 @@ class _RegisterState extends State<RegisterInOrOutGuestPage>
             */
           ],
         ),
-        floatingActionButton: FloatingButtonMenu(
-          onPressed1: () {
-            Navigator.of(context)
-                .pushNamed(Routes.SEARCH_GUEST, arguments: currentEvent)
-                .then((value) {
-              setState(() {});
-            });
-          },
-          onPressed2: () async {
-            final value = await Navigator.of(context)
-                .pushNamed(Routes.ADD_GUEST, arguments: currentEvent);
+        bottomNavigationBar: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Divider(
+                height: 3,
+                thickness: 3,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: IconButton(
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
 
-            if (value != null) {
-              setState(() {
-                guestCurrent = value as GuestEntity;
-                isIn = false;
-                statusGuest = "O Convidado está fora do Evento";
-              });
-            }
-          },
-          onPressed3: () {
-            Utils.capture(key1qrcode, context, guestCurrent.contact, true);
-          },
-          onPressed4: () async {
-            setState(() {
-              isLoading = true;
-            });
+                            var qrResult =
+                                await FlutterBarcodeScanner.scanBarcode(
+                                    "red", "Cancelar", true, ScanMode.QR);
 
-            var qrResult = await FlutterBarcodeScanner.scanBarcode(
-                "red", "Cancelar", true, ScanMode.QR);
+                            if (qrResult == "-1") {
+                              setState(() {
+                                isLoading = false;
+                              });
 
-            if (qrResult == "-1") {
-              setState(() {
-                isLoading = false;
-              });
+                              return;
+                            }
+                            guestCurrent = await widget.controller
+                                .getGuest(qrResult, currentEvent.objectId);
 
-              return;
-            }
-            guestCurrent = await widget.controller
-                .getGuest(qrResult, currentEvent.objectId);
+                            if (guestCurrent.contact == "contact") {
+                              setState(() {
+                                isLoading = false;
+                                isIn = false;
+                                statusGuest =
+                                    "Usuário não está cadastrado neste Evento";
+                              });
+                              showResultCustom(context, "O usuário não existe",
+                                  isError: true);
+                              return;
+                            }
+                            setState(() {
+                              isLoading = false;
+                            });
+                            isIn = guestCurrent.isIn;
+                            if (isIn) {
+                              statusGuest =
+                                  "Acesso Negado, o convidado já está no Evento";
+                              showResultCustom(
+                                  context, "O usuário já está dentro do evento",
+                                  isError: true);
+                            } else {
+                              setState(() {
+                                isLoading = true;
+                              });
 
-            if (guestCurrent.contact == "contact") {
-              setState(() {
-                isLoading = false;
-                isIn = false;
-                statusGuest = "Usuário não está cadastrado neste Evento";
-              });
-              showResultCustom(context, "O usuário não existe", isError: true);
-              return;
-            }
-            setState(() {
-              isLoading = false;
-            });
-            isIn = guestCurrent.isIn;
-            if (isIn) {
-              statusGuest = "Acesso Negado, o convidado já está no Evento";
-              showResultCustom(context, "O usuário já está dentro do evento",
-                  isError: true);
-            } else {
-              setState(() {
-                isLoading = true;
-              });
+                              await doneInOrOutGuest(
+                                  guestCurrent.objectId, !isIn);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              statusGuest = "O Convidado pode entrar no Evento";
+                              isIn = !isIn;
+                            }
+                          },
+                          icon: const Icon(Icons.qr_code_scanner,
+                              color: Colors.white))),
+                  const Text(
+                    "Registrar\nEntrada",
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: IconButton(
+                          onPressed: () async {
+                            final value = await Navigator.of(context).pushNamed(
+                                Routes.ADD_GUEST,
+                                arguments: currentEvent);
 
-              await doneInOrOutGuest(guestCurrent.objectId, !isIn);
-              setState(() {
-                isLoading = false;
-              });
-              statusGuest = "O Convidado pode entrar no Evento";
-              isIn = !isIn;
-            }
-          },
-        ),
+                            if (value != null) {
+                              setState(() {
+                                guestCurrent = value as GuestEntity;
+                                isIn = false;
+                                statusGuest = "O Convidado está fora do Evento";
+                              });
+                            }
+                          },
+                          icon: const Icon(Icons.group_add_sharp,
+                              color: Colors.white))),
+                  const Text(
+                    "Adicionar\nPessoas",
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: IconButton(
+                          onPressed: () {
+                            Utils.capture(key1qrcode, context,
+                                guestCurrent.contact, true);
+                          },
+                          icon: const Icon(Icons.share_outlined,
+                              color: Colors.white))),
+                  const Text(
+                    "Partilhar\nQr Code",
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(50)),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(Routes.SEARCH_GUEST,
+                                arguments: currentEvent)
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "Procurar\nConvidados",
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              ),
+            ]),
       ),
     );
   }

@@ -20,6 +20,7 @@ class GetAllProductDataSourceBack4appImp implements IGetAllProductDataSource {
                 name: e["name"],
                 price: e["price"],
                 objectId: e["objectId"],
+                favorite: e["favorite"],
                 eventObjectId: eventObjectId),
           );
         }

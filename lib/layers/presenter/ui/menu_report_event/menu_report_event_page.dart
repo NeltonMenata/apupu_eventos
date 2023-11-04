@@ -29,51 +29,56 @@ class _MenuReportEventPageState extends State<MenuReportEventPage> {
         ModalRoute.of(context)!.settings.arguments as EventEntity;
 
     return Scaffold(
-      body: Column(children: [
-        Padding(
-          padding: EdgeInsets.only(
-              left: paddingLeft,
-              right: paddingLeft,
-              top: paddingTop,
-              bottom: paddingBottom),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Relatório do Evento - ${currentEvent.name}",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: fontSizeTitle),
-              ),
-              const SizedBox(height: paddingBottom),
-              Text(
-                "Consulte a quantidade de convidados que participaram deste evento, produtos vendidos e o valor monetário arrecadado pelo cartão de consumo.",
-                style: TextStyle(fontSize: fontSizeSubtitle),
-              )
-            ],
+      appBar: AppBar(title: const Text("Relatório do Evento")),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Padding(
+            padding: EdgeInsets.only(
+                left: paddingLeft,
+                right: paddingLeft,
+                top: paddingTop,
+                bottom: paddingBottom),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Relatório do Evento - ${currentEvent.name}",
+                  style: TextStyle(
+                      fontFamily: "Arial Black",
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSizeTitle),
+                ),
+                const SizedBox(height: paddingBottom),
+                Text(
+                  "Consulte a quantidade de convidados que participaram deste evento, produtos vendidos e o valor monetário arrecadado pelo cartão de consumo.",
+                  style: TextStyle(fontSize: fontSizeSubtitle),
+                )
+              ],
+            ),
           ),
-        ),
-        BigButtonNavigation(
-            title: "Relatório de Convidados",
-            icon: Icons.dashboard,
-            action: () {
-              Navigator.of(context)
-                  .pushNamed(Routes.REPORT_EVENT, arguments: currentEvent);
-            }),
-        BigButtonNavigation(
-            title: "Relatório de Produtos Vendidos",
-            icon: Icons.dashboard,
-            action: () {
-              Navigator.of(context)
-                  .pushNamed(Routes.REPORT_SALE, arguments: currentEvent);
-            }),
-        BigButtonNavigation(
-            title: "Relatório de Créditos - Cartão de Consumo",
-            icon: Icons.dashboard,
-            action: () {
-              Navigator.of(context)
-                  .pushNamed(Routes.REPORT_CREDIT, arguments: currentEvent);
-            }),
-      ]),
+          BigButtonNavigation(
+              title: "Relatório de Convidados",
+              icon: Icons.dashboard,
+              action: () {
+                Navigator.of(context)
+                    .pushNamed(Routes.REPORT_EVENT, arguments: currentEvent);
+              }),
+          BigButtonNavigation(
+              title: "Relatório de Produtos Vendidos",
+              icon: Icons.dashboard,
+              action: () {
+                Navigator.of(context)
+                    .pushNamed(Routes.REPORT_SALE, arguments: currentEvent);
+              }),
+          BigButtonNavigation(
+              title: "Relatório de Créditos - Cartão de Consumo",
+              icon: Icons.dashboard,
+              action: () {
+                Navigator.of(context)
+                    .pushNamed(Routes.REPORT_CREDIT, arguments: currentEvent);
+              }),
+        ]),
+      ),
     );
   }
 }

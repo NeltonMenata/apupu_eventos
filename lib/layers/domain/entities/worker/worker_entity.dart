@@ -19,4 +19,11 @@ class WorkerEntity {
       this.managerObjectId,
       this.phone,
       required this.isDoorman});
+
+  @override
+  String toString() {
+    super.toString();
+
+    return "username: $username, password: $password, name: $name, error: $error";
+  }
 }

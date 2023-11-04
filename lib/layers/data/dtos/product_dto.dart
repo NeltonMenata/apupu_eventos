@@ -9,6 +9,7 @@ class ProductDto extends ProductEntity {
   final int price;
   final String eventObjectId;
   final int? quantity;
+  final bool? favorite;
   final String? error;
 
   ProductDto(
@@ -17,6 +18,7 @@ class ProductDto extends ProductEntity {
       required this.price,
       required this.eventObjectId,
       this.quantity,
+      this.favorite,
       this.error})
       : super(
             objectId: objectId,
@@ -24,6 +26,7 @@ class ProductDto extends ProductEntity {
             price: price,
             eventObjectId: eventObjectId,
             quantity: quantity,
+            favorite: favorite,
             error: error);
   String toJson() {
     final json = {
@@ -32,6 +35,7 @@ class ProductDto extends ProductEntity {
       "price": price,
       "eventObjectId": eventObjectId,
       "quantity": quantity,
+      "favorite": favorite,
       "totalValue": totalValue
     };
 
@@ -45,6 +49,7 @@ class ProductDto extends ProductEntity {
       "price": price,
       "eventObjectId": eventObjectId,
       "quantity": quantity,
+      "favorite": favorite,
       "totalValue": totalValue
     };
     return json;
@@ -56,6 +61,7 @@ class ProductDto extends ProductEntity {
       name: map["name"],
       price: map["price"],
       eventObjectId: map["eventObjectId"],
+      favorite: map["favorite"],
       quantity: map["quantity"],
     );
   }
